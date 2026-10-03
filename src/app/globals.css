@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Ocean palette — the only brand colours. See CLAUDE.md / SPEC.md. */
+:root {
+  --deep-ocean: #0d2b45;
+  --ocean-teal: #1e5a6e;
+  --seafoam: #6ba7a0;
+  --sandy-beige: #dcc8aa;
+  --light-sky: #b7d4e6;
+
+  --sea-night: #081c2e; /* darker sea for the immersive screens */
+  --foam: #f6fafc; /* page background on light screens */
+  --ink: var(--deep-ocean);
+  --ink-soft: #4d6577;
+}
+
+@theme inline {
+  --color-deep-ocean: var(--deep-ocean);
+  --color-ocean-teal: var(--ocean-teal);
+  --color-seafoam: var(--seafoam);
+  --color-sandy-beige: var(--sandy-beige);
+  --color-light-sky: var(--light-sky);
+  --color-sea-night: var(--sea-night);
+  --color-foam: var(--foam);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+
+  --font-sans: "Nunito Variable", ui-rounded, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-card: 1.5rem;
+  --radius-pill: 999px;
+}
+
+html,
+body {
+  background: var(--foam);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Small uppercase "LESSON 01" style labels, like the OceanX chapter labels. */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

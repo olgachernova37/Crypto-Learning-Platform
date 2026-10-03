@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # CLAUDE.md
 
 Crypto learning web platform for complete beginners (Duolingo + SoloLearn style), built for the SolanaCZE Build Station / Colosseum hackathon. Full product spec: [SPEC.md](SPEC.md). NFT minting notes: [docs/nft-guide.md](docs/nft-guide.md).
