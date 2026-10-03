@@ -1,0 +1,144 @@
+/* Gentle motion for the lesson experience. Global CSS already shortens motion for
+   prefers-reduced-motion; the looping/decorative bits below are switched off explicitly. */
+
+.fadeUp {
+  animation: fadeUp 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.fadeUpSlow {
+  animation: fadeUp 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.delay1 {
+  animation-delay: 0.12s;
+}
+.delay2 {
+  animation-delay: 0.24s;
+}
+.delay3 {
+  animation-delay: 0.36s;
+}
+.delay4 {
+  animation-delay: 0.48s;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bob {
+  animation: bob 5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+.drift {
+  animation: drift 9s ease-in-out infinite alternate;
+}
+.driftSlow {
+  animation: drift 14s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift {
+  from {
+    transform: translateX(-14px);
+  }
+  to {
+    transform: translateX(14px);
+  }
+}
+
+.twinkle {
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.pop {
+  animation: pop 0.7s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* confetti: each piece sets --x, --r, --d (delay) and --t (duration) inline */
+.confetti {
+  position: absolute;
+  top: -24px;
+  left: var(--x);
+  animation: fall var(--t, 5s) linear var(--d, 0s) infinite;
+  opacity: 0;
+}
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  8% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--sway, 30px), 70vh, 0) rotate(var(--r, 360deg));
+  }
+}
+
+.progress {
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bob,
+  .drift,
+  .driftSlow,
+  .twinkle,
+  .float {
+    animation: none;
+  }
+  .confetti {
+    display: none;
+  }
+}
