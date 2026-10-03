@@ -1,0 +1,134 @@
+/* Motion for the ocean screens. Everything here is disabled under reduced motion. */
+
+/* ---------- boat ---------- */
+.bob {
+  animation: bob 4.2s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: rotate(-1.6deg) scale(1);
+  }
+  50% {
+    transform: rotate(1.6deg) scale(1.025);
+  }
+}
+
+/* ---------- stops ---------- */
+.halo {
+  animation: halo 2.6s ease-out infinite;
+}
+@keyframes halo {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* ---------- text block ---------- */
+.cardIn > * {
+  opacity: 0;
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.cardIn > :nth-child(1) {
+  animation-delay: 0.02s;
+}
+.cardIn > :nth-child(2) {
+  animation-delay: 0.08s;
+}
+.cardIn > :nth-child(3) {
+  animation-delay: 0.14s;
+}
+.cardIn > :nth-child(4) {
+  animation-delay: 0.2s;
+}
+.cardIn > :nth-child(5) {
+  animation-delay: 0.26s;
+}
+.cardIn > :nth-child(6) {
+  animation-delay: 0.32s;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ---------- arriving from the globe ---------- */
+.diveIn {
+  animation: diveIn 1.5s cubic-bezier(0.3, 0.6, 0.2, 1) forwards;
+}
+@keyframes diveIn {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.worldIn {
+  animation: worldIn 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes worldIn {
+  from {
+    transform: scale(1.18);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 1.2s ease both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hint {
+  animation: hint 2.4s ease-in-out infinite;
+}
+@keyframes hint {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bob,
+  .halo,
+  .hint,
+  .worldIn {
+    animation: none;
+  }
+  .cardIn > *,
+  .fadeIn {
+    animation: none;
+    opacity: 1;
+  }
+  .diveIn {
+    display: none;
+  }
+}
