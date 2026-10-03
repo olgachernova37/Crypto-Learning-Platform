@@ -1,0 +1,32 @@
+# CLAUDE.md
+
+Crypto learning web platform for complete beginners (Duolingo + SoloLearn style), built for the SolanaCZE Build Station / Colosseum hackathon. Full product spec: [SPEC.md](SPEC.md). NFT minting notes: [docs/nft-guide.md](docs/nft-guide.md).
+
+## Must-follow rules
+
+- **Devnet only.** Never touch mainnet, never ask for or handle private keys or seed phrases.
+- **Audience is non-developers.** No code is taught. Lesson text is warm, simple, friend-to-friend, with real-life examples, no jargon.
+- **UI language: English** (Ukrainian may come later — keep strings easy to extract).
+- **Mobile-first, responsive.** Every screen must work on a phone; bottom nav on mobile.
+- **No hearts/lives, no leaderboard.** Gamification = streak + XP + NFT animal reward.
+- **Wrong answer → show the correct one with an explanation right away** (no "try again" loop).
+- Multiple-correct quizzes use square checkboxes + "select all that apply".
+
+## Design
+
+- Rounded shapes everywhere, soft and airy, lots of white space, friendly sans-serif font (font not chosen yet).
+- Ocean palette — use these as design tokens:
+  - Deep ocean `#0D2B45` (text, dark accents)
+  - Ocean teal `#1E5A6E` (primary)
+  - Seafoam `#6BA7A0` (secondary / success)
+  - Sandy beige `#DCC8AA` (warm accent)
+  - Light sky `#B7D4E6` (light backgrounds)
+- References in `docs/design/` — take the layout ideas (answer rows with A/B/C badges, rounded numbered lesson cards with progress bars, welcome banner, celebration screen), not their colors.
+
+## Stack
+
+Next.js · Solana Kit · embedded wallet (provider TBD), Phantom later · Metaplex compressed NFTs (Bubblegum v2, Umi) · Solana Explorer links.
+
+## Pages
+
+Home → Lessons list → Lesson (steps + quizzes + "Ask AI" button) → Partners ("We recommend").
