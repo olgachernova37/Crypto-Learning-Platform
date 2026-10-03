@@ -30,4 +30,4 @@ Next.js · Solana Kit · embedded wallet (provider TBD), Phantom later · Metapl
 
 ## Pages
 
-Home → Lessons list → Lesson (steps + quizzes + "Ask AI" button) → Partners ("We recommend").
+Home (Earth / globe start screen) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.

@@ -122,9 +122,9 @@ What we take from them (colors stay ours, the ocean palette):
 
 ## Pages (screen map)
 
-1. **Home page** — entry point, short welcome, button to start learning.
-2. **Lessons list** — opened from the home page; shows all lessons and progress.
-3. **Lesson page** — paragraph-steps with quizzes and the "Ask AI" button.
+1. **Home page** — the Earth (a globe) as the start screen, short welcome, button to start learning.
+2. **Lessons list** — a little boat sails along a route across the ocean; each stop on the route is a lesson. The boat shows where the learner is, finished stops are marked.
+3. **Lesson page** — tapping a stop opens the lesson on its **own new page** (not a slide-in or popup over the map). Paragraph-steps with quizzes and the "Ask AI" button, in the ocean tones of the palette.
 4. **Partners page ("We recommend")** — opened by its own button; see below.
 
 ## Partners page
