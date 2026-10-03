@@ -18,4 +18,6 @@ export function nextLesson(id: string): Lesson | undefined {
   return i >= 0 ? lessons[i + 1] : undefined;
 }
 
-export const lessonLabel = (n: number) => `Lesson ${String(n).padStart(2, "0")}`;
+/** Lessons are numbered from 0 in data, but shown to people starting at 01. */
+export const lessonNum = (n: number) => String(n + 1).padStart(2, "0");
+export const lessonLabel = (n: number) => `Lesson ${lessonNum(n)}`;

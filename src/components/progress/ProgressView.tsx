@@ -5,7 +5,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { lessons, lessonLabel } from "@/content/lessons";
+import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
 import type { Lesson } from "@/content/types";
 import { useProgress, type Progress } from "@/lib/progress";
 import { clearVisitedPartners } from "@/components/partners/visited";
@@ -205,7 +205,7 @@ export function ProgressView() {
                     }`}
                     aria-hidden
                   >
-                    {s.done ? <CheckIcon size={20} /> : lesson.number}
+                    {s.done ? <CheckIcon size={20} /> : lessonNum(lesson.number)}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="label-mono block text-ink-soft">{lessonLabel(lesson.number)}</span>

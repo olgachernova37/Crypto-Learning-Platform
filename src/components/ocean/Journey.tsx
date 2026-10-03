@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
-import { lessons, lessonLabel } from "@/content/lessons";
+import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { Boat } from "./Boat";
 import { Islands } from "./Islands";
@@ -75,7 +75,7 @@ export function Journey() {
         key: l.id,
         kind: "lesson",
         label: lessonLabel(l.number),
-        num: String(l.number).padStart(2, "0"),
+        num: lessonNum(l.number),
         kicker: l.kicker,
         title: l.title,
         summary: l.summary,

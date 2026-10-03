@@ -3,7 +3,7 @@
 // Learner progress, kept in localStorage for the MVP (no accounts yet).
 // XP + streak + finished lessons + finished steps. No hearts, no leaderboard.
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 export type Progress = {
   xp: number;
@@ -60,21 +60,42 @@ function touch(p: Progress): Progress {
   return { ...p, streak, lastActiveDay: t };
 }
 
-export function useProgress() {
-  const [progress, setProgress] = useState<Progress>(emptyProgress);
-  const [ready, setReady] = useState(false);
+// Cached snapshot so useSyncExternalStore gets a stable object between changes.
+let cachedRaw: string | null | undefined;
+let cached: Progress = emptyProgress;
 
-  useEffect(() => {
-    const sync = () => setProgress(readProgress());
-    sync();
-    setReady(true);
-    window.addEventListener(EVENT, sync);
-    window.addEventListener("storage", sync);
-    return () => {
-      window.removeEventListener(EVENT, sync);
-      window.removeEventListener("storage", sync);
-    };
-  }, []);
+function getSnapshot(): Progress {
+  let raw: string | null = null;
+  try {
+    raw = localStorage.getItem(KEY);
+  } catch {
+    /* ignore */
+  }
+  if (raw !== cachedRaw) {
+    cachedRaw = raw;
+    try {
+      cached = raw ? { ...emptyProgress, ...JSON.parse(raw) } : emptyProgress;
+    } catch {
+      cached = emptyProgress;
+    }
+  }
+  return cached;
+}
+
+const getServerSnapshot = () => emptyProgress;
+
+function subscribe(onChange: () => void) {
+  window.addEventListener(EVENT, onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener(EVENT, onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+export function useProgress() {
+  const progress = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const ready = useSyncExternalStore(subscribe, () => true, () => false);
 
   const update = useCallback((fn: (p: Progress) => Progress) => {
     write(fn(touch(readProgress())));

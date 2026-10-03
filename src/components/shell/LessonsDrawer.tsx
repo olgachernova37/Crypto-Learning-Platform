@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { lessons, lessonLabel } from "@/content/lessons";
+import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { ArrowRightIcon, CheckIcon, CloseIcon, PartnersIcon, ProgressIcon } from "./icons";
 
@@ -84,7 +84,7 @@ export function LessonsDrawer({ open, onClose }: Props) {
                       }`}
                       aria-hidden
                     >
-                      {done ? <CheckIcon size={18} /> : lesson.number}
+                      {done ? <CheckIcon size={18} /> : lessonNum(lesson.number)}
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="label-mono block text-ink-soft">{lessonLabel(lesson.number)}</span>
