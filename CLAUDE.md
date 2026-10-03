@@ -21,6 +21,7 @@ Crypto learning web platform for complete beginners (Duolingo + SoloLearn style)
   - Seafoam `#6BA7A0` (secondary / success)
   - Sandy beige `#DCC8AA` (warm accent)
   - Light sky `#B7D4E6` (light backgrounds)
+- **Lesson + quiz template: https://2025.oceanx.org/** — each step/question is a full-screen chapter with a big bold headline, calm ocean visuals, minimal UI, a "Keep exploring" next button, and progress drawn as a journey. Copy the feel, never their content, logo or photos.
 - References in `docs/design/` — take the layout ideas (answer rows with A/B/C badges, rounded numbered lesson cards with progress bars, welcome banner, celebration screen), not their colors.
 
 ## Stack

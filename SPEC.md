@@ -101,6 +101,14 @@ What we take from them (colors stay ours, the ocean palette):
 - Celebration screen after finishing (badge with sparkles) — fits the moment the learner gets the NFT animal
 - Not taken: the "VS" duel screen with opponents, since we have no leaderboard
 
+**Quiz template: [OceanX 2025 in Review](https://2025.oceanx.org/)** — the main style reference for lessons and quizzes (take the feel and structure, not their content, branding or photos):
+
+- A lesson reads like an explorer's logbook: each step is its own full-screen "chapter", one after another, with lots of calm space between
+- Big, bold display headline for each step and each quiz question; short, readable body text under it
+- Soft ocean imagery behind or above the content, so the visuals carry the mood and the UI stays minimal
+- A gentle "Keep exploring" button moves to the next step, like turning to the next chapter
+- Progress shown as a journey (a timeline or route), not a score
+
 **Tone of voice:**
 
 - Warm and friendly, like explaining to a friend — not like a course or a lecture
