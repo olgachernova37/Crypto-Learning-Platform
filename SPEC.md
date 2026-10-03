@@ -103,11 +103,18 @@ What we take from them (colors stay ours, the ocean palette):
 
 **Quiz template: [OceanX 2025 in Review](https://2025.oceanx.org/)** — the main style reference for lessons and quizzes (take the feel and structure, not their content, branding or photos):
 
-- A lesson reads like an explorer's logbook: each step is its own full-screen "chapter", one after another, with lots of calm space between
-- Big, bold display headline for each step and each quiz question; short, readable body text under it
-- Soft ocean imagery behind or above the content, so the visuals carry the mood and the UI stays minimal
-- A gentle "Keep exploring" button moves to the next step, like turning to the next chapter
-- Progress shown as a journey (a timeline or route), not a score
+What the animation does (studied from a screen recording — frames in `docs/design/oceanx-*.png`):
+
+1. **Intro:** dark screen with a small loader, then a 3D **Earth globe** glowing in deep blue with a huge headline over it ("A Year of Discovery") and one button.
+2. **Dive in:** the camera zooms from the globe down to the ocean surface.
+3. **The ship sails:** a top-down view of a ship on a full-screen, moving deep-blue ocean with sparkling waves and a white wake behind it. The ocean scrolls under the ship ("scroll or drag sideways to discover"), islands and coastlines pass by.
+4. **Chapters appear as you sail:** at each stop a text block fades in at the bottom-right: small label "■ CHAPTER 01", a light-blue uppercase kicker, a big white headline (2–3 lines), one thin sentence, and a white pill "Learn more" button with a coloured dot.
+5. **Learn more:** a white panel slides in from the right with a satellite map on the left and the article (title, subtitle, text, photo/video) on the right; at the bottom a dark "Keep exploring" block leads to the next chapter. **We do this differently: "Learn more" opens the lesson on its own new page** (same look — light page, map/illustration + text), not a slide-in.
+6. **Outro:** the camera pulls back out to the globe, big headline "Share the Journey", partner logos, and a "Chapters" list panel (small thumbnails + titles) opened from a pill button top-right.
+
+Constant UI: thin top bar (sound toggle left, logo centre, "Chapters ☰" pill right), tiny "2025 / A year of discovery" label bottom-left, "Share ↗" bottom-right. Typography: clean geometric sans for headlines, small monospace-style uppercase for labels.
+
+**For us:** globe start → zoom into the ocean → our little boat sails a route between lesson stops → each stop shows "Lesson 01" + title + "Start lesson" pill → the lesson opens as a new page → back to the route → finale zooms out to the globe with "Share the journey" and the NFT animal. Colours from our ocean palette (Deep ocean as the sea, Light sky / Seafoam for kickers, Sandy beige for the button dot), and a cute, softer boat instead of a research ship.
 
 How their structure maps onto ours:
 
