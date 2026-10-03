@@ -109,6 +109,19 @@ What we take from them (colors stay ours, the ocean palette):
 - A gentle "Keep exploring" button moves to the next step, like turning to the next chapter
 - Progress shown as a journey (a timeline or route), not a score
 
+How their structure maps onto ours:
+
+| OceanX 2025 | Our platform |
+| --- | --- |
+| Hero + "Enter experience" button | Globe start page + "Start your journey" button |
+| Expedition timeline, a map per chapter | The boat route; each stop is a lesson with its own small map/illustration |
+| "Chapter 01 · Nice, France" label | "Lesson 01 · What is crypto" label above the headline |
+| Big headline + one-line subheading | Big lesson title + one friendly sentence on what you'll learn |
+| "Keep exploring" button | Next step / next quiz / next lesson |
+| "Back to timeline" button | "Back to the route" — returns to the boat map |
+| Chapter index grid with "Learn more" | Optional grid of all lessons (fallback for the route on small screens) |
+| "Share the journey" at the end | Finale: get your NFT animal and share that you finished |
+
 **Tone of voice:**
 
 - Warm and friendly, like explaining to a friend — not like a course or a lecture
