@@ -1,3 +1,10 @@
+import { AppShell } from "@/components/shell/AppShell";
+import { GlobeStart } from "@/components/ocean/GlobeStart";
+
 export default function Page() {
-  return <main className="p-8">Home — globe start screen (agent A)</main>;
+  return (
+    <AppShell variant="immersive">
+      <GlobeStart />
+    </AppShell>
+  );
 }
