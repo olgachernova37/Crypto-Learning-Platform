@@ -1,0 +1,536 @@
+{
+  "what-is-crypto": {
+    "kicker": "Start here",
+    "title": "What is crypto and blockchain?",
+    "summary": "The big idea behind crypto, explained like you would to a friend over coffee.",
+    "outro": "You did an amazing job grasping the basics. You're one step closer to becoming a true crypto explorer!",
+    "steps": {
+      "money-without-borders": {
+        "title": "Money without borders",
+        "body": [
+          "Welcome! Grab a cozy seat. We're about to explore the world of crypto together, and I promise it's much simpler than it sounds.",
+          "Cryptocurrency (or just \"crypto\") is simply digital money. You can't hold it in your hand like a physical coin, but it works everywhere in the world.",
+          "Because it doesn't belong to any specific country or bank, you can send it to a friend across the globe just as easily as sending a text message!"
+        ],
+        "example": "Think of how a photo travels: you tap send, and a second later it's on your friend's phone in another country. Crypto moves money in a similar way.",
+        "quiz": {
+          "question": "Cryptocurrency is a special type of physical coin that you can keep in your real-life purse.",
+          "explanation": "False! Crypto is entirely digital. You keep it safely on your phone or computer, not in your real purse. 👜"
+        }
+      },
+      "public-notebook": {
+        "title": "The magic public notebook",
+        "body": [
+          "If there's no central bank holding the money, how do we know who has what?",
+          "Instead of a bank keeping secret records, crypto uses a blockchain. Imagine a giant, magical digital notebook that everyone in the world can read, but absolutely no one can erase or cheat.",
+          "Every time someone sends money, a new permanent line is written in this notebook for everyone to see."
+        ],
+        "example": "It's like a shared family recipe book where every change is written in ink and every relative has an identical copy. Nobody can quietly rewrite grandma's recipe.",
+        "quiz": {
+          "question": "What is the easiest way to describe a blockchain?",
+          "explanation": "A blockchain is a giant digital notebook that's completely public, so no single bank has to keep a secret file. 📖",
+          "options": {
+            "a": "A giant, public digital notebook that cannot be erased.",
+            "b": "A secret file kept on a bank manager's computer.",
+            "c": "A physical diary locked in a library."
+          }
+        }
+      },
+      "no-boss": {
+        "title": "No boss in charge",
+        "body": [
+          "Because everyone shares a copy of this magical notebook, there's no single boss. No CEO, no bank manager, and no central office decides what you can do with your coins.",
+          "This is what people mean when they say crypto is decentralized. A whole community of computers works together as a team to make sure everything is fair."
+        ],
+        "example": "Like a neighbourhood book-swap shelf: there's no shop owner, everyone follows the same simple rules, and everyone can see what's there.",
+        "quiz": {
+          "question": "What does it mean when we say a network is \"decentralized\"?",
+          "explanation": "Decentralized means there is no central boss or bank manager. The network runs itself as a team. 🤝",
+          "options": {
+            "a": "There is no single boss or CEO in charge.",
+            "b": "A bank manager has to approve your weekend transactions.",
+            "c": "The network works together as a team to check the rules.",
+            "d": "No central office can randomly freeze your account."
+          }
+        }
+      },
+      "why-sail": {
+        "title": "Why sail these waters?",
+        "body": [
+          "Why use crypto instead of your regular banking app? Because it gives you true ownership of your digital money and items.",
+          "Plus, modern networks like Solana make this incredibly fast and practically free. It's like sending a quick chat message instead of mailing a heavy package!",
+          "One honest note before we sail on: crypto prices can go up and down a lot. Only ever put in money you could afford to lose."
+        ],
+        "example": "On Solana, a typical network fee is a tiny fraction of a cent, far less than a bank transfer abroad.",
+        "quiz": {
+          "question": "Modern crypto networks like Solana make sending digital money incredibly ___ and practically free.",
+          "explanation": "We were looking for fast! Solana is built to be extremely speedy. ⚡",
+          "answers": [
+            "fast",
+            "quick",
+            "speedy"
+          ]
+        }
+      }
+    }
+  },
+  "your-first-wallet": {
+    "kicker": "Wallets",
+    "title": "Your first crypto wallet",
+    "summary": "A safe place for your digital treasures, and the one address you can share with anyone.",
+    "outro": "You now know what a wallet is, and you have your very own practice address!",
+    "steps": {
+      "safe-place": {
+        "title": "A safe place for digital treasures",
+        "body": [
+          "Before we sail deeper, you need a safe place to keep your digital items. That's a crypto wallet!",
+          "Think of it like a personal digital backpack. It holds your digital money and your unique collectibles.",
+          "You're the only one in charge of it: no branch managers and no waiting in lines."
+        ],
+        "example": "Your banking app has opening hours for some things. A crypto wallet works at 3 a.m. on a Sunday just the same.",
+        "quiz": {
+          "question": "How is a crypto wallet different from a regular bank account?",
+          "explanation": "Your wallet is always open and only you control it. No branch, no queue, no manager. 🎒",
+          "options": {
+            "a": "It's open 24/7, and you are the only one in control.",
+            "b": "You have to wait in line at a physical branch to use it."
+          }
+        }
+      },
+      "meet-phantom": {
+        "title": "Meet Phantom 👻",
+        "body": [
+          "Different networks need different wallets. For the fast Solana network, the friendliest wallet is called Phantom. (You might also hear about MetaMask, which is made for a different network called Ethereum.)",
+          "Normally, setting up a wallet means writing down a 12-word secret recovery phrase. Because you're just starting, we create a training wallet for you right here in the course, on Solana's free practice network, so you can relax and focus on exploring.",
+          "One rule for later, when you set up a real Phantom: those 12 words are for your eyes only. No real company or support person will ever ask for them."
+        ],
+        "example": "It's like learning to drive in an instructor's car with dual brakes before getting your own.",
+        "quiz": {
+          "question": "You have to write down a complicated password right now to continue this lesson.",
+          "explanation": "False! Your practice training wallet is ready for you. You'll only need the 12 words when you set up a real wallet, and then they stay private. 🔒"
+        }
+      },
+      "public-address": {
+        "title": "Your public address",
+        "body": [
+          "Every wallet has a public address, a long line of letters and numbers like 7Xb…9Yz.",
+          "Think of it as your bank account number (your IBAN). If a friend wants to send you a digital gift, you give them this address.",
+          "Because it's only for receiving, it's completely safe to share it with anyone!"
+        ],
+        "example": "Just like you'd give your IBAN to a colleague who owes you for lunch, you can give your address to anyone who wants to send you crypto.",
+        "quiz": {
+          "question": "Which of these statements about your public address are true?",
+          "explanation": "Your address is like an account number: share it freely so people can send you things. The secret one is your 12-word recovery phrase, never the address. ✉️",
+          "options": {
+            "a": "It acts like your bank account number.",
+            "b": "It is perfectly safe to share with others.",
+            "c": "It is a top-secret password you must hide."
+          }
+        }
+      }
+    }
+  },
+  "send-and-receive": {
+    "kicker": "Practice money",
+    "title": "Let's move some magic money! ✨",
+    "summary": "Make your first transfer with practice coins: zero risk, and you can't break anything.",
+    "outro": "You just made your first real blockchain transaction, with test coins. How cool is that?!",
+    "steps": {
+      "safe-space": {
+        "title": "A completely safe space",
+        "body": [
+          "Today, you'll make your first crypto transfer! Take a deep breath: we're using \"play money\" on a practice network called Devnet.",
+          "Think of it like a flight simulator. There's absolutely zero risk, and you can't break anything."
+        ],
+        "example": "Pilots train for hours in simulators before flying a real plane. Devnet is our simulator.",
+        "quiz": {
+          "question": "If I click the wrong button in this lesson, I might accidentally lose my real money.",
+          "explanation": "False! Everything here is practice money with no real value. Click away, nothing can go wrong. 🛟"
+        }
+      },
+      "solana-speed": {
+        "title": "The magic of Solana speed 🚀",
+        "body": [
+          "When you send money through a traditional bank on a Friday, it might not arrive until Monday.",
+          "On Solana, when you press \"send\", your friend receives it in about a second, anywhere in the world, 24/7. And the fee is a tiny fraction of a cent."
+        ],
+        "example": "It's the difference between posting a letter and sending a text.",
+        "quiz": {
+          "question": "Why is sending crypto on Solana so awesome?",
+          "explanation": "Solana never closes: transfers land in about a second, day or night, weekends included. ⚡",
+          "options": {
+            "a": "It arrives in about a second, 24/7.",
+            "b": "It only works during normal business hours."
+          }
+        }
+      },
+      "paying-it-forward": {
+        "title": "Paying it forward 💌",
+        "body": [
+          "Below is your training wallet. It's a real wallet on Solana's practice network, created just for you in this browser.",
+          "First, use the magical \"faucet\" to pour some free test SOL into it. A faucet is simply a tap that gives out free test coins.",
+          "Then let's send a little bit! The friend's address is already filled in. Press send to give away 0.1 test SOL.",
+          "Tip for real life: always double-check the address before you send, because blockchain transfers can't be undone."
+        ]
+      }
+    }
+  },
+  "see-it-onchain": {
+    "kicker": "Block explorer",
+    "title": "The digital receipt",
+    "summary": "Track your transaction like a parcel, on a public website anyone can check.",
+    "outro": "You know how to track your digital footprints!",
+    "steps": {
+      "tracking-package": {
+        "title": "Tracking your digital package 📦",
+        "body": [
+          "Have you ever ordered something online and kept refreshing the tracking page? In crypto, we have a Block Explorer.",
+          "It's a public website that works like a global package tracker. You type in a wallet address, and it shows every transaction that address has ever made!"
+        ],
+        "example": "Solana's official one is called Solana Explorer. Others you may meet are Solscan and SolanaFM.",
+        "quiz": {
+          "question": "What is a Block Explorer most similar to?",
+          "explanation": "An explorer is a public receipt book: look up any transaction, like tracking a parcel. 🔍",
+          "options": {
+            "a": "A website where you track a package or look up a receipt.",
+            "b": "A secret folder for passwords."
+          }
+        }
+      },
+      "your-footprint": {
+        "title": "Seeing your own footprint 👣",
+        "body": [
+          "Because the blockchain is public, anyone can look at these receipts. But they only show wallet addresses, never your real name.",
+          "Below is the receipt of the test SOL you sent in the last lesson: who sent it, who received it, the amount, the tiny fee and the time.",
+          "Tap \"View on Solana Explorer\" to see the very same receipt on the public website that anyone in the world can check."
+        ],
+        "example": "It's like a bank statement, except anyone can look it up, and it shows wallet addresses instead of names.",
+        "quiz": {
+          "question": "The website we use to check our transaction receipts is called a block ___.",
+          "explanation": "It's a block explorer: it lets you explore the blocks of the public notebook. 🧭",
+          "answers": [
+            "explorer"
+          ]
+        }
+      }
+    }
+  },
+  "your-first-swap": {
+    "kicker": "Exchange",
+    "title": "Your first swap 🔄",
+    "summary": "Exchange one coin for another, like changing money at the airport, but with a fair machine.",
+    "outro": "You just completed your first decentralized exchange! You're officially ready for the open ocean.",
+    "steps": {
+      "currency-exchange": {
+        "title": "The digital currency exchange 💱",
+        "body": [
+          "When you travel to another country, you exchange your money at the airport, like changing euros for dollars.",
+          "In crypto, this is called a swap. You're simply exchanging one type of digital coin (like SOL) for another (like our special practice Ocean Token, OCN)."
+        ],
+        "example": "Euros to dollars at the airport desk = SOL to OCN in a swap.",
+        "quiz": {
+          "question": "What does it mean to \"swap\" in crypto?",
+          "explanation": "A swap is an exchange: you give one coin and get another back, nothing is deleted. 💱",
+          "options": {
+            "a": "Exchanging one type of digital coin for another.",
+            "b": "Deleting your coins permanently."
+          }
+        }
+      },
+      "vending-machine": {
+        "title": "The magic vending machine 🤖",
+        "body": [
+          "In the real world, an exchange desk has a cashier who takes a cut. In crypto, you can use a DEX, a decentralized exchange.",
+          "There's no human cashier! It works like a giant, fair digital vending machine: you put your SOL in, and the machine automatically gives you tokens back. It's instant and open 24/7."
+        ],
+        "example": "Just like a vending machine doesn't need a shop assistant to hand you a drink, a DEX doesn't need a cashier to approve your swap.",
+        "quiz": {
+          "question": "You have to wait for a human cashier to approve your crypto swap.",
+          "explanation": "False! A DEX is automatic, like a vending machine. No cashier, no waiting. 🤖"
+        }
+      },
+      "try-swap": {
+        "title": "Try it yourself!",
+        "body": [
+          "Let's use our practice vending machine. You're going to swap 0.5 of your practice SOL for 10 Ocean Tokens (OCN).",
+          "Don't worry, this is still practice money!"
+        ]
+      }
+    }
+  },
+  "staking": {
+    "kicker": "Staking",
+    "title": "Put your SOL to work 🌱",
+    "summary": "Help keep the network safe and get a small thank-you in return, without giving your coins away.",
+    "outro": "You know how staking works, and you even tried it with practice SOL. Your coins can now help the network while you sleep!",
+    "steps": {
+      "what-is-staking": {
+        "title": "Helping the network, earning a thank-you 🙌",
+        "body": [
+          "Remember the shared public notebook? Someone has to check every new page before it's added. On Solana, these checkers are called validators: computers around the world, run by people and companies.",
+          "Staking means you put your SOL behind a validator you trust, like a vote of confidence. The more SOL stands behind a validator, the more say it has in checking the notebook.",
+          "As a thank-you for helping keep the network honest, you get small rewards in SOL, paid out every couple of days."
+        ],
+        "example": "A bit like putting money in a savings account that pays a little interest. The difference: the reward comes from the network for helping keep it safe, and the amount can change over time.",
+        "quiz": {
+          "question": "What are you doing when you stake your SOL?",
+          "explanation": "Staking is a vote of confidence: your SOL backs a validator that checks the notebook, and the network thanks you with small rewards. 🌱",
+          "options": {
+            "a": "Giving your SOL to a stranger forever.",
+            "b": "Backing a validator that helps run the network, and earning small rewards for it.",
+            "c": "Swapping your SOL for a brand-new coin."
+          }
+        }
+      },
+      "still-yours": {
+        "title": "Your SOL stays yours 🔐",
+        "body": [
+          "Here's the comforting part: the validator never gets your coins. Your staked SOL stays in your own wallet, under your control. The validator can't spend it or move it.",
+          "You can change your mind and unstake whenever you like. It just isn't instant: Solana works in rounds called epochs, about two days each, so unlocking takes a couple of days.",
+          "Rewards aren't a promise of riches. They're small, they change over time, and it helps to pick a validator that's reliable and always online."
+        ],
+        "example": "It's like lending your support to a candidate in a club election: they get your vote, not your wallet.",
+        "quiz": {
+          "question": "Once you stake, the validator can spend your SOL however it wants.",
+          "explanation": "False! Your staked SOL never leaves your control. The validator only gets your vote of confidence, never your coins. 🔐"
+        }
+      },
+      "liquid-staking": {
+        "title": "Liquid staking: a receipt you can use 🧾",
+        "body": [
+          "Waiting a couple of days to unstake can feel slow. That's why liquid staking exists.",
+          "With a liquid staking service like Marinade, you stake your SOL and get a receipt token back, called mSOL. Your SOL keeps earning rewards, and you can swap the receipt back whenever you want.",
+          "Let's try it with practice SOL. Nothing real moves: this is a safe simulation in your training wallet."
+        ],
+        "example": "Like a coat-check ticket: your coat stays safe in the cloakroom, and the ticket in your pocket proves it's yours.",
+        "quiz": {
+          "question": "Which of these are true about staking on Solana?",
+          "explanation": "Your SOL stays yours, unlocking takes a couple of days, and liquid staking hands you a receipt like mSOL. Rewards are small and change, so never a promise of riches. 🧾",
+          "options": {
+            "a": "Your staked SOL still belongs to you.",
+            "b": "Unstaking usually takes a couple of days.",
+            "c": "Staking rewards are guaranteed to make you rich.",
+            "d": "Liquid staking gives you a receipt token, like mSOL."
+          }
+        }
+      }
+    }
+  },
+  "nfts": {
+    "kicker": "NFTs",
+    "title": "One of a kind 🖼️",
+    "summary": "Why some digital things are unique, and what owning one really means.",
+    "outro": "Now you know what an NFT really is. Spoiler: a one-of-a-kind sea friend is waiting for you at the end of the route!",
+    "steps": {
+      "one-of-a-kind": {
+        "title": "Swappable vs one of a kind 🎟️",
+        "body": [
+          "A 10-euro note is just like any other 10-euro note. If you swap yours for a friend's, nobody loses anything. Things like that are called fungible: every piece is the same. SOL is fungible too.",
+          "Now think of a concert ticket for seat 12B, or your grandma's painting. There's only one, so you can't simply swap it for another. That's non-fungible.",
+          "An NFT, a non-fungible token, is a one-of-a-kind digital item. The blockchain keeps a public record of who owns it, so anyone can check."
+        ],
+        "example": "Any 1-euro coin will do for a coffee. But your boarding pass for seat 14A? Only that one gets you on the plane.",
+        "quiz": {
+          "question": "Match each word with its meaning.",
+          "explanation": "Fungible = all the same, non-fungible = one of a kind, and an NFT is a unique digital item whose owner anyone can check. 🎟️",
+          "pairs": [
+            {
+              "left": "Fungible",
+              "right": "Every piece is the same, like coins"
+            },
+            {
+              "left": "Non-fungible",
+              "right": "One of a kind, like a ticket for seat 12B"
+            },
+            {
+              "left": "NFT",
+              "right": "A unique digital item with a public owner record"
+            }
+          ]
+        }
+      },
+      "not-just-pictures": {
+        "title": "Not just pictures 🎮",
+        "body": [
+          "You may have heard of NFTs as pricey cartoon pictures. But that's just one use. An NFT can be anything that needs to be unique and provably yours.",
+          "Event tickets that can't be faked, an item in a video game you truly own, a club membership card, a certificate for finishing a course, or a piece of digital art.",
+          "On Solana, making NFTs is very cheap. There's even a \"compressed\" kind that lets a game or festival hand out thousands of them for just a few cents."
+        ],
+        "example": "Imagine your gym card living in your wallet app: it proves you're a member, and nobody can copy it.",
+        "quiz": {
+          "question": "Which of these could be an NFT?",
+          "explanation": "Tickets, game items and memberships are one of a kind, so they fit perfectly. 1 SOL is the same as any other SOL, so it's fungible, not an NFT. 🎮",
+          "options": {
+            "a": "A concert ticket for one specific seat",
+            "b": "A sword you own in a video game",
+            "c": "A membership card for a book club",
+            "d": "1 SOL, exactly like every other SOL"
+          }
+        }
+      },
+      "what-you-own": {
+        "title": "What you really own 🔑",
+        "body": [
+          "Here's a surprise for many people: owning an NFT of an artwork usually doesn't give you the copyright. You own that unique token, not the right to print the picture on T-shirts.",
+          "Anyone can screenshot the picture. What they can't copy is the public record that says you're the owner.",
+          "The picture itself is often stored on another service, and Solana keeps track of who owns it. At the end of this route you'll get your own NFT: Pebble the Sea Turtle, a learning badge with no money value, just proof of your voyage."
+        ],
+        "example": "Buying a signed print from an artist makes it yours to hang on the wall, but the artist still owns the right to the artwork.",
+        "quiz": {
+          "question": "Buying an NFT of an artwork automatically gives you the copyright to it.",
+          "explanation": "False! You own the unique token and its public owner record. The copyright usually stays with the artist. 🔑"
+        }
+      }
+    }
+  },
+  "memecoins": {
+    "kicker": "Memecoins",
+    "title": "Memecoins: jokes with a price tag 🐶",
+    "summary": "Where those funny dog coins come from, and why their prices ride a rollercoaster.",
+    "outro": "You can now spot hype from a mile away. That calm, curious head is your best tool in crypto!",
+    "steps": {
+      "born-from-a-joke": {
+        "title": "Born from a joke 😂",
+        "body": [
+          "A memecoin is a coin that started as an internet joke or a funny picture. The most famous one, Dogecoin, was made in 2013 as a joke about a Shiba Inu dog meme.",
+          "Solana has its own famous ones too, like BONK, another dog. Many memecoins have cute animals, inside jokes and very excited online fans.",
+          "Here's the key thing: most memecoins don't have a product or a business behind them. Their price depends mostly on attention and hype: how many people are talking about them right now."
+        ],
+        "example": "Like a funny sticker everyone in your group chat shares for a week. Everyone loves it, until the next one comes along.",
+        "quiz": {
+          "question": "What mostly drives a memecoin's price?",
+          "explanation": "Most memecoins have no business behind them, so their price moves with attention and hype. When the buzz fades, the price usually does too. 😂",
+          "options": {
+            "a": "Profits from a factory or a shop",
+            "b": "Hype and attention online",
+            "c": "A guarantee from a government"
+          }
+        }
+      },
+      "rollercoaster": {
+        "title": "A rollercoaster ride 🎢",
+        "body": [
+          "Today, anyone can create a new coin in a few minutes, so thousands of memecoins appear every single day. Most of them lose almost all of their value quickly.",
+          "Prices can jump up a lot in an hour and crash just as fast. Often the people who got in early sell to the people who arrive late, excited by the hype. That's called a pump and dump.",
+          "Sometimes it's worse: the creators collect people's money and simply disappear. That's called a rug pull, as in pulling the rug from under everyone's feet."
+        ],
+        "example": "Imagine a party where the organisers sell lots of tickets, then leave with the money before the music even starts.",
+        "quiz": {
+          "question": "Match each word with what it means.",
+          "explanation": "A pump and dump inflates the price and then sells, a rug pull is creators running off with the money, and FOMO is the panicky feeling that makes people jump in too fast. 🎢",
+          "pairs": [
+            {
+              "left": "Pump and dump",
+              "right": "Price pushed up by hype, then early holders sell"
+            },
+            {
+              "left": "Rug pull",
+              "right": "The creators vanish with everyone's money"
+            },
+            {
+              "left": "FOMO",
+              "right": "Fear of missing out, which rushes decisions"
+            }
+          ]
+        }
+      },
+      "look-before-you-leap": {
+        "title": "Look before you leap 🧭",
+        "body": [
+          "We're not here to tell you what to buy or not buy. We're here to help you think clearly.",
+          "If you ever come across a memecoin, ask yourself: how long has it existed? Is a big share held by just a few wallets? Is someone promising it will \"100x\"? Remember that some influencers are paid to promote coins.",
+          "And the golden rule of any risky thing: only ever use money you could lose completely without it hurting your life."
+        ],
+        "example": "It's like a casino night with friends: fun to watch, but you only bring cash you're happy to never see again.",
+        "quiz": {
+          "question": "If a memecoin went up 1000% this week, it will surely keep going up next week.",
+          "explanation": "False! Past jumps say nothing about the future, and memecoins can crash just as fast as they rise. Stay curious and calm. 🧭"
+        }
+      }
+    }
+  },
+  "spot-the-scam": {
+    "kicker": "Staying safe",
+    "title": "Spot the scam 🛟",
+    "summary": "The tricks scammers use, and the simple habits that keep your wallet safe.",
+    "outro": "You're now a scam-spotter! These habits protect you far better than any fancy tool. Your sea friend is waiting at the finish.",
+    "steps": {
+      "golden-rule": {
+        "title": "The golden rule: your 12 words 🤫",
+        "body": [
+          "Remember the 12-word recovery phrase from a real wallet? It's the master key to everything inside. Whoever has those words can take all your coins, and nobody can undo it.",
+          "So here's the rule with no exceptions: never share them. Not with support, not with a friend, not with a website, not with an app, not even with an AI.",
+          "Real support teams never message you first and never ask for your words. Write them on paper and keep them somewhere safe and offline, never in a photo or a note on your phone."
+        ],
+        "example": "It's like the PIN to your bank card, your house keys and your passport all in one. You'd never hand those to a stranger who messaged you.",
+        "quiz": {
+          "question": "\"Phantom Support\" messages you: \"There's a problem with your wallet. Send us your recovery phrase so we can fix it.\" What do you do?",
+          "explanation": "Block and move on. No real company will ever ask for your recovery phrase, and even half of it helps a thief. 🤫",
+          "options": {
+            "a": "Send it quickly, they're official support.",
+            "b": "Send only the first 6 words, just to be safe.",
+            "c": "Ignore and block them. Real support never asks for your words."
+          }
+        }
+      },
+      "too-good-to-be-true": {
+        "title": "Too good to be true 🎣",
+        "body": [
+          "Scammers love big promises: \"Send 1 SOL and get 2 back!\", \"You won a free airdrop!\", \"Guaranteed profit!\" If it sounds too good to be true, it is.",
+          "They also love hurry: \"Only 10 minutes left!\" Rushing you is the trick, so you don't stop to think.",
+          "Watch out for surprise gifts too: random tokens or NFTs that suddenly appear in your wallet with a link to \"claim your prize\". Don't click. Just ignore or hide them."
+        ],
+        "example": "Like an email saying you've won a car and only need to pay the shipping fee first.",
+        "quiz": {
+          "question": "Which of these are red flags?",
+          "explanation": "Doubling promises, time pressure and surprise \"prizes\" are classic scams. Confirming a transfer you started yourself is just normal. 🎣",
+          "options": {
+            "a": "\"Send 1 SOL and we'll send you 2 back!\"",
+            "b": "\"Hurry, this offer ends in 10 minutes!\"",
+            "c": "A random token appears in your wallet with a link to claim a prize.",
+            "d": "Your wallet asks you to confirm a transfer you just started yourself."
+          }
+        }
+      },
+      "lookalikes": {
+        "title": "Lookalike websites and sneaky approvals ✍️",
+        "body": [
+          "Some scam websites are perfect copies of real ones, with an address that's almost the same, like \"phant0m\" with a zero. Always check the address bar, and save the real sites as bookmarks.",
+          "When a website wants your wallet to approve something, your wallet shows a pop-up first. Read it! A sneaky approval, called a wallet drainer, can empty your wallet in one tap.",
+          "If you didn't start it, or you don't understand what it does, press Reject. And when trying a new app, start with a tiny amount."
+        ],
+        "example": "It's like checking the sender's address on a parcel notice text before you click: \"p0st-office\" isn't your post office.",
+        "quiz": {
+          "question": "Match each scam with how it works.",
+          "explanation": "Phishing sites copy real ones, drainers hide in approvals, and fake support reaches out first. Knowing their names makes them easy to spot. ✍️",
+          "pairs": [
+            {
+              "left": "Phishing site",
+              "right": "A fake copy of a real website"
+            },
+            {
+              "left": "Wallet drainer",
+              "right": "A sneaky approval that empties your wallet"
+            },
+            {
+              "left": "Fake support",
+              "right": "A \"helper\" who messages you first"
+            }
+          ]
+        }
+      },
+      "safety-checklist": {
+        "title": "Your safety checklist ✅",
+        "body": [
+          "Let's pack it into a few habits: keep your 12 words offline and secret. Check website addresses. Read every wallet pop-up. Ignore surprise gifts. Start small with new apps.",
+          "And when in doubt, slow down. A real opportunity will still be there tomorrow. A scam needs you to act right now."
+        ],
+        "example": "Just like you lock your front door without thinking about it, these habits become automatic after a while.",
+        "quiz": {
+          "question": "If a website looks professional, it's safe to approve anything your wallet asks.",
+          "explanation": "False! Scam sites can look beautiful. Check the address, read the pop-up, and reject anything you didn't start or don't understand. ✅"
+        }
+      }
+    }
+  }
+}
