@@ -1,0 +1,90 @@
+/* Boss battle motion: gentle, never flashy. All of it switches off with reduced motion. */
+.spin {
+  animation: spin 9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.orbit {
+  animation: spin 14s linear infinite reverse;
+}
+.sway {
+  animation: sway 3.6s ease-in-out infinite;
+}
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+.notes text {
+  animation: notes 3s ease-in-out infinite;
+}
+.notes text:nth-child(2) {
+  animation-delay: 0.8s;
+}
+.notes text:nth-child(3) {
+  animation-delay: 1.4s;
+}
+.notes text:nth-child(4) {
+  animation-delay: 2s;
+}
+@keyframes notes {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+}
+/* a hit: quick shake */
+.hit {
+  animation: hit 0.5s ease;
+}
+@keyframes hit {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-10px) rotate(-2deg);
+  }
+  40% {
+    transform: translateX(8px) rotate(2deg);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+/* defeated: sinks away */
+.gone {
+  animation: gone 1.2s ease forwards;
+}
+@keyframes gone {
+  to {
+    transform: translateY(30px) scale(0.6);
+    opacity: 0.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin,
+  .orbit,
+  .sway,
+  .notes text,
+  .hit,
+  .gone {
+    animation: none;
+  }
+}

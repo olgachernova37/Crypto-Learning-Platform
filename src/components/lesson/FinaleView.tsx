@@ -9,6 +9,8 @@ import { useProfile } from "@/lib/profile";
 import { SeaScene } from "./SeaScene";
 import { SeaTurtle } from "./SeaTurtle";
 import { MintMascot } from "./MintMascot";
+import { ALLIES } from "@/content/voyage";
+import { CrewCard } from "@/components/voyage/CrewCard";
 import { IconArrowLeft, IconArrowRight, IconCheck, IconShare, IconSparkle } from "./icons";
 import m from "./motion.module.css";
 
@@ -99,6 +101,8 @@ export function FinaleView() {
                 </Link>
               </div>
             )}
+
+            {claimed && <CrewCard ally={ALLIES.find((a) => a.joinsAfter === "finale")!} tone="dark" />}
 
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               <Link

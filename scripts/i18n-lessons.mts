@@ -13,8 +13,9 @@ const walk = (a: unknown, b: unknown, path: string, lang: string) => {
     if (!Array.isArray(b)) return report(lang, path, "missing or not a list");
     // body paragraphs may differ in count; quiz pairs/answers must not be empty
     if (b.length === 0) return report(lang, path, "empty list");
-    if (path.endsWith(".pairs") && a.length !== b.length) return report(lang, path, `has ${b.length} pairs, English has ${a.length}`);
-    if (path.endsWith(".pairs")) a.forEach((x, i) => walk(x, b[i], `${path}[${i}]`, lang));
+    const ordered = path.endsWith(".pairs") || path.endsWith(".rounds");
+    if (ordered && a.length !== b.length) return report(lang, path, `has ${b.length} items, English has ${a.length}`);
+    if (ordered) a.forEach((x, i) => walk(x, b[i], `${path}[${i}]`, lang));
     return;
   }
   if (a && typeof a === "object") {

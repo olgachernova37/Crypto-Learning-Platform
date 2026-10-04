@@ -19,6 +19,8 @@ import { useProfile } from "@/lib/profile";
 import { useLessons } from "@/i18n/lessons";
 import { useProgress } from "@/lib/progress";
 import { Boat } from "./Boat";
+import { allyAfterLesson, bossInLesson } from "@/content/voyage";
+import { StopTeaser } from "@/components/voyage/StopTeaser";
 import { Islands } from "./Islands";
 import { createOcean } from "./oceanRenderer";
 import { buildRoute, pointAt, subPath } from "./route";
@@ -61,6 +63,9 @@ type Motion = {
 
 const BOAT_WIDE = 128;
 const BOAT_NARROW = 96;
+
+/** Emoji badge on a stop where a crewmate joins or a boss waits. */
+const stopBadge = (lessonId: string) => bossInLesson(lessonId)?.emoji ?? allyAfterLesson(lessonId)?.emoji;
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -424,6 +429,14 @@ export function Journey() {
                     </span>
                   )}
                 </button>
+                {stop.kind === "lesson" && stopBadge(stop.key) && (
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-2 left-2 grid size-7 place-items-center rounded-full bg-sea-night/85 text-[15px] shadow-[0_0_14px_-2px_rgba(126,224,240,0.6)] ring-1 ring-light-sky/50"
+                  >
+                    {stopBadge(stop.key)}
+                  </span>
+                )}
                 <span
                   className={[
                     "pointer-events-none absolute whitespace-nowrap text-[13px] font-semibold transition-opacity duration-500",
@@ -548,6 +561,7 @@ export function Journey() {
             <p className="mt-3 max-w-[38ch] text-[15px] font-light leading-relaxed text-white/80 md:mt-4 md:text-base">
               {active.summary}
             </p>
+            {active.kind === "lesson" && <StopTeaser lessonId={active.key} className="mt-3" />}
             <p className="label-mono mt-3 flex items-center gap-2 text-light-sky/80">
               {active.done && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-seafoam/25 px-2 py-0.5 text-[#bfe3dc]">

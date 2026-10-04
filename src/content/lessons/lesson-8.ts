@@ -89,5 +89,59 @@ export const lesson8: Lesson = {
         explanation: "False! Scam sites can look beautiful. Check the address, read the pop-up, and reject anything you didn't start or don't understand. ✅",
       },
     },
+    {
+      id: "boss-sirens",
+      title: "Boss: the Island of Sirens 🧜",
+      body: [
+        "Listen… a sweet song drifts over the water. The Sirens sing the oldest tricks in crypto: fake support, magic prizes and hurry, hurry!",
+        "Your crewmate Phantom stands by with a shield: tap it for a hint whenever a song sounds too sweet. Every answer lands a hit, and the right ones hit hardest.",
+      ],
+      boss: {
+        id: "siren-island",
+        rounds: [
+          {
+            kind: "single",
+            question: "🎶 \"Hi, I'm from Phantom Support! Send me your 12 words and I'll fix your wallet.\"",
+            options: [
+              { id: "a", text: "Block and ignore. Real support never asks for your words." },
+              { id: "b", text: "Send them, support needs them to help." },
+              { id: "c", text: "Send only half, just to be safe." },
+            ],
+            correct: "a",
+            explanation: "Block and sail on. Nobody real ever asks for your recovery phrase, and even half of it helps a thief. 🤫",
+            hint: "Phantom never messages you first, and never asks for your 12 words.",
+          },
+          {
+            kind: "single",
+            question: "🎶 \"Surprise! A new token just landed in your wallet: claim your $500 at claim-sol-prize.xyz!\"",
+            options: [
+              { id: "a", text: "Click fast before the prize expires." },
+              { id: "b", text: "Don't click. Hide the token and move on." },
+            ],
+            correct: "b",
+            explanation: "Surprise tokens with a \"claim\" link are bait. The link leads to a page that empties wallets. Hide it and move on. 🎣",
+            hint: "You didn't ask for this gift. Who benefits if you click?",
+          },
+          {
+            kind: "truefalse",
+            question: "🎶 \"Send 1 SOL to this address and get 2 SOL back! Only 10 minutes left ⏳\" This is a scam.",
+            correct: true,
+            explanation: "True! Doubling money plus a countdown is a classic siren song. The 1 SOL would be gone forever.",
+            hint: "Big promise + time pressure = ?",
+          },
+          {
+            kind: "single",
+            question: "You're on \"phant0m.app\" and a pop-up asks you to approve something you don't understand.",
+            options: [
+              { id: "a", text: "Approve, the website looks very professional." },
+              { id: "b", text: "Reject, then check the website address." },
+            ],
+            correct: "b",
+            explanation: "Reject! \"phant0m\" has a zero instead of an \"o\". When you don't understand a request, the answer is always no. 🛡️",
+            hint: "Look closely at the letters in the address.",
+          },
+        ],
+      },
+    },
   ],
 };

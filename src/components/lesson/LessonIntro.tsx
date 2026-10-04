@@ -5,6 +5,7 @@ import type { Lesson } from "@/content/types";
 import { lessonNum } from "@/content/lessons";
 import { useT } from "@/i18n";
 import { SeaScene } from "./SeaScene";
+import { StopTeaser } from "@/components/voyage/StopTeaser";
 import { IconArrowLeft } from "./icons";
 import m from "./motion.module.css";
 
@@ -45,6 +46,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
           <p className={`mt-4 max-w-md text-[17px] leading-relaxed text-white/80 sm:text-lg ${m.fadeUp} ${m.delay3}`}>
             {lesson.summary}
           </p>
+          <StopTeaser lessonId={lesson.id} className={`mt-5 ${m.fadeUp} ${m.delay3}`} />
           <div className={`mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 ${m.fadeUp} ${m.delay4}`}>
             <button
               type="button"

@@ -7,6 +7,8 @@ import { lessonNum } from "@/content/lessons";
 import { useT } from "@/i18n";
 import { useLessons } from "@/i18n/lessons";
 import { Confetti } from "./Confetti";
+import { allyAfterLesson } from "@/content/voyage";
+import { CrewCard } from "@/components/voyage/CrewCard";
 import { IconArrowRight, IconSparkle, IconStar, IconWave } from "./icons";
 import m from "./motion.module.css";
 
@@ -34,6 +36,7 @@ export function LessonComplete({
   const c = t.lesson.complete;
   const allLessons = useLessons();
   const heading = useRef<HTMLHeadingElement>(null);
+  const ally = allyAfterLesson(lesson.id);
   const nextLesson = next && next !== "finale" ? allLessons.find((l) => l.id === next.lessonId) : undefined;
   const nextLink =
     next === "finale"
@@ -80,6 +83,11 @@ export function LessonComplete({
         </button>
       ) : (
         <>
+      {ally && (
+        <div className={`mt-8 flex w-full justify-center ${m.fadeUp} ${m.delay2}`}>
+          <CrewCard ally={ally} />
+        </div>
+      )}
 
       <dl className={`mt-8 grid w-full max-w-md grid-cols-3 gap-3 ${m.fadeUp} ${m.delay3}`}>
         <Stat label={c.xpEarned} value={`+${earned || lesson.xp}`} icon={<IconSparkle width={18} height={18} />} tone="bg-seafoam/20 text-[#2f6b64]" />
