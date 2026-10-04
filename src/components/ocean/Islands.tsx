@@ -6,7 +6,7 @@ import type { Route } from "./route";
 type IslandSpec = { at: number; side: 1 | -1; dist: number; size: number; shape: 0 | 1 | 2; rot: number };
 
 // Placed along the main axis (in "stops"), pushed sideways off the route.
-const SPECS_WIDE: IslandSpec[] = [
+const SPECS_WIDE_BASE: IslandSpec[] = [
   // Wide screens: the text block lives bottom-right of the boat, so islands sit above
   // the route (plus one bottom-left at the very start).
   { at: -0.7, side: 1, dist: 240, size: 1.1, shape: 0, rot: -10 },
@@ -18,7 +18,7 @@ const SPECS_WIDE: IslandSpec[] = [
   { at: 5.5, side: -1, dist: 230, size: 1.0, shape: 0, rot: 12 },
 ];
 
-const SPECS_NARROW: IslandSpec[] = [
+const SPECS_NARROW_BASE: IslandSpec[] = [
   { at: -0.55, side: 1, dist: 220, size: 1.1, shape: 0, rot: -10 },
   { at: 0.5, side: -1, dist: 240, size: 0.8, shape: 1, rot: 24 },
   { at: 1.5, side: 1, dist: 250, size: 1.05, shape: 2, rot: 5 },
@@ -27,6 +27,14 @@ const SPECS_NARROW: IslandSpec[] = [
   { at: 4.5, side: -1, dist: 250, size: 0.9, shape: 2, rot: 200 },
   { at: 5.55, side: 1, dist: 230, size: 1.0, shape: 0, rot: 12 },
 ];
+
+// The route can grow (more lessons): repeat the pattern further along, shifted by whole stops.
+const extend = (base: IslandSpec[]) => [
+  ...base,
+  ...base.slice(1).map((s, i) => ({ ...s, at: s.at + 6, shape: ((s.shape + 1) % 3) as 0 | 1 | 2, rot: s.rot + 40 * (i % 2 ? 1 : -1) })),
+];
+const SPECS_WIDE = extend(SPECS_WIDE_BASE);
+const SPECS_NARROW = extend(SPECS_NARROW_BASE);
 
 type Shape = { sand: string; trees: [number, number, number][] };
 

@@ -478,7 +478,7 @@ export function Journey() {
         aria-hidden="true"
       />
 
-      {/* ---- back to the globe ---- */}
+      {/* ---- back to the start page ---- */}
       <Link
         href="/"
         onPointerDown={(e) => e.stopPropagation()}
@@ -487,7 +487,7 @@ export function Journey() {
         <span aria-hidden="true" className="text-base leading-none">
           ←
         </span>
-        Back to globe
+        Back to the start
       </Link>
 
       {/* ---- wide screens: counter, arrows, hint (bottom-left) ---- */}

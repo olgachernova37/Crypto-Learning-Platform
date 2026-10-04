@@ -56,6 +56,7 @@ export type LessonStep = {
 export type Practice =
   | { kind: "send"; amount: number } // send SOL from the training wallet
   | { kind: "swap"; payAmount: number; getAmount: number; getSymbol: string } // swap SOL -> token
+  | { kind: "stake"; amount: number } // liquid-stake SOL for mSOL (practice simulation)
   | { kind: "receipt" }; // show the receipt of the learner's last practice transaction
 
 export type Lesson = {

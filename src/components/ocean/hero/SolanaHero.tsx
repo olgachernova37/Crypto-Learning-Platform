@@ -10,7 +10,7 @@ import { lessons } from "@/content/lessons";
 import { Boat } from "../Boat";
 import s from "./solana-hero.module.css";
 
-const ROUTE = ["What is crypto", "Blockchain", "Solana", "Wallets", "Transactions", "Tokens", "Staying safe"];
+const ROUTE = ["What is crypto", "Solana", "Wallets", "Sending SOL", "Swaps", "Staking", "NFTs", "Memecoins", "Staying safe"];
 
 // fixed star field (deterministic, so server and client render the same)
 const STARS = Array.from({ length: 70 }, (_, i) => {
@@ -96,7 +96,7 @@ export function SolanaHero() {
             <p className={s.routeLabel}>On your route</p>
             <ol className={s.routeList}>
               {ROUTE.map((r, i) => (
-                <li key={r} className={i === 2 ? s.routeHere : undefined}>
+                <li key={r} className={i === 1 ? s.routeHere : undefined}>
                   {r}
                 </li>
               ))}

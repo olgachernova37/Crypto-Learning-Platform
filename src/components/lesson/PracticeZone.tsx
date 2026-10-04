@@ -23,7 +23,7 @@ const FEE = 0.000005;
 const fmt = (n: number) => (Math.round(n * 10000) / 10000).toLocaleString("en", { maximumFractionDigits: 4 });
 
 export function PracticeZone({ practice, onDone }: { practice: Practice; onDone: () => void }) {
-  const { wallet, sol, busy, error, ensure, faucet, send, swap, switchToPractice } = useTrainingWallet();
+  const { wallet, sol, busy, error, ensure, faucet, send, swap, stake, switchToPractice } = useTrainingWallet();
   const [tx, setTx] = useState<PracticeTx | null>(null);
   const [showReceipt, setShowReceipt] = useState(practice.kind === "receipt");
   const [copied, setCopied] = useState(false);
@@ -33,7 +33,8 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
     ensure();
   }, [ensure]);
 
-  const kind = practice.kind === "swap" ? "swap" : "send";
+  const kind = practice.kind === "swap" || practice.kind === "stake" ? practice.kind : "send";
+  const simulatedOnly = practice.kind === "swap" || practice.kind === "stake";
   const existing = wallet?.txs.find((t) => t.kind === kind) ?? null;
   const done = tx ?? existing;
   const devnet = wallet?.mode === "devnet";
@@ -42,12 +43,18 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
     if (done) onDone();
   }, [done, onDone]);
 
-  const amount = practice.kind === "send" ? practice.amount : practice.kind === "swap" ? practice.payAmount : 0.1;
-  const needsCoins = practice.kind !== "swap" && devnet && sol !== null && sol < amount + FEE;
+  const amount =
+    practice.kind === "send" || practice.kind === "stake" ? practice.amount : practice.kind === "swap" ? practice.payAmount : 0.1;
+  const needsCoins = !simulatedOnly && devnet && sol !== null && sol < amount + FEE;
 
   const run = async () => {
     if (busy) return;
-    const t = practice.kind === "swap" ? await swap(practice.payAmount, practice.getAmount, practice.getSymbol) : await send(amount);
+    const t =
+      practice.kind === "swap"
+        ? await swap(practice.payAmount, practice.getAmount, practice.getSymbol)
+        : practice.kind === "stake"
+          ? await stake(amount)
+          : await send(amount);
     if (t) setTx(t);
   };
 
@@ -163,6 +170,8 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
 
         {practice.kind === "swap" ? (
           <SwapForm pay={practice.payAmount} get={practice.getAmount} symbol={practice.getSymbol} />
+        ) : practice.kind === "stake" ? (
+          <StakeForm amount={practice.amount} />
         ) : practice.kind === "send" ? (
           <SendForm amount={practice.amount} />
         ) : !done ? (
@@ -180,15 +189,17 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
           <button
             type="button"
             onClick={run}
-            disabled={!!busy || needsCoins || sol === null}
+            disabled={!!busy || needsCoins || (!simulatedOnly && sol === null)}
             className={`${btn} mt-5 bg-ocean-teal text-white hover:bg-deep-ocean disabled:bg-ocean-teal/50`}
           >
-            {busy === "send" || busy === "swap" ? (
+            {busy === "send" || busy === "swap" || busy === "stake" ? (
               <>
-                <Spinner /> {practice.kind === "swap" ? "Swapping…" : "Sending…"}
+                <Spinner /> {practice.kind === "swap" ? "Swapping…" : practice.kind === "stake" ? "Staking…" : "Sending…"}
               </>
             ) : practice.kind === "swap" ? (
               `Swap to ${practice.getSymbol}`
+            ) : practice.kind === "stake" ? (
+              `Stake ${amount} SOL`
             ) : (
               `Send ${amount} SOL`
             )}
@@ -200,13 +211,17 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
                 <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
                   <IconCheck width={18} height={18} />
                 </span>
-                {practice.kind === "swap" ? "The vending machine gave you your tokens!" : "Sent! It arrived in about a second."}
+                {practice.kind === "swap"
+                  ? "The vending machine gave you your tokens!"
+                  : practice.kind === "stake"
+                    ? "Staked! Your mSOL receipt is in your wallet."
+                    : "Sent! It arrived in about a second."}
               </p>
             )}
             {!showReceipt ? (
               <>
                 <p className="mt-3 text-[16px] text-ink-soft">
-                  {practice.kind === "swap" ? "Did it really happen? Let's verify!" : "Did you send it? Let's check the public notebook!"}
+                  {simulatedOnly ? "Did it really happen? Let's verify!" : "Did you send it? Let's check the public notebook!"}
                 </p>
                 <button
                   type="button"
@@ -275,6 +290,27 @@ function SwapForm({ pay, get, symbol }: { pay: number; get: number; symbol: stri
         </p>
       </div>
       <p className="mt-1 text-sm text-ink-soft">Practice swap: simulated in your training wallet, no real tokens move.</p>
+    </div>
+  );
+}
+
+function StakeForm({ amount }: { amount: number }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="rounded-[1.1rem] bg-foam px-4 py-3">
+        <p className="text-sm font-bold text-ink-soft">You stake</p>
+        <p className="text-2xl font-extrabold">{amount} SOL</p>
+      </div>
+      <span aria-hidden className="z-10 mx-auto -my-4 grid size-10 place-items-center rounded-full bg-sandy-beige text-deep-ocean ring-4 ring-white">
+        ↓
+      </span>
+      <div className="rounded-[1.1rem] bg-light-sky/35 px-4 py-3">
+        <p className="text-sm font-bold text-ink-soft">You get a receipt</p>
+        <p className="text-2xl font-extrabold">
+          ≈ {amount} mSOL <span className="text-base font-bold text-ink-soft">keeps earning rewards</span>
+        </p>
+      </div>
+      <p className="mt-1 text-sm text-ink-soft">Practice staking: simulated in your training wallet, no real coins move.</p>
     </div>
   );
 }

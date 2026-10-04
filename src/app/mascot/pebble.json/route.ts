@@ -8,7 +8,7 @@ export function GET(request: Request) {
       name: "Pebble the Sea Turtle",
       symbol: "VOYAGE",
       description:
-        "A learning badge from Crypto Voyage: earned by finishing five beginner lessons on wallets, transfers, block explorers and swaps. Minted on Solana devnet — it has no monetary value.",
+        "A learning badge from Crypto Voyage: earned by finishing the beginner route: wallets, transfers, block explorers, swaps, staking, NFTs, memecoins and staying safe. Minted on Solana devnet — it has no monetary value.",
       image: `${origin}/mascot/pebble.png`,
       external_url: origin,
       attributes: [
