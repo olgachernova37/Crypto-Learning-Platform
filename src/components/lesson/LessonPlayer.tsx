@@ -16,6 +16,7 @@ import { StepContent } from "./StepContent";
 import { PracticeZone } from "./PracticeZone";
 import { LessonComplete, type NextStop } from "./LessonComplete";
 import { AskAi } from "./AskAi";
+import { BossBattle } from "./BossBattle";
 import { IconArrowLeft, IconArrowRight } from "./icons";
 import m from "./motion.module.css";
 
@@ -29,7 +30,7 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
   const lesson = useLocalizedLesson(source);
   const t = useT();
   const tp = t.lesson.player;
-  const { progress, completeStep, completeLesson } = useProgress();
+  const { progress, completeStep, completeLesson, addXp } = useProgress();
   const [phase, setPhase] = useState<Phase>("intro");
   const [i, setI] = useState(0);
   const [results, setResults] = useState<Record<string, Result>>({});
@@ -39,6 +40,7 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
   const continueBtn = useRef<HTMLButtonElement>(null);
   const feedbackRef = useRef<HTMLDivElement>(null);
   const [practiceDone, setPracticeDone] = useState<Record<string, boolean>>({});
+  const [bossWon, setBossWon] = useState<Record<string, boolean>>({});
 
   const steps = lesson.steps;
   const step = steps[i];
@@ -52,6 +54,7 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
     if (stepId) setPracticeDone((d) => (d[stepId] ? d : { ...d, [stepId]: true }));
   }, [stepId]);
   const practicePending = !!(step?.practice && !practiceDone[step.id]);
+  const bossPending = !!(step?.boss && !bossWon[step.id]);
   const claimed = progress.completedLessons.includes(lesson.id);
   const claim = () => {
     if (claimed) return;
@@ -106,6 +109,7 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
   const { admin } = useAdmin();
   const demoNext = () => {
     if (phase === "quiz" && revealed) return goNext();
+    if (step.boss && !bossWon[step.id]) return setBossWon((b) => ({ ...b, [step.id]: true }));
     if (step.quiz) {
       if (!revealed) {
         const a = correctAnswer(step.quiz);
@@ -167,6 +171,17 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
               {step.title}
             </h1>
             <StepContent step={step} />
+            {step.boss && (
+              <BossBattle
+                boss={step.boss}
+                won={!!bossWon[step.id]}
+                onWin={() => setBossWon((b) => ({ ...b, [step.id]: true }))}
+                onXp={(xp) => {
+                  setGained((g) => g + xp);
+                  addXp(xp);
+                }}
+              />
+            )}
             {step.practice && (
               <div className="mt-6">
                 <PracticeZone practice={step.practice} onDone={markPractice} />
@@ -244,8 +259,8 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
           )}
 
           {phase === "read" && (
-            <PrimaryButton onClick={fromRead} disabled={practicePending}>
-              {practicePending ? tp.practiceFirst : step.quiz ? tp.quickCheck : isLast ? tp.finishLesson : tp.continue}
+            <PrimaryButton onClick={fromRead} disabled={practicePending || bossPending}>
+              {bossPending ? t.voyage.battle.defeatFirst : practicePending ? tp.practiceFirst : step.quiz ? tp.quickCheck : isLast ? tp.finishLesson : tp.continue}
             </PrimaryButton>
           )}
           {phase === "quiz" && !revealed && (

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { DeepPartial } from "../types";
 import type { Dict } from "./en";
 import { ruExtra } from "./extra/ru";
+import { ruVoyage } from "./extra/ru-voyage";
 
 // Russian translation of src/i18n/ui/en.ts. Anything missing falls back to English.
 // Informal «ты», gender-neutral phrasing where possible (avoid gendered past tense for the learner).
@@ -19,6 +20,7 @@ type Bold = (text: string) => ReactNode;
 
 export const ru: DeepPartial<Dict> = {
   ...ruExtra,
+  ...ruVoyage,
   common: {
     language: "Язык",
     appName: "Crypto Voyage",

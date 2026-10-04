@@ -453,6 +453,51 @@
           "question": "Když memecoin tento týden vyrostl o 1000 %, příští týden určitě poroste dál.",
           "explanation": "Nepravda! Minulé skoky nic neříkají o budoucnosti a memecoiny umí spadnout stejně rychle, jako vyletěly. Zachovej klid a zvědavost. 🧭"
         }
+      },
+      "boss-whirlpool": {
+        "title": "Boss: Vír hypu 🌀",
+        "body": [
+          "Ajaj, moře se začíná točit! Vír hypu stahuje lodě do hlubin hlasitými sliby a uspěchanými rozhodnutími.",
+          "Poraz ho tím, co teď už víš: každou zprávu si v klidu přečti a vyber odpověď s chladnou hlavou. Každá odpověď zasáhne, ale ty správné zasáhnou nejvíc."
+        ],
+        "boss": {
+          "rounds": [
+            {
+              "question": "Příspěvek křičí: „Tahle mince do pátku vyroste 100×, zaručeně! 🚀“ Co to je?",
+              "explanation": "Nikdo nemůže zaručit, kam se cena pohne. „Zaručeně“ plus raketky, to je oblíbená píseň víru. 🌀",
+              "options": {
+                "a": "Hype slib: cenu nemůže zaručit nikdo.",
+                "b": "Bezpečný tip od někoho, kdo to ví."
+              },
+              "hint": "Může někdo doopravdy vědět, jaká bude cena příští pátek?"
+            },
+            {
+              "question": "Mince vznikla před dvěma hodinami a většinu z ní drží jen pár peněženek. To je varovný signál.",
+              "explanation": "Pravda! Zbrusu nová mince v rukou pár peněženek znamená, že ji pár lidí může během vteřin prodat a nechat ostatní s prázdnou.",
+              "hint": "Zamysli se, kdo by mohl najednou prodat hodně."
+            },
+            {
+              "question": "Ve vaší skupině v chatu všichni nakupují a ty máš pocit, že si musíš pospíšit. Jak se tomu pocitu říká?",
+              "explanation": "To je FOMO. Když si ho všimneš, máš napůl vyhráno: skutečná příležitost nevyžaduje paniku. 🧘",
+              "options": {
+                "a": "Staking",
+                "b": "FOMO, strach, že o něco přijdeš",
+                "c": "Síťový poplatek"
+              },
+              "hint": "Je to pocit, ne funkce blockchainu."
+            },
+            {
+              "question": "Když už někdy zkusíš něco takhle riskantního, kolik peněz do toho dáš?",
+              "explanation": "Jen peníze, o které můžeš přijít, aniž by ti to zkomplikovalo život. Tohle jediné pravidlo tě uchrání před každým vírem. ⚓",
+              "options": {
+                "a": "Jen peníze, o které můžu úplně přijít, aniž by to bolelo.",
+                "b": "Peníze na nájem za tento měsíc, rychle vyrostou.",
+                "c": "Půjčené peníze, ať je výhra větší."
+              },
+              "hint": "Co když cena zítra spadne na nulu?"
+            }
+          ]
+        }
       }
     }
   },
@@ -536,6 +581,50 @@
         "quiz": {
           "question": "Když web vypadá profesionálně, je bezpečné schválit cokoli, o co peněženka požádá.",
           "explanation": "Nepravda! Podvodné weby můžou vypadat nádherně. Zkontroluj adresu, přečti vyskakovací okno a odmítni všechno, co nespouštíš ty nebo čemu nerozumíš. ✅"
+        }
+      },
+      "boss-sirens": {
+        "title": "Boss: Ostrov sirén 🧜",
+        "body": [
+          "Poslouchej… přes vodu se nese sladká píseň. Sirény zpívají ty nejstarší triky v kryptu: falešnou podporu, zázračné výhry a rychle, rychle!",
+          "Tvůj parťák z posádky Phantom stojí připravený se štítem: klepni na něj pro nápovědu, kdykoli ti nějaká píseň zní až moc sladce. Každá odpověď zasáhne, ale ty správné zasáhnou nejvíc."
+        ],
+        "boss": {
+          "rounds": [
+            {
+              "question": "🎶 „Ahoj, tady podpora Phantomu! Pošli mi svých 12 slov a já ti peněženku opravím.“",
+              "explanation": "Zablokovat a plout dál. Nikdo skutečný po tobě obnovovací frázi nikdy nechce a zloději pomůže i její polovina. 🤫",
+              "options": {
+                "a": "Zablokovat a ignorovat. Skutečná podpora o tvoje slova nikdy nežádá.",
+                "b": "Poslat je, podpora je potřebuje, aby mohla pomoct.",
+                "c": "Poslat jen polovinu, pro jistotu."
+              },
+              "hint": "Phantom ti nikdy nenapíše první a nikdy nechce tvých 12 slov."
+            },
+            {
+              "question": "🎶 „Překvapení! Do tvé peněženky právě dorazil nový token: vyzvedni si svých 500 $ na claim-sol-prize.xyz!“",
+              "explanation": "Nečekané tokeny s odkazem „vyzvedni si“ jsou návnada. Odkaz vede na stránku, která vybílí peněženku. Token skryj a pluj dál. 🎣",
+              "options": {
+                "a": "Rychle kliknout, než výhra vyprší.",
+                "b": "Neklikat. Token skrýt a jít dál."
+              },
+              "hint": "Tenhle dárek přišel bez pozvání. Kdo by měl z tvého kliknutí prospěch?"
+            },
+            {
+              "question": "🎶 „Pošli 1 SOL na tuhle adresu a dostaneš zpátky 2 SOL! Zbývá jen 10 minut ⏳“ Tohle je podvod.",
+              "explanation": "Pravda! Zdvojnásobení peněz plus odpočet, to je klasická píseň sirén. Ten 1 SOL by byl navždy pryč.",
+              "hint": "Velký slib + časový tlak = ?"
+            },
+            {
+              "question": "Jsi na „phant0m.app“ a vyskakovací okno tě žádá o schválení něčeho, čemu nerozumíš.",
+              "explanation": "Odmítnout! V „phant0m“ je místo „o“ nula. Když žádosti nerozumíš, odpověď je vždycky ne. 🛡️",
+              "options": {
+                "a": "Schválit, web vypadá hodně profesionálně.",
+                "b": "Odmítnout a pak zkontrolovat adresu webu."
+              },
+              "hint": "Podívej se pozorně na písmena v adrese."
+            }
+          ]
         }
       }
     }

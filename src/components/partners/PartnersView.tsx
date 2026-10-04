@@ -10,6 +10,10 @@ import { useVisitedPartners } from "./visited";
 import { Guides } from "./Guides";
 import { useT } from "@/i18n";
 import type { Dict } from "@/i18n/ui/en";
+import { ALLIES, allyJoined } from "@/content/voyage";
+import { lessonNum } from "@/content/lessons";
+import { useLessons } from "@/i18n/lessons";
+import { AllyMark } from "@/components/voyage/AllyMark";
 
 type Partner = {
   id: "marinade" | "superteam" | "phantom" | "bybit"; // also the key in t.partners.cards
@@ -22,11 +26,12 @@ type Partner = {
   tile: string;
 };
 
+// Same order as the voyage: each partner meets the learner at the stop where its topic is taught.
 const PARTNERS: Partner[] = [
-  { id: "marinade", emoji: "💧", name: "Marinade", xp: 0, href: "/partners/marinade", internal: true, tile: "bg-seafoam/20" },
-  { id: "superteam", emoji: "☀️", name: "Solana Community (Superteam)", xp: 50, href: "https://superteam.fun", tile: "bg-sandy-beige/45" },
   { id: "phantom", emoji: "👻", name: "Phantom Wallet", xp: 100, href: "https://phantom.com/download", tile: "bg-light-sky/55" },
   { id: "bybit", emoji: "💳", name: "Bybit EU", xp: 50, href: "https://www.bybit.eu", tile: "bg-deep-ocean/10" },
+  { id: "marinade", emoji: "💧", name: "Marinade", xp: 0, href: "/partners/marinade", internal: true, tile: "bg-seafoam/20" },
+  { id: "superteam", emoji: "☀️", name: "Solana Community (Superteam)", xp: 50, href: "https://superteam.fun", tile: "bg-sandy-beige/45" },
 ];
 
 /** The partner's translated card text. */
@@ -43,7 +48,16 @@ function cardText(t: Dict["partners"]["cards"], p: Partner) {
 }
 
 export function PartnersView() {
-  const { addXp } = useProgress();
+  const { addXp, progress } = useProgress();
+  const tt = useT();
+  const lessons = useLessons();
+  /** "In your crew" or "Joins at Lesson 02" */
+  const crewStatus = (id: Partner["id"]) => {
+    const a = ALLIES.find((x) => x.id === id)!;
+    if (allyJoined(a, progress)) return { joined: true, text: tt.voyage.crew.joined };
+    const l = lessons.find((x) => x.id === a.joinsAfter);
+    return { joined: false, text: l ? tt.voyage.crew.joinsAt(tt.common.lessonLabel(lessonNum(l.number))) : tt.voyage.crew.joinsAtFinale };
+  };
   const { visited, markVisited } = useVisitedPartners();
   const t = useT().partners;
 
@@ -72,9 +86,7 @@ export function PartnersView() {
               className="flex flex-col rounded-[1.75rem] bg-white p-6 shadow-[0_1px_2px_rgba(13,43,69,0.04),0_12px_32px_-18px_rgba(13,43,69,0.22)] ring-1 ring-deep-ocean/5 sm:p-7"
             >
               <div className="flex items-center gap-4">
-                <span className={`grid size-14 shrink-0 place-items-center rounded-[1.1rem] text-3xl ${p.tile}`} aria-hidden>
-                  {p.emoji}
-                </span>
+                <AllyMark ally={ALLIES.find((a) => a.id === p.id)!} alt={tt.voyage.crew.logoAlt(p.name)} />
                 <div className="min-w-0">
                   <h2 className="text-xl font-extrabold tracking-tight text-deep-ocean sm:text-2xl">{c.name}</h2>
                   <p className="font-semibold text-ocean-teal">{c.tagline}</p>
@@ -84,6 +96,18 @@ export function PartnersView() {
               <p className="mt-5 text-lg leading-snug text-ink">{c.line}</p>
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
+                {(() => {
+                  const st = crewStatus(p.id);
+                  return (
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1.5 text-sm font-bold ${
+                        st.joined ? "bg-seafoam/15 text-[#2f6b64]" : "bg-light-sky/40 text-deep-ocean"
+                      }`}
+                    >
+                      ⚓ {st.text}
+                    </span>
+                  );
+                })()}
                 <span className="inline-flex items-center rounded-full bg-sandy-beige/40 px-3 py-1.5 text-sm font-bold text-deep-ocean">
                   {c.reward}
                 </span>

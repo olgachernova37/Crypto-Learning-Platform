@@ -39,6 +39,11 @@ Next.js · Solana Kit · Gemini AI guide (`src/app/api/ai/route.ts`, server-only
 - `src/lib/solana/mascot.ts` — mints the mascot NFT (Token-2022 + metadata extension). Metadata route: `src/app/mascot/pebble.json/route.ts`. Smoke test: `scripts/mascot-smoke.mts`.
 - Test without devnet access: run `solana-test-validator`, build with `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899`, or `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899 npx tsx scripts/devnet-smoke.mts`.
 
+## Voyage: crew & bosses
+
+- Partners are the **crew**, joining in learning order (never before their topic is taught): Phantom after L02 Wallet, Bybit EU after L05 Swap, Marinade after L06 Staking, Superteam at the finale. Data: `src/content/voyage.ts`; text: `t.voyage`. Logos: put the partner's official file in `public/partners/<id>.(svg|png)` and set `logo` — never draw brand logos ourselves.
+- **Bosses are threats, never partners**: L08 Whirlpool of Hype, L09 Island of Sirens — a `boss` step (rounds = quizzes) rendered by `BossBattle`. No lives: every answer hits, right ones hit harder; Phantom's shield gives hints once Phantom has joined.
+
 ## Accounts & admin
 
 - Learners only give a name (no email/password): asked on "Start the journey" and by `NameGate` on any other page. Stored on the device (`src/lib/profile.ts`) and sent to `/api/learners` → Upstash Redis if `KV_REST_API_URL`/`KV_REST_API_TOKEN` are set.

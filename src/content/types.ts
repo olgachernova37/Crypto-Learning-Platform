@@ -51,7 +51,14 @@ export type LessonStep = {
   /** A hands-on practice zone. Simulated with the in-app training wallet until devnet is wired up. */
   practice?: Practice;
   quiz?: Quiz;
+  /** A boss battle (replaces the quiz): a few quick rounds; every answer lands a hit, right answers land bigger ones. */
+  boss?: Boss;
 };
+
+/** One round of a boss battle: a normal quiz (single / truefalse / multiple) plus an optional hint ("Phantom's shield"). */
+export type BossRound = Quiz & { hint?: string };
+export type Boss = { id: BossId; rounds: BossRound[] };
+export type BossId = "hype-whirlpool" | "siren-island";
 
 export type Practice =
   | { kind: "send"; amount: number } // send SOL from the training wallet

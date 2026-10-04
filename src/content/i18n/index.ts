@@ -4,7 +4,7 @@
 // Regenerate the English template with: npx tsx scripts/i18n-lessons.mts
 
 import { lessons } from "../lessons";
-import type { Lesson, LessonStep, Quiz } from "../types";
+import type { BossRound, Lesson, LessonStep, Quiz } from "../types";
 import type { Locale } from "@/i18n/locales";
 import uk from "./uk.json";
 import cs from "./cs.json";
@@ -23,6 +23,8 @@ export type StepText = {
   example?: string;
   action?: { label: string; note?: string };
   quiz?: QuizText;
+  /** boss battle rounds, same order as English */
+  boss?: { rounds: (QuizText & { hint?: string })[] };
 };
 export type LessonText = { kicker: string; title: string; summary: string; outro?: string; steps: Record<string, StepText> };
 export type LessonsText = Record<string, LessonText>;
@@ -33,6 +35,14 @@ const TEXT: Partial<Record<Locale, LessonsText>> = {
   ru: ru as LessonsText,
 };
 
+function quizText(q: Quiz): QuizText {
+  const qt: QuizText = { question: q.question, explanation: q.explanation };
+  if (q.kind === "single" || q.kind === "multiple") qt.options = Object.fromEntries(q.options.map((o) => [o.id, o.text]));
+  if (q.kind === "fill") qt.answers = q.answers;
+  if (q.kind === "match") qt.pairs = q.pairs;
+  return qt;
+}
+
 /** English text of every lesson, in the translation-file shape (the template for translators). */
 export function lessonsText(list: Lesson[] = lessons): LessonsText {
   const out: LessonsText = {};
@@ -42,14 +52,8 @@ export function lessonsText(list: Lesson[] = lessons): LessonsText {
       const st: StepText = { title: s.title, body: s.body };
       if (s.example) st.example = s.example;
       if (s.action) st.action = { label: s.action.label, ...(s.action.note ? { note: s.action.note } : {}) };
-      if (s.quiz) {
-        const q = s.quiz;
-        const qt: QuizText = { question: q.question, explanation: q.explanation };
-        if (q.kind === "single" || q.kind === "multiple") qt.options = Object.fromEntries(q.options.map((o) => [o.id, o.text]));
-        if (q.kind === "fill") qt.answers = q.answers;
-        if (q.kind === "match") qt.pairs = q.pairs;
-        st.quiz = qt;
-      }
+      if (s.quiz) st.quiz = quizText(s.quiz);
+      if (s.boss) st.boss = { rounds: s.boss.rounds.map((r) => ({ ...quizText(r), ...(r.hint ? { hint: r.hint } : {}) })) };
       steps[s.id] = st;
     }
     out[l.id] = { kicker: l.kicker, title: l.title, summary: l.summary, ...(l.outro ? { outro: l.outro } : {}), steps };
@@ -87,6 +91,15 @@ function localizeStep(s: LessonStep, t: StepText | undefined): LessonStep {
     example: s.example ? t.example || s.example : undefined,
     action: s.action ? { ...s.action, label: t.action?.label || s.action.label, note: s.action.note ? t.action?.note || s.action.note : undefined } : undefined,
     quiz: s.quiz ? localizeQuiz(s.quiz, t.quiz) : undefined,
+    boss: s.boss
+      ? {
+          ...s.boss,
+          rounds: s.boss.rounds.map((r, i) => {
+            const rt = t.boss?.rounds?.[i];
+            return { ...localizeQuiz(r, rt), hint: r.hint ? rt?.hint || r.hint : undefined } as BossRound;
+          }),
+        }
+      : undefined,
   };
 }
 

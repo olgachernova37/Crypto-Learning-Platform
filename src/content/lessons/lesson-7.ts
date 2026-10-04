@@ -68,5 +68,60 @@ export const lesson7: Lesson = {
         explanation: "False! Past jumps say nothing about the future, and memecoins can crash just as fast as they rise. Stay curious and calm. 🧭",
       },
     },
+    {
+      id: "boss-whirlpool",
+      title: "Boss: the Whirlpool of Hype 🌀",
+      body: [
+        "Uh-oh, the sea starts spinning! The Whirlpool of Hype pulls boats in with loud promises and rushed decisions.",
+        "Beat it with what you just learned: read each message calmly and pick the clear-headed answer. Every answer lands a hit, and the right ones hit hardest.",
+      ],
+      boss: {
+        id: "hype-whirlpool",
+        rounds: [
+          {
+            kind: "single",
+            question: "A post shouts: \"This coin will 100x by Friday, guaranteed! 🚀\" What is it?",
+            options: [
+              { id: "a", text: "A hype promise: nobody can guarantee a price." },
+              { id: "b", text: "A safe tip from someone who knows." },
+            ],
+            correct: "a",
+            explanation: "Nobody can guarantee where a price goes. \"Guaranteed\" plus rockets is the whirlpool's favourite song. 🌀",
+            hint: "Can anyone really know the price next Friday?",
+          },
+          {
+            kind: "truefalse",
+            question: "A coin launched two hours ago, and just a few wallets hold most of it. That's a warning sign.",
+            correct: true,
+            explanation: "True! Brand-new and owned by a few wallets means a few people can dump it on everyone else in seconds.",
+            hint: "Think about who could sell a lot at once.",
+          },
+          {
+            kind: "single",
+            question: "Everyone in your group chat is buying, and you feel you must hurry. What's that feeling called?",
+            options: [
+              { id: "a", text: "Staking" },
+              { id: "b", text: "FOMO, the fear of missing out" },
+              { id: "c", text: "A network fee" },
+            ],
+            correct: "b",
+            explanation: "That's FOMO. Noticing it is half the win: a real chance doesn't need you to panic. 🧘",
+            hint: "It's a feeling, not a feature of the blockchain.",
+          },
+          {
+            kind: "single",
+            question: "If you ever try something this risky, how much should you use?",
+            options: [
+              { id: "a", text: "Only money you could lose completely without it hurting." },
+              { id: "b", text: "This month's rent, it'll grow fast." },
+              { id: "c", text: "Borrowed money, to win bigger." },
+            ],
+            correct: "a",
+            explanation: "Only money you could lose without it hurting your life. That one rule keeps you out of every whirlpool. ⚓",
+            hint: "What if the price goes to zero tomorrow?",
+          },
+        ],
+      },
+    },
   ],
 };

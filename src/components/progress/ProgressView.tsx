@@ -9,6 +9,7 @@ import { lessonNum } from "@/content/lessons";
 import { useLessons } from "@/i18n/lessons";
 import { useLocale, useT } from "@/i18n";
 import { useProfile } from "@/lib/profile";
+import { CrewList } from "@/components/voyage/CrewList";
 import type { Dict } from "@/i18n/ui/en";
 import type { Lesson } from "@/content/types";
 import { useProgress, type Progress } from "@/lib/progress";
@@ -247,6 +248,8 @@ export function ProgressView() {
           })}
         </ol>
       </section>
+
+      <CrewList />
 
       {/* NFT animal */}
       <section
