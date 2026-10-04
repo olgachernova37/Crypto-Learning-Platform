@@ -31,6 +31,12 @@ export async function saveLearner(l: { id: string; name: string; locale: string 
   await redis(["HSET", KEY, l.id, JSON.stringify({ ...l, joinedAt, lastSeen: now } satisfies Learner)]);
 }
 
+/** "Delete my data": removes the learner's row (the random id is only known to their device). */
+export async function deleteLearner(id: string): Promise<void> {
+  if (!storageConfigured()) return;
+  await redis(["HDEL", KEY, id]);
+}
+
 export async function listLearners(): Promise<Learner[]> {
   if (!storageConfigured()) return [];
   const flat = await redis<string[]>(["HGETALL", KEY]);

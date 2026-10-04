@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { lessons } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { useT } from "@/i18n";
@@ -11,42 +10,19 @@ import { SeaTurtle } from "./SeaTurtle";
 import { MintMascot } from "./MintMascot";
 import { ALLIES } from "@/content/voyage";
 import { CrewCard } from "@/components/voyage/CrewCard";
-import { IconArrowLeft, IconArrowRight, IconCheck, IconShare, IconSparkle } from "./icons";
+import { ShareActions } from "@/components/account/ShareActions";
+import { IconArrowLeft, IconArrowRight, IconCheck, IconSparkle } from "./icons";
 import m from "./motion.module.css";
 
 const core = lessons;
 
 export function FinaleView() {
   const { progress, ready } = useProgress();
-  const [shareMsg, setShareMsg] = useState("");
   const t = useT();
   const f = t.finale;
   const done = core.filter((l) => progress.completedLessons.includes(l.id)).length;
   const unlocked = done === core.length;
   const claimed = progress.nftClaimed;
-
-  async function share() {
-    const url = window.location.origin;
-    const data = {
-      title: t.common.appName,
-      text: f.shareText,
-      url,
-    };
-    if (navigator.share) {
-      try {
-        await navigator.share(data);
-        return;
-      } catch (e) {
-        if (e instanceof DOMException && e.name === "AbortError") return;
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(url);
-      setShareMsg(f.shareCopied);
-    } catch {
-      setShareMsg(f.shareCopyManually(url));
-    }
-  }
 
   return (
     <main className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-sea-night text-white">
@@ -111,18 +87,8 @@ export function FinaleView() {
               >
                 {f.partners} <IconArrowRight width={18} height={18} />
               </Link>
-              <button
-                type="button"
-                onClick={share}
-                className="inline-flex min-h-12 items-center gap-2 rounded-full bg-white/10 px-5 text-[15px] font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-3 focus-visible:outline-light-sky"
-              >
-                <IconShare width={18} height={18} />
-                {f.share}
-              </button>
             </div>
-            <p aria-live="polite" className="min-h-5 text-sm font-semibold text-light-sky">
-              {shareMsg}
-            </p>
+            <ShareActions kind={unlocked ? "done" : "invite"} />
           </div>
         </div>
 

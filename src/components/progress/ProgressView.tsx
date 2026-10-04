@@ -10,6 +10,7 @@ import { useLessons } from "@/i18n/lessons";
 import { useLocale, useT } from "@/i18n";
 import { useProfile } from "@/lib/profile";
 import { CrewList } from "@/components/voyage/CrewList";
+import { ShareActions } from "@/components/account/ShareActions";
 import type { Dict } from "@/i18n/ui/en";
 import type { Lesson } from "@/content/types";
 import { useProgress, type Progress } from "@/lib/progress";
@@ -295,6 +296,14 @@ export function ProgressView() {
         )}
       </section>
 
+      <section aria-labelledby="invite-title" className="mt-4 rounded-[1.75rem] bg-light-sky/35 p-6 sm:p-8">
+        <h2 id="invite-title" className="text-2xl font-extrabold text-deep-ocean">
+          {t.share.inviteTitle}
+        </h2>
+        <p className="mt-1 mb-4 text-ink-soft">{t.share.inviteBody}</p>
+        <ShareActions kind="invite" tone="light" />
+      </section>
+
       <ResetButton
         onReset={() => {
           reset();
@@ -302,6 +311,14 @@ export function ProgressView() {
           resetTrainingWallet();
         }}
       />
+      <p className="mt-2 text-center">
+        <Link
+          href="/privacy"
+          className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-ink-soft underline decoration-ink-soft/40 underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-ocean-teal"
+        >
+          {t.privacy.link}
+        </Link>
+      </p>
     </main>
   );
 }

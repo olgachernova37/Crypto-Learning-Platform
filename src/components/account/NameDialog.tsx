@@ -9,7 +9,9 @@ import { useLocale, useT } from "@/i18n";
 import { saveName, useProfile } from "@/lib/profile";
 
 export function NameDialog({ onDone, onClose }: { onDone: (name: string) => void; onClose?: () => void }) {
-  const t = useT().account.dialog;
+  const all = useT();
+  const t = all.account.dialog;
+  const privacyLink = all.privacy.link;
   const [locale] = useLocale();
   const { profile } = useProfile();
   const [name, setName] = useState(profile?.name ?? "");
@@ -80,7 +82,12 @@ export function NameDialog({ onDone, onClose }: { onDone: (name: string) => void
           >
             {t.submit} <span aria-hidden>→</span>
           </button>
-          <p className="mt-3 text-center text-[13px] text-light-sky/60">{t.privacy}</p>
+          <p className="mt-3 text-center text-[13px] text-light-sky/60">
+            {t.privacy}{" "}
+            <a href="/privacy" target="_blank" className="font-bold underline underline-offset-2 hover:text-light-sky">
+              {privacyLink}
+            </a>
+          </p>
         </form>
       </div>
     </div>

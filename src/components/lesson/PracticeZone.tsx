@@ -127,7 +127,12 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
         )}
       </div>
 
-      <div className="m-3 mt-5 rounded-[1.4rem] bg-white p-5 text-ink sm:m-4 sm:p-6">
+      <p className="mt-3 flex gap-2 px-5 text-[13px] leading-snug text-white/65 sm:px-6">
+        <span aria-hidden>ⓘ</span>
+        <span>{t.privacy.walletNotice}</span>
+      </p>
+
+      <div className="m-3 mt-4 rounded-[1.4rem] bg-white p-5 text-ink sm:m-4 sm:p-6">
         {/* step 1 (devnet): fill up from the faucet */}
         {needsCoins && !done && (
           <div className={`mb-5 rounded-[1.1rem] bg-light-sky/35 p-4 ${m.fadeUp}`}>

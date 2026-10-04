@@ -68,3 +68,33 @@ export function useProfile(): { profile: Profile | null; ready: boolean } {
   return { profile, ready };
 }
 
+
+/**
+ * "Delete my data" (/privacy): removes the name from our server, then clears everything this site
+ * saved in this browser (name, progress, practice wallet, Phantom address). The language choice stays.
+ * Returns false if the server couldn't be reached (the browser is cleared anyway).
+ */
+export async function deleteMyData(): Promise<boolean> {
+  const p = read();
+  let ok = true;
+  if (p) {
+    try {
+      const res = await fetch("/api/learners", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id: p.id }),
+      });
+      ok = res.ok;
+    } catch {
+      ok = false;
+    }
+  }
+  try {
+    for (const k of Object.keys(localStorage)) {
+      if (k.startsWith("crypto-voyage-") && k !== "crypto-voyage-locale") localStorage.removeItem(k);
+    }
+  } catch {
+    /* storage blocked: nothing saved anyway */
+  }
+  return ok;
+}

@@ -2,6 +2,7 @@ import type { DeepPartial } from "../types";
 import type { Dict } from "./en";
 import { csExtra } from "./extra/cs";
 import { csVoyage } from "./extra/cs-voyage";
+import { csMore } from "./extra/cs-more";
 
 // Czech translation of src/i18n/ui/en.ts. Anything missing falls back to English.
 // Tone: friendly "ty" (tykání). Past-tense forms are avoided where they would force a gender (udělal/a).
@@ -18,6 +19,7 @@ const ofLessons = (total: number) => (total === 1 ? "lekce" : "lekcí");
 export const cs: DeepPartial<Dict> = {
   ...csExtra,
   ...csVoyage,
+  ...csMore,
   common: {
     language: "Jazyk",
     appName: "Crypto Voyage",

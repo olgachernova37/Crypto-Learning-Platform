@@ -88,6 +88,8 @@ npm run dev                  # http://localhost:3000
 | `ADMIN_PASSWORD` | `/admin` | Server only. |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Learner list | Upstash Redis (Vercel Marketplace adds them). |
 
+**Visit statistics:** turn on Web Analytics in the Vercel project (Analytics tab). No cookies; see `/privacy`.
+
 **Without devnet access** run a local validator: `solana-test-validator`, then build with `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899`. Smoke tests: `npx tsx scripts/devnet-smoke.mts`, `npx tsx scripts/mascot-smoke.mts`.
 
 **Translations:** `npx tsx scripts/i18n-ui.mts` and `npx tsx scripts/i18n-lessons.mts` check that every language is complete.

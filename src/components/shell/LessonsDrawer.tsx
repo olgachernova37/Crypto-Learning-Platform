@@ -127,6 +127,13 @@ export function LessonsDrawer({ open, onClose }: Props) {
           >
             {t.shell.drawer.backToRoute} <ArrowRightIcon size={18} />
           </Link>
+          <Link
+            href="/privacy"
+            onClick={onClose}
+            className="col-span-2 mx-auto inline-flex min-h-9 items-center px-3 text-sm font-semibold text-ink-soft underline decoration-ink-soft/40 underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-ocean-teal"
+          >
+            {t.privacy.link}
+          </Link>
         </div>
       </div>
     </dialog>
