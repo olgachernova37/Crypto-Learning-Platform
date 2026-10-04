@@ -1,0 +1,370 @@
+/* Earth hero — composition and motion after the MotionSites "space-planet" spec.
+   One design unit --u = one pixel of a 1353 × 1163 reference; every length is N × --u. */
+
+.stage {
+  --u: max(min(0.72px, calc(100dvh / 700)), min(calc(100vw / 1353), calc(100dvh / 1163)));
+  --dh-px: calc(1163 * var(--u));
+  --vshift: calc(max(0px, (100dvh - var(--dh-px))) * 0.42);
+  --cyan: #b7d4e6; /* light sky — our palette's take on the reference cyan */
+  --btn-ink: #0d2b45;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  /* our own deep sea under everything, in case the clip can't load */
+  background: radial-gradient(120% 90% at 50% 100%, #0d2b45 0%, #081c2e 45%, #040c17 100%);
+}
+
+/* ---------- backdrop ---------- */
+.sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition:
+    transform 1.25s cubic-bezier(0.55, 0, 0.35, 1),
+    filter 1.25s ease;
+  transform-origin: 50% 62%;
+}
+.clip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clip {
+    display: none;
+  }
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(4, 12, 23, 0.55) 0%, transparent 22%),
+    linear-gradient(to bottom, transparent 55%, rgba(4, 12, 23, 0.6) 100%);
+}
+
+/* ---------- copy ---------- */
+.copy {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  transform: translateY(var(--vshift));
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    filter 0.45s ease;
+}
+.copy button {
+  pointer-events: auto;
+}
+.col {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.eyebrow {
+  top: calc(188.8 * var(--u));
+  font-size: calc(30.45 * var(--u));
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: calc(4 * var(--u));
+  text-indent: calc(4 * var(--u));
+}
+.title {
+  top: calc(262 * var(--u));
+  margin: 0;
+  /* bold italic sans, the 𝙛𝙖𝙣𝙘𝙮 𝙩𝙚𝙭𝙩 style Olya picked */
+  font-family: "Inter Variable", "Helvetica Neue", Arial, sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  font-size: calc(124 * var(--u));
+  line-height: 1;
+  letter-spacing: calc(-2 * var(--u));
+}
+.rule {
+  top: calc(405.5 * var(--u));
+  height: calc(5 * var(--u));
+  font-size: 0;
+  line-height: 0;
+}
+.rule span {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100 * var(--u));
+  height: 100%;
+  border-radius: calc(2.5 * var(--u));
+  background: var(--cyan);
+}
+.lede {
+  top: calc(433.2 * var(--u));
+  margin: 0;
+  font-size: calc(18.36 * var(--u));
+  line-height: calc(30 * var(--u));
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 12px rgba(4, 12, 23, 0.6);
+}
+.cta {
+  top: calc(597 * var(--u));
+  height: calc(66 * var(--u));
+}
+.cta button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(250 * var(--u));
+  height: calc(66 * var(--u));
+  border: 0;
+  border-radius: calc(33 * var(--u));
+  font: inherit;
+  font-size: calc(17 * var(--u));
+  font-weight: 800;
+  letter-spacing: calc(0.6 * var(--u));
+  line-height: 1;
+  color: var(--btn-ink);
+  cursor: pointer;
+  padding-top: calc(2 * var(--u));
+  background: linear-gradient(180deg, #ffffff 0%, #d6e8f8 4%, #d9ecfe 72%, #ffffff 100%);
+  box-shadow:
+    0 calc(10 * var(--u)) calc(18 * var(--u)) calc(-8 * var(--u)) rgba(255, 255, 255, 0.5),
+    0 0 calc(26 * var(--u)) rgba(255, 255, 255, 0.18),
+    inset 0 0 0 calc(2 * var(--u)) rgba(255, 255, 255, 0.9);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cta button:hover {
+  transform: scale(1.035);
+}
+.cta button:active {
+  transform: scale(0.985);
+}
+.cta button:focus-visible {
+  outline: calc(2 * var(--u)) solid var(--cyan);
+  outline-offset: calc(4 * var(--u));
+}
+@media (pointer: coarse) {
+  .cta button {
+    min-height: 48px;
+  }
+}
+
+/* ---------- the dive ---------- */
+.sea {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 45%, #1e5a6e 0%, #0d2b45 55%, #081c2e 100%);
+  transition: opacity 0.9s ease 0.35s;
+}
+.diving .copy {
+  opacity: 0;
+  filter: blur(8px);
+}
+.diving .sky {
+  transform: scale(2.6);
+  filter: blur(2px) saturate(1.2);
+}
+.diving .sea {
+  opacity: 1;
+}
+
+/* ---------- tablet ---------- */
+@media (min-width: 580px) and (max-width: 1030px) and (min-height: 621px) {
+  .stage {
+    --u: min(max(min(0.85px, calc(100dvh / 780)), min(calc(100vw / 900), calc(100dvh / 1163))), 1.15px);
+    --dh-px: calc(1120 * var(--u));
+    --vshift: calc(max(0px, (100dvh - var(--dh-px))) * 0.38);
+  }
+  .lede br {
+    display: none;
+  }
+  .lede {
+    max-width: calc(620 * var(--u));
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ---------- phone / short: the copy flows instead of being pinned ---------- */
+@media (max-width: 579px), (max-height: 620px) {
+  .stage {
+    --u: max(min(0.92px, calc(100dvh / 620)), min(calc(100vw / 430), calc(100dvh / 880)));
+    --dh-px: calc(880 * var(--u));
+    --vshift: calc(max(0px, (100dvh - var(--dh-px))) * 0.34);
+  }
+  .copy {
+    top: calc(76 * var(--u));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(56 * var(--u)) calc(26 * var(--u)) 0;
+  }
+  .col {
+    position: static;
+    width: 100%;
+  }
+  .eyebrow {
+    font-size: calc(20 * var(--u));
+    letter-spacing: calc(5 * var(--u));
+    text-indent: calc(5 * var(--u));
+  }
+  .title {
+    font-size: calc(92 * var(--u));
+    margin-top: calc(15 * var(--u));
+  }
+  .rule {
+    margin-top: calc(20 * var(--u));
+  }
+  .rule span {
+    width: calc(84 * var(--u));
+  }
+  .lede {
+    margin-top: calc(19 * var(--u));
+    font-size: calc(16 * var(--u));
+    line-height: calc(26 * var(--u));
+    max-width: calc(400 * var(--u));
+    text-wrap: balance;
+  }
+  .lede br {
+    display: none;
+  }
+  .cta {
+    margin-top: calc(32 * var(--u));
+    height: calc(60 * var(--u));
+  }
+  .cta button {
+    width: calc(230 * var(--u));
+    height: calc(60 * var(--u));
+    border-radius: calc(30 * var(--u));
+  }
+}
+@media (max-height: 620px) {
+  .stage {
+    --u: max(min(0.85px, calc(100dvh / 470)), min(calc(100vw / 640), calc(100dvh / 560)));
+    --vshift: 0px;
+  }
+  .copy {
+    padding-top: calc(26 * var(--u));
+  }
+  .title {
+    font-size: calc(68 * var(--u));
+    margin-top: calc(8 * var(--u));
+  }
+}
+
+/* ---------- entrance: runs once, then the classes are removed ---------- */
+@keyframes ent-reveal {
+  from {
+    transform: translateY(115%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes ent-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise, 10px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ent-settle {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise, 8px)) scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ent-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ent-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.mask,
+.line {
+  display: block;
+}
+.anim .mask {
+  overflow: hidden;
+  padding-top: 0.18em;
+  margin-top: -0.18em;
+}
+.anim .line {
+  transform: translateY(115%);
+  will-change: transform;
+}
+.anim .rule span {
+  transform: scaleX(0);
+}
+.anim .lede,
+.anim .cta button,
+.anim .sky {
+  opacity: 0;
+}
+.play .sky {
+  animation: ent-fade 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.25s both;
+}
+.play .eyebrow .line {
+  animation: ent-reveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+.play .title .line {
+  animation: ent-reveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.44s both;
+}
+.play .rule span {
+  animation: ent-draw 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.78s both;
+}
+.play .lede {
+  --rise: calc(12 * var(--u));
+  animation: ent-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.86s both;
+}
+.play .cta button {
+  --rise: calc(8 * var(--u));
+  animation: ent-settle 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.14s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky,
+  .copy,
+  .sea,
+  .cta button {
+    transition: none;
+  }
+  .anim .line,
+  .anim .rule span {
+    transform: none;
+    animation: none !important;
+  }
+  .anim .lede,
+  .anim .cta button,
+  .anim .sky {
+    opacity: 1;
+    animation: none !important;
+  }
+}
