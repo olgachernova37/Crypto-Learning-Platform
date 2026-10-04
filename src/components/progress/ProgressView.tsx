@@ -5,7 +5,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
+import { lessonNum } from "@/content/lessons";
+import { useLessons } from "@/i18n/lessons";
+import { useLocale, useT } from "@/i18n";
+import type { Dict } from "@/i18n/ui/en";
 import type { Lesson } from "@/content/types";
 import { useProgress, type Progress } from "@/lib/progress";
 import { clearVisitedPartners } from "@/components/partners/visited";
@@ -31,7 +34,7 @@ type StreakInfo = {
 };
 
 /** The stored streak only counts if the last active day was today or yesterday. */
-function streakInfo(p: Progress): StreakInfo {
+function streakInfo(p: Progress, locale: string): StreakInfo {
   const now = new Date();
   const today = dayKey(now);
   const yesterday = dayKey(addDays(now, -1));
@@ -50,7 +53,7 @@ function streakInfo(p: Progress): StreakInfo {
     const key = dayKey(d);
     return {
       key,
-      letter: d.toLocaleDateString("en", { weekday: "narrow" }),
+      letter: d.toLocaleDateString(locale, { weekday: "narrow" }),
       isToday: key === today,
       active: active.has(key),
     };
@@ -59,18 +62,18 @@ function streakInfo(p: Progress): StreakInfo {
   return { current, activeToday: p.lastActiveDay === today, week };
 }
 
-function lessonState(lesson: Lesson, p: Progress) {
+function lessonState(lesson: Lesson, p: Progress, t: Dict["progress"]["lessons"]) {
   const done = p.completedLessons.includes(lesson.id);
   const total = lesson.steps.length;
   const stepsDone = Math.min(p.completedSteps[lesson.id]?.length ?? 0, total);
   const pct = done ? 100 : total > 0 ? Math.round((stepsDone / total) * 100) : 0;
   const label = done
-    ? "Done"
+    ? t.stateDone
     : total === 0
-      ? "Not started"
+      ? t.stateNotStarted
       : stepsDone === 0
-        ? `${total} steps`
-        : `${stepsDone}/${total}`;
+        ? t.stateSteps(total)
+        : t.stateStepsDone(stepsDone, total);
   return { done, pct, label, started: done || stepsDone > 0 };
 }
 
@@ -84,6 +87,10 @@ const TINTS = [
 
 export function ProgressView() {
   const { progress, ready, reset } = useProgress();
+  const t = useT();
+  const pt = t.progress;
+  const lessons = useLessons();
+  const [locale] = useLocale();
 
   if (!ready) return <ProgressSkeleton />;
 
@@ -95,15 +102,15 @@ export function ProgressView() {
 
   if (isEmpty) return <EmptyState />;
 
-  const streak = streakInfo(progress);
+  const streak = streakInfo(progress, locale);
   const lessonsDone = lessons.filter((l) => progress.completedLessons.includes(l.id)).length;
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6 sm:pt-10">
       <header>
-        <p className="label-mono text-ocean-teal">Your progress</p>
+        <p className="label-mono text-ocean-teal">{pt.eyebrow}</p>
         <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-deep-ocean sm:text-5xl">
-          Look how far you&apos;ve sailed
+          {pt.title}
         </h1>
       </header>
 
@@ -115,18 +122,18 @@ export function ProgressView() {
         >
           <WaveDecor />
           <h2 id="xp-title" className="label-mono relative text-light-sky">
-            Experience
+            {pt.xp.heading}
           </h2>
           <p className="relative mt-3 flex items-end gap-3">
             <span className="text-7xl font-black leading-none tracking-tight tabular-nums sm:text-8xl">
               {progress.xp}
             </span>
-            <span className="pb-2 text-2xl font-extrabold text-light-sky">XP</span>
+            <span className="pb-2 text-2xl font-extrabold text-light-sky">{pt.xp.unit}</span>
           </p>
           <p className="relative mt-4 max-w-xs text-[1.02rem] leading-relaxed text-white/85">
             {lessonsDone === 0
-              ? "Every step and quiz adds a little more. Keep going!"
-              : `${lessonsDone} of ${lessons.length} lessons finished — lovely work.`}
+              ? pt.xp.nothingYet
+              : pt.xp.lessonsFinished(lessonsDone, lessons.length)}
           </p>
         </section>
 
@@ -141,19 +148,19 @@ export function ProgressView() {
             </span>
             <div>
               <h2 id="streak-title" className="text-2xl font-extrabold text-deep-ocean">
-                {streak.current} {streak.current === 1 ? "day" : "days"} in a row
+                {pt.streak.daysInRow(streak.current)}
               </h2>
               <p className="text-ink-soft">
                 {streak.activeToday
-                  ? "You learned today — see you tomorrow."
+                  ? pt.streak.activeToday
                   : streak.current > 0
-                    ? "A tiny lesson today keeps it going."
-                    : "Learn a little today to start a new streak."}
+                    ? pt.streak.keepGoing
+                    : pt.streak.start}
               </p>
             </div>
           </div>
 
-          <ol className="mt-6 grid grid-cols-7 gap-1.5" aria-label="The last 7 days">
+          <ol className="mt-6 grid grid-cols-7 gap-1.5" aria-label={pt.streak.weekLabel}>
             {streak.week.map((d) => (
               <li key={d.key} className="flex flex-col items-center gap-2">
                 <span
@@ -165,14 +172,14 @@ export function ProgressView() {
                 >
                   {d.active ? <CheckIcon size={16} /> : null}
                   <span className="sr-only">
-                    {d.isToday ? "Today" : d.key}: {d.active ? "learned" : "no lesson"}
+                    {(d.active ? pt.streak.dayLearned : pt.streak.dayNoLesson)(d.isToday ? pt.streak.today : d.key)}
                   </span>
                 </span>
                 <span
                   className={`text-xs font-bold ${d.isToday ? "text-ocean-teal" : "text-ink-soft"}`}
                   aria-hidden
                 >
-                  {d.isToday ? "Today" : d.letter}
+                  {d.isToday ? pt.streak.today : d.letter}
                 </span>
               </li>
             ))}
@@ -184,15 +191,15 @@ export function ProgressView() {
       <section aria-labelledby="lessons-title" className="mt-10">
         <div className="flex items-end justify-between gap-4">
           <h2 id="lessons-title" className="text-2xl font-extrabold tracking-tight text-deep-ocean">
-            Your lessons
+            {pt.lessons.heading}
           </h2>
           <p className="text-sm font-bold text-ink-soft">
-            {lessonsDone} / {lessons.length} done
+            {pt.lessons.doneCount(lessonsDone, lessons.length)}
           </p>
         </div>
         <ol className="mt-4 grid gap-3 md:grid-cols-2">
           {lessons.map((lesson, i) => {
-            const s = lessonState(lesson, progress);
+            const s = lessonState(lesson, progress, pt.lessons);
             const tint = TINTS[i % TINTS.length];
             return (
               <li key={lesson.id}>
@@ -209,7 +216,7 @@ export function ProgressView() {
                     {s.done ? <CheckIcon size={20} /> : lessonNum(lesson.number)}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="label-mono block text-ink-soft">{lessonLabel(lesson.number)}</span>
+                    <span className="label-mono block text-ink-soft">{t.common.lessonLabel(lessonNum(lesson.number))}</span>
                     <span className="block text-lg font-extrabold leading-snug text-deep-ocean">
                       {lesson.title}
                     </span>
@@ -219,7 +226,7 @@ export function ProgressView() {
                       aria-valuemin={0}
                       aria-valuemax={100}
                       aria-valuenow={s.pct}
-                      aria-label={`${lesson.title} progress`}
+                      aria-label={pt.lessons.progressLabel(lesson.title)}
                     >
                       <span
                         className={`block h-full rounded-full transition-[width] duration-500 ${s.done ? "bg-seafoam" : tint.bar}`}
@@ -252,24 +259,23 @@ export function ProgressView() {
           <TurtleArt size={72} muted={!progress.nftClaimed} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="label-mono text-ocean-teal">Your NFT animal</p>
+          <p className="label-mono text-ocean-teal">{pt.nft.eyebrow}</p>
           {progress.nftClaimed ? (
             <>
               <h2 id="nft-title" className="mt-1 text-2xl font-extrabold text-deep-ocean">
-                Your animal is in your wallet
+                {pt.nft.claimedTitle}
               </h2>
               <p className="mt-1 text-ink-soft">
-                It&apos;s yours, on Solana devnet — proof that you learned something new.
+                {pt.nft.claimedBody}
               </p>
             </>
           ) : (
             <>
               <h2 id="nft-title" className="mt-1 text-2xl font-extrabold text-deep-ocean">
-                Finish the lessons to earn your animal
+                {pt.nft.lockedTitle}
               </h2>
               <p className="mt-1 text-ink-soft">
-                A little sea friend waits at the end of the route. {lessonsDone} of {lessons.length}{" "}
-                lessons done.
+                {pt.nft.lockedBody(lessonsDone, lessons.length)}
               </p>
             </>
           )}
@@ -279,7 +285,7 @@ export function ProgressView() {
             href="/journey"
             className="flex min-h-12 items-center gap-2 rounded-full bg-ocean-teal px-6 font-bold text-white transition-colors hover:bg-deep-ocean focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal"
           >
-            Continue the journey <ArrowRightIcon size={18} />
+            {pt.nft.continue} <ArrowRightIcon size={18} />
           </Link>
         )}
       </section>
@@ -299,17 +305,18 @@ export function ProgressView() {
 
 function ResetButton({ onReset }: { onReset: () => void }) {
   const [asking, setAsking] = useState(false);
+  const t = useT().progress.reset;
   return (
     <div className="mt-10 flex min-h-12 flex-wrap items-center justify-center gap-3 text-sm" aria-live="polite">
       {asking ? (
         <>
-          <span className="font-semibold text-ink">Erase all XP, your streak and lessons?</span>
+          <span className="font-semibold text-ink">{t.confirm}</span>
           <button
             type="button"
             onClick={onReset}
             className="min-h-11 rounded-full bg-deep-ocean px-5 font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal"
           >
-            Yes, start over
+            {t.yes}
           </button>
           <button
             type="button"
@@ -317,7 +324,7 @@ function ResetButton({ onReset }: { onReset: () => void }) {
             className="min-h-11 rounded-full bg-white px-5 font-bold text-ink ring-1 ring-deep-ocean/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal"
             autoFocus
           >
-            Keep my progress
+            {t.no}
           </button>
         </>
       ) : (
@@ -326,7 +333,7 @@ function ResetButton({ onReset }: { onReset: () => void }) {
           onClick={() => setAsking(true)}
           className="min-h-11 rounded-full px-4 font-semibold text-ink-soft underline decoration-ink-soft/40 underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-ocean-teal"
         >
-          Reset progress
+          {t.button}
         </button>
       )}
     </div>
@@ -334,35 +341,35 @@ function ResetButton({ onReset }: { onReset: () => void }) {
 }
 
 function EmptyState() {
+  const t = useT().progress;
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 pb-10 pt-6 sm:px-6 sm:pt-10">
-      <p className="label-mono text-ocean-teal">Your progress</p>
+      <p className="label-mono text-ocean-teal">{t.eyebrow}</p>
       <section className="mt-4 flex flex-1 flex-col items-center justify-center rounded-[2rem] bg-white px-6 py-12 text-center ring-1 ring-deep-ocean/5 sm:py-16">
         <span className="grid size-36 place-items-center rounded-full bg-light-sky/40">
           <SailboatArt size={104} />
         </span>
         <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-deep-ocean sm:text-4xl">
-          Your voyage starts here
+          {t.empty.title}
         </h1>
         <p className="mt-3 max-w-md text-lg leading-relaxed text-ink-soft">
-          Nothing here yet — and that&apos;s perfect. The first lesson takes about five minutes, and
-          everything you learn will show up on this page.
+          {t.empty.body}
         </p>
         <Link
           href="/"
           className="mt-8 flex min-h-12 items-center gap-2 rounded-full bg-ocean-teal px-7 text-lg font-bold text-white transition-colors hover:bg-deep-ocean focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal"
         >
-          Start your journey <ArrowRightIcon size={20} />
+          {t.empty.cta} <ArrowRightIcon size={20} />
         </Link>
         <p className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-semibold text-ink-soft [&>span]:whitespace-nowrap">
           <span className="inline-flex items-center gap-1">
-            <XpIcon size={16} /> Earn XP
+            <XpIcon size={16} /> {t.empty.earnXp}
           </span>
           <span className="inline-flex items-center gap-1">
-            <FlameIcon size={16} /> Build a streak
+            <FlameIcon size={16} /> {t.empty.buildStreak}
           </span>
           <span className="inline-flex items-center gap-1">
-            <TurtleArt size={18} /> Get an animal
+            <TurtleArt size={18} /> {t.empty.getAnimal}
           </span>
         </p>
       </section>
@@ -371,15 +378,16 @@ function EmptyState() {
 }
 
 function ProgressSkeleton() {
+  const t = useT().progress;
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6 sm:pt-10" aria-busy="true">
-      <p className="label-mono text-ocean-teal">Your progress</p>
+      <p className="label-mono text-ocean-teal">{t.eyebrow}</p>
       <div className="mt-4 h-12 w-2/3 animate-pulse rounded-2xl bg-deep-ocean/5" />
       <div className="mt-8 grid gap-4 md:grid-cols-[1.1fr_1fr]">
         <div className="h-56 animate-pulse rounded-[1.75rem] bg-deep-ocean/5" />
         <div className="h-56 animate-pulse rounded-[1.75rem] bg-deep-ocean/5" />
       </div>
-      <span className="sr-only">Loading your progress…</span>
+      <span className="sr-only">{t.loading}</span>
     </main>
   );
 }

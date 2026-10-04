@@ -83,19 +83,15 @@ export function stableShuffle(n: number, seed: string): number[] {
 
 export const letter = (i: number) => String.fromCharCode(65 + i);
 
-const cheers = [
-  "Lovely, that's it!",
-  "Exactly right.",
-  "You've got it!",
-  "Spot on.",
-  "Nice one!",
-  "Yes, well done!",
-];
+/** Pick a cheer for a correct answer (stable per question). `cheers` comes from the dictionary (t.quiz.feedback.cheers). */
+export const cheerFor = (seed: string, cheers: readonly string[]) => cheers[seed.length % cheers.length] ?? "";
 
-export const cheerFor = (seed: string) => cheers[seed.length % cheers.length];
+/** How "True"/"False" are written out (pass t.quiz in the UI; the server uses English). */
+export type TrueFalseLabels = { true: string; false: string };
+const EN_TF: TrueFalseLabels = { true: "True", false: "False" };
 
 /** The right answer in plain words (used by the feedback card and the AI tutor). */
-export function rightAnswerText(q: Quiz): string {
+export function rightAnswerText(q: Quiz, tf: TrueFalseLabels = EN_TF): string {
   switch (q.kind) {
     case "single":
       return q.options.find((o) => o.id === q.correct)?.text ?? "";
@@ -107,14 +103,14 @@ export function rightAnswerText(q: Quiz): string {
     case "fill":
       return q.answers[0];
     case "truefalse":
-      return q.correct ? "True" : "False";
+      return q.correct ? tf.true : tf.false;
     case "match":
       return q.pairs.map((p) => `${p.left}: ${p.right}`).join(" · ");
   }
 }
 
 /** What the learner picked, in plain words. */
-export function answerText(q: Quiz, a: QuizAnswer): string {
+export function answerText(q: Quiz, a: QuizAnswer, tf: TrueFalseLabels = EN_TF): string {
   if (q.kind === "single" && a.kind === "single") return q.options.find((o) => o.id === a.value)?.text ?? "";
   if (q.kind === "multiple" && a.kind === "multiple")
     return q.options
@@ -122,7 +118,7 @@ export function answerText(q: Quiz, a: QuizAnswer): string {
       .map((o) => o.text)
       .join(" · ");
   if (q.kind === "fill" && a.kind === "fill") return a.value.trim();
-  if (q.kind === "truefalse" && a.kind === "truefalse") return a.value === null ? "" : a.value ? "True" : "False";
+  if (q.kind === "truefalse" && a.kind === "truefalse") return a.value === null ? "" : a.value ? tf.true : tf.false;
   if (q.kind === "match" && a.kind === "match")
     return q.pairs.map((p, i) => `${p.left}: ${q.pairs[a.value[i]]?.right ?? "?"}`).join(" · ");
   return "";

@@ -8,78 +8,44 @@ import { useProgress } from "@/lib/progress";
 import { CheckIcon, ExternalIcon } from "@/components/shell/icons";
 import { useVisitedPartners } from "./visited";
 import { Guides } from "./Guides";
+import { useT } from "@/i18n";
+import type { Dict } from "@/i18n/ui/en";
 
 type Partner = {
-  id: string;
+  id: "marinade" | "superteam" | "phantom" | "bybit"; // also the key in t.partners.cards
   emoji: string;
+  /** Brand name; a translated name in t.partners.cards[id].name wins when present */
   name: string;
-  tagline: string;
-  line: string;
-  reward: string;
   xp: number;
-  cta: string;
   href: string;
   internal?: boolean; // an in-app quest instead of an external link
   tile: string;
-  note?: string;
 };
 
 const PARTNERS: Partner[] = [
-  {
-    id: "marinade",
-    emoji: "💧",
-    name: "Marinade",
-    tagline: "Your digital savings account",
-    line: "A simple, safe way to let your crypto grow peacefully while you sleep.",
-    reward: "⭐️ Starfish NFT (practice) + Marinade's $10 sign-up bonus",
-    xp: 0,
-    cta: "Start the staking quest",
-    href: "/partners/marinade",
-    internal: true,
-    tile: "bg-seafoam/20",
-    note: "The $10 bonus is Marinade's own offer for real sign-ups. Check current terms on their site.",
-  },
-  {
-    id: "superteam",
-    emoji: "☀️",
-    name: "Solana Community (Superteam)",
-    tagline: "The friendly global family behind our network",
-    line: "Crypto is better together! Discover free events and meet new friends who are also learning.",
-    reward: "🌟 +50 XP",
-    xp: 50,
-    cta: "Explore the Solana community",
-    href: "https://superteam.fun",
-    tile: "bg-sandy-beige/45",
-  },
-  {
-    id: "phantom",
-    emoji: "👻",
-    name: "Phantom Wallet",
-    tagline: "Your real everyday digital backpack",
-    line: "Ready to graduate from our training wallet? Get the official app to carry your digital treasures safely every day.",
-    reward: "🛡️ \"True Owner\" badge + 100 XP",
-    xp: 100,
-    cta: "Set up your Phantom wallet",
-    href: "https://phantom.com/download",
-    tile: "bg-light-sky/55",
-  },
-  {
-    id: "bybit",
-    emoji: "💳",
-    name: "Bybit EU",
-    tagline: "Your friendly currency exchange",
-    line: "Ready to try real coins? Exchange your regular money (with a bank card) for crypto to start your journey.",
-    reward: "🎟️ +50 XP",
-    xp: 50,
-    cta: "Visit Bybit EU",
-    href: "https://www.bybit.eu",
-    tile: "bg-deep-ocean/10",
-  },
+  { id: "marinade", emoji: "💧", name: "Marinade", xp: 0, href: "/partners/marinade", internal: true, tile: "bg-seafoam/20" },
+  { id: "superteam", emoji: "☀️", name: "Solana Community (Superteam)", xp: 50, href: "https://superteam.fun", tile: "bg-sandy-beige/45" },
+  { id: "phantom", emoji: "👻", name: "Phantom Wallet", xp: 100, href: "https://phantom.com/download", tile: "bg-light-sky/55" },
+  { id: "bybit", emoji: "💳", name: "Bybit EU", xp: 50, href: "https://www.bybit.eu", tile: "bg-deep-ocean/10" },
 ];
+
+/** The partner's translated card text. */
+function cardText(t: Dict["partners"]["cards"], p: Partner) {
+  const c = t[p.id];
+  return {
+    name: "name" in c ? c.name : p.name,
+    tagline: c.tagline,
+    line: c.line,
+    reward: typeof c.reward === "function" ? c.reward(p.xp) : c.reward,
+    cta: c.cta,
+    note: "note" in c ? c.note : undefined,
+  };
+}
 
 export function PartnersView() {
   const { addXp } = useProgress();
   const { visited, markVisited } = useVisitedPartners();
+  const t = useT().partners;
 
   const onVisit = (p: Partner) => {
     if (p.internal) return;
@@ -89,16 +55,14 @@ export function PartnersView() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pt-6 pb-10 sm:px-6 sm:pt-10">
       <header className="max-w-2xl">
-        <p className="label-mono text-ocean-teal">We recommend</p>
-        <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-deep-ocean sm:text-5xl">🧭 Trusted harbors</h1>
-        <p className="mt-3 text-lg leading-relaxed text-ink-soft">
-          We&apos;ve picked the safest and friendliest places to help you on your future journey. Tap any of our
-          trusted friends to see how they can help.
-        </p>
+        <p className="label-mono text-ocean-teal">{t.page.kicker}</p>
+        <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-deep-ocean sm:text-5xl">{t.page.title}</h1>
+        <p className="mt-3 text-lg leading-relaxed text-ink-soft">{t.page.intro}</p>
       </header>
 
       <ul className="mt-8 grid gap-5 md:grid-cols-2">
         {PARTNERS.map((p) => {
+          const c = cardText(t.cards, p);
           const done = visited.includes(p.internal ? `${p.id}-quest` : p.id);
           const linkClass =
             "flex min-h-12 items-center justify-between gap-3 rounded-full bg-ocean-teal py-1.5 pr-1.5 pl-6 font-bold text-white transition-colors hover:bg-deep-ocean focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal";
@@ -112,29 +76,29 @@ export function PartnersView() {
                   {p.emoji}
                 </span>
                 <div className="min-w-0">
-                  <h2 className="text-xl font-extrabold tracking-tight text-deep-ocean sm:text-2xl">{p.name}</h2>
-                  <p className="font-semibold text-ocean-teal">{p.tagline}</p>
+                  <h2 className="text-xl font-extrabold tracking-tight text-deep-ocean sm:text-2xl">{c.name}</h2>
+                  <p className="font-semibold text-ocean-teal">{c.tagline}</p>
                 </div>
               </div>
 
-              <p className="mt-5 text-lg leading-snug text-ink">{p.line}</p>
+              <p className="mt-5 text-lg leading-snug text-ink">{c.line}</p>
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center rounded-full bg-sandy-beige/40 px-3 py-1.5 text-sm font-bold text-deep-ocean">
-                  {p.reward}
+                  {c.reward}
                 </span>
                 {done && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-seafoam/15 px-3 py-1.5 text-sm font-bold text-[#2f6b64]">
-                    <CheckIcon size={14} /> Reward earned
+                    <CheckIcon size={14} /> {t.page.rewardEarned}
                   </span>
                 )}
               </div>
-              {p.note && <p className="mt-2 text-sm text-ink-soft">{p.note}</p>}
+              {c.note && <p className="mt-2 text-sm text-ink-soft">{c.note}</p>}
 
               <div className="mt-auto pt-6">
                 {p.internal ? (
                   <Link href={p.href} className={linkClass}>
-                    <span>{p.cta}</span>
+                    <span>{c.cta}</span>
                     <span className="grid size-9 place-items-center rounded-full bg-white/15 text-lg" aria-hidden>
                       ➔
                     </span>
@@ -149,8 +113,8 @@ export function PartnersView() {
                     className={linkClass}
                   >
                     <span>
-                      {p.cta}
-                      <span className="sr-only"> (opens in a new tab)</span>
+                      {c.cta}
+                      <span className="sr-only">{t.page.opensInNewTab}</span>
                     </span>
                     <span className="grid size-9 place-items-center rounded-full bg-white/15" aria-hidden>
                       <ExternalIcon size={18} />
@@ -165,9 +129,7 @@ export function PartnersView() {
 
       <Guides />
 
-      <p className="mt-10 text-center text-sm text-ink-soft">
-        We provide educational maps, not financial advice. Crypto is risky — start small.
-      </p>
+      <p className="mt-10 text-center text-sm text-ink-soft">{t.page.disclaimer}</p>
     </main>
   );
 }

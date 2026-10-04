@@ -13,7 +13,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
-import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
+import { lessonNum } from "@/content/lessons";
+import { useT } from "@/i18n";
+import { useLessons } from "@/i18n/lessons";
 import { useProgress } from "@/lib/progress";
 import { Boat } from "./Boat";
 import { Islands } from "./Islands";
@@ -66,6 +68,8 @@ export function Journey() {
   const { progress, ready } = useProgress();
   const narrow = useIsNarrow();
   const reduced = useReducedMotion();
+  const t = useT();
+  const lessons = useLessons();
 
   const stops: Stop[] = useMemo(() => {
     const done = new Set(progress.completedLessons);
@@ -74,33 +78,31 @@ export function Journey() {
       ...lessons.map<Stop>((l) => ({
         key: l.id,
         kind: "lesson",
-        label: lessonLabel(l.number),
+        label: t.common.lessonLabel(lessonNum(l.number)),
         num: lessonNum(l.number),
         kicker: l.kicker,
         title: l.title,
         summary: l.summary,
-        meta: `~${l.minutes} min · +${l.xp} XP`,
+        meta: t.journey.lessonMeta(l.minutes, l.xp),
         href: `/lesson/${l.id}`,
-        cta: done.has(l.id) ? "Review lesson" : "Start lesson",
+        cta: done.has(l.id) ? t.journey.reviewLesson : t.journey.startLesson,
         done: done.has(l.id),
       })),
       {
         key: "reward",
         kind: "reward",
-        label: "The finish",
+        label: t.journey.reward.label,
         num: "",
-        kicker: "Your reward",
-        title: "Collect your NFT animal",
-        summary: allDone
-          ? "You made it! A little sea friend is waiting to swim into your wallet."
-          : "Finish the route and a little sea friend lands in your wallet, yours to keep.",
-        meta: "Free · Solana devnet",
+        kicker: t.journey.reward.kicker,
+        title: t.journey.reward.title,
+        summary: allDone ? t.journey.reward.summaryAllDone : t.journey.reward.summary,
+        meta: t.journey.reward.meta,
         href: "/finale",
-        cta: "See your reward",
+        cta: t.journey.reward.cta,
         done: progress.nftClaimed,
       },
     ];
-  }, [progress.completedLessons, progress.nftClaimed]);
+  }, [progress.completedLessons, progress.nftClaimed, lessons, t]);
 
   const currentIndex = useMemo(() => {
     const i = stops.findIndex((s) => s.kind === "lesson" && !s.done);
@@ -353,7 +355,7 @@ export function Journey() {
       onPointerUp={onPointerUp}
       onPointerCancel={() => (drag.current = null)}
     >
-      <h1 className="sr-only">Your route: pick a lesson</h1>
+      <h1 className="sr-only">{t.journey.srTitle}</h1>
       {/* arrival: continue the dive from the home intro, fading out of the same deep blue */}
       <div aria-hidden className={`pointer-events-none fixed inset-0 z-50 ${styles.arrive}`} />
 
@@ -394,7 +396,7 @@ export function Journey() {
                   type="button"
                   onClick={() => goTo(i)}
                   onPointerDown={(e) => e.stopPropagation()}
-                  aria-label={`${stop.kind === "lesson" ? stop.label : stop.kicker}: ${stop.title}${stop.done ? " (finished)" : ""}`}
+                  aria-label={t.journey.stopAria(stop.kind === "lesson" ? stop.label : stop.kicker, stop.title, stop.done)}
                   aria-current={selected ? "step" : undefined}
                   className="group absolute -left-7 -top-7 grid h-14 w-14 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
@@ -432,7 +434,7 @@ export function Journey() {
                   ].join(" ")}
                   aria-hidden="true"
                 >
-                  {stop.kind === "reward" ? "Your reward" : stop.title}
+                  {stop.kind === "reward" ? t.journey.reward.mapLabel : stop.title}
                 </span>
               </div>
             );
@@ -487,7 +489,7 @@ export function Journey() {
         <span aria-hidden="true" className="text-base leading-none">
           ←
         </span>
-        Back to the start
+        {t.journey.backToStart}
       </Link>
 
       {/* ---- wide screens: counter, arrows, hint (bottom-left) ---- */}
@@ -500,10 +502,10 @@ export function Journey() {
           <div className="flex flex-col gap-1">
             <span className="label-mono text-white/90">
               <span className="mr-2 inline-block h-1.5 w-1.5 -translate-y-px bg-sandy-beige align-middle" aria-hidden="true" />
-              Stop {String(sel + 1).padStart(2, "0")} / {String(stops.length).padStart(2, "0")}
+              {t.journey.stopCounter(sel + 1, stops.length)}
             </span>
             <span className={`label-mono text-light-sky/60 transition-opacity duration-700 ${touched ? "opacity-0" : "opacity-100"}`}>
-              Scroll, drag or use ← → to sail
+              {t.journey.hint}
             </span>
           </div>
         </div>
@@ -540,7 +542,7 @@ export function Journey() {
             <p className="label-mono mt-3 flex items-center gap-2 text-light-sky/80">
               {active.done && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-seafoam/25 px-2 py-0.5 text-[#bfe3dc]">
-                  <Check small /> Done
+                  <Check small /> {t.journey.done}
                 </span>
               )}
               {active.meta}
@@ -588,14 +590,15 @@ export function Journey() {
 }
 
 function StepArrows({ sel, count, onStep }: { sel: number; count: number; onStep: (d: number) => void }) {
+  const t = useT();
   const btn =
     "grid h-11 w-11 place-items-center rounded-full border border-white/25 bg-white/5 text-white backdrop-blur-sm transition hover:border-white/60 hover:bg-white/10 disabled:opacity-30 disabled:hover:border-white/25 focus-visible:outline-2 focus-visible:outline-white";
   return (
     <div className="flex gap-2">
-      <button type="button" className={btn} onClick={() => onStep(-1)} disabled={sel <= 0} aria-label="Sail to the previous stop">
+      <button type="button" className={btn} onClick={() => onStep(-1)} disabled={sel <= 0} aria-label={t.journey.prevAria}>
         <Chevron dir={-1} />
       </button>
-      <button type="button" className={btn} onClick={() => onStep(1)} disabled={sel >= count - 1} aria-label="Sail to the next stop">
+      <button type="button" className={btn} onClick={() => onStep(1)} disabled={sel >= count - 1} aria-label={t.journey.nextAria}>
         <Chevron dir={1} />
       </button>
     </div>

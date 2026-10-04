@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Lesson } from "@/content/types";
-import { lessonLabel } from "@/content/lessons";
+import { lessonNum } from "@/content/lessons";
+import { useT } from "@/i18n";
+import { useLocalizedLesson } from "@/i18n/lessons";
 import { useProgress } from "@/lib/progress";
 import { QuizView } from "@/components/quiz/QuizView";
 import { QuizFeedback } from "@/components/quiz/QuizFeedback";
@@ -21,7 +23,11 @@ const STEP_XP = 10;
 type Phase = "intro" | "read" | "quiz" | "done";
 type Result = { answer: QuizAnswer; correct: boolean };
 
-export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop }) {
+export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: NextStop }) {
+  // the server sends English; show steps/quizzes in the learner's language (ids and answers are the same)
+  const lesson = useLocalizedLesson(source);
+  const t = useT();
+  const tp = t.lesson.player;
   const { progress, completeStep, completeLesson } = useProgress();
   const [phase, setPhase] = useState<Phase>("intro");
   const [i, setI] = useState(0);
@@ -132,7 +138,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
         {phase === "read" ? (
           <article key={`r-${step.id}`}>
             <p className={`label-mono text-ocean-teal ${m.fadeUp}`}>
-              {lessonLabel(lesson.number)} · Step {i + 1} of {n}
+              {tp.stepEyebrow(t.common.lessonLabel(lessonNum(lesson.number)), i + 1, n)}
             </p>
             <h1
               ref={heading}
@@ -153,7 +159,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
           answer && (
             <div key={`q-${step.id}`} className={m.fadeUp}>
               <h1 ref={heading} tabIndex={-1} className="label-mono text-ocean-teal outline-none">
-                Quick check · {step.title}
+                {tp.quickCheckHeading(step.title)}
               </h1>
               <div className="mt-4">
                 <QuizView
@@ -179,7 +185,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
           stepId: step.id,
           stepTitle: step.title,
           phase: phase === "quiz" ? "quiz" : "read",
-          learnerAnswer: phase === "quiz" && result && step.quiz ? answerText(step.quiz, result.answer) : undefined,
+          learnerAnswer: phase === "quiz" && result && step.quiz ? answerText(step.quiz, result.answer, t.quiz) : undefined,
           wasCorrect: phase === "quiz" ? result?.correct : undefined,
         }}
       />
@@ -189,9 +195,9 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
         <div className="mx-auto flex min-h-[5.5rem] max-w-2xl items-center justify-between gap-3 px-4 sm:min-h-24 sm:px-8">
           {phase === "quiz" && revealed ? (
             <div className="hidden min-w-0 sm:block">
-              <p className="label-mono text-seafoam">Keep exploring</p>
+              <p className="label-mono text-seafoam">{tp.keepExploring}</p>
               <p className="truncate text-[15px] font-bold text-ink-soft">
-                {isLast ? "That's the last step, well done!" : `Next: ${steps[i + 1].title}`}
+                {isLast ? tp.lastStep : tp.nextStep(steps[i + 1].title)}
               </p>
             </div>
           ) : phase === "quiz" || i > 0 ? (
@@ -201,7 +207,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
               className="inline-flex min-h-12 items-center gap-2 rounded-full px-4 text-[16px] font-bold text-ink-soft transition hover:bg-light-sky/35 hover:text-ink focus-visible:outline-3 focus-visible:outline-ocean-teal/50"
             >
               <IconArrowLeft width={18} height={18} />
-              {phase === "quiz" ? "Reread" : "Back"}
+              {phase === "quiz" ? tp.reread : tp.back}
             </button>
           ) : (
             <span />
@@ -209,17 +215,17 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
 
           {phase === "read" && (
             <PrimaryButton onClick={fromRead} disabled={practicePending}>
-              {practicePending ? "Practice first" : step.quiz ? "Quick check" : isLast ? "Finish lesson" : "Continue"}
+              {practicePending ? tp.practiceFirst : step.quiz ? tp.quickCheck : isLast ? tp.finishLesson : tp.continue}
             </PrimaryButton>
           )}
           {phase === "quiz" && !revealed && (
             <PrimaryButton onClick={check} disabled={!ready}>
-              Check
+              {tp.check}
             </PrimaryButton>
           )}
           {phase === "quiz" && revealed && (
             <PrimaryButton onClick={goNext} ref={continueBtn} wide>
-              {isLast ? "Finish lesson" : "Continue"}
+              {isLast ? tp.finishLesson : tp.continue}
             </PrimaryButton>
           )}
         </div>

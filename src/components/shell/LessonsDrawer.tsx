@@ -6,7 +6,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
+import { lessonNum } from "@/content/lessons";
+import { useT } from "@/i18n";
+import { useLessons } from "@/i18n/lessons";
 import { useProgress } from "@/lib/progress";
 import { ArrowRightIcon, CheckIcon, CloseIcon, PartnersIcon, ProgressIcon } from "./icons";
 
@@ -15,6 +17,8 @@ type Props = { open: boolean; onClose: () => void };
 export function LessonsDrawer({ open, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const { progress, ready } = useProgress();
+  const t = useT();
+  const lessons = useLessons();
 
   useEffect(() => {
     const dialog = ref.current;
@@ -48,26 +52,26 @@ export function LessonsDrawer({ open, onClose }: Props) {
       <div className="flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_20px_60px_-20px_rgba(8,28,46,0.45)]">
         <div className="flex items-center justify-between gap-4 px-6 pb-2 pt-5">
           <div>
-            <p className="label-mono text-ocean-teal/80">Your voyage</p>
+            <p className="label-mono text-ocean-teal/80">{t.shell.drawer.eyebrow}</p>
             <h2 id="lessons-drawer-title" className="text-2xl font-extrabold tracking-tight">
-              Lessons
+              {t.shell.drawer.title}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="grid size-11 place-items-center rounded-full bg-foam text-ink transition-colors hover:bg-light-sky/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal"
-            aria-label="Close lessons"
+            aria-label={t.shell.drawer.closeAria}
           >
             <CloseIcon size={20} />
           </button>
         </div>
 
         <p className="px-6 text-sm text-ink-soft" aria-live="polite">
-          {ready ? `${doneCount} of ${lessons.length} finished` : " "}
+          {ready ? t.shell.drawer.finished(doneCount, lessons.length) : " "}
         </p>
 
-        <nav aria-label="Lessons" className="min-h-0 flex-1 overflow-y-auto px-3 pb-3 pt-4">
+        <nav aria-label={t.shell.drawer.listAria} className="min-h-0 flex-1 overflow-y-auto px-3 pb-3 pt-4">
           <ol className="flex flex-col gap-1.5">
             {lessons.map((lesson) => {
               const done = ready && progress.completedLessons.includes(lesson.id);
@@ -87,13 +91,13 @@ export function LessonsDrawer({ open, onClose }: Props) {
                       {done ? <CheckIcon size={18} /> : lessonNum(lesson.number)}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="label-mono block text-ink-soft">{lessonLabel(lesson.number)}</span>
+                      <span className="label-mono block text-ink-soft">{t.common.lessonLabel(lessonNum(lesson.number))}</span>
                       <span className="block truncate text-[1.02rem] font-bold leading-snug">{lesson.title}</span>
                     </span>
                     <span className="shrink-0 text-xs font-semibold text-ink-soft">
-                      {done ? <span className="text-seafoam">Done</span> : `${lesson.minutes} min`}
+                      {done ? <span className="text-seafoam">{t.shell.drawer.done}</span> : t.shell.drawer.minutes(lesson.minutes)}
                     </span>
-                    {done && <span className="sr-only">(finished)</span>}
+                    {done && <span className="sr-only">{t.shell.drawer.finishedSr}</span>}
                   </Link>
                 </li>
               );
@@ -107,21 +111,21 @@ export function LessonsDrawer({ open, onClose }: Props) {
             onClick={onClose}
             className="flex min-h-12 items-center gap-2 rounded-2xl bg-foam px-4 font-bold text-ink transition-colors hover:bg-light-sky/40 focus-visible:outline-2 focus-visible:outline-ocean-teal"
           >
-            <ProgressIcon size={20} className="text-ocean-teal" /> Progress
+            <ProgressIcon size={20} className="text-ocean-teal" /> {t.shell.drawer.progress}
           </Link>
           <Link
             href="/partners"
             onClick={onClose}
             className="flex min-h-12 items-center gap-2 rounded-2xl bg-foam px-4 font-bold text-ink transition-colors hover:bg-light-sky/40 focus-visible:outline-2 focus-visible:outline-ocean-teal"
           >
-            <PartnersIcon size={20} className="text-ocean-teal" /> Partners
+            <PartnersIcon size={20} className="text-ocean-teal" /> {t.shell.drawer.partners}
           </Link>
           <Link
             href="/journey"
             onClick={onClose}
             className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-full bg-ocean-teal px-5 font-bold text-white transition-colors hover:bg-deep-ocean focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal"
           >
-            Back to the route <ArrowRightIcon size={18} />
+            {t.shell.drawer.backToRoute} <ArrowRightIcon size={18} />
           </Link>
         </div>
       </div>

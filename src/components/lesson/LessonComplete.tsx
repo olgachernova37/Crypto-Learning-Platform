@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { Lesson } from "@/content/types";
-import { lessonLabel } from "@/content/lessons";
+import { lessonNum } from "@/content/lessons";
+import { useT } from "@/i18n";
+import { useLessons } from "@/i18n/lessons";
 import { Confetti } from "./Confetti";
 import { IconArrowRight, IconSparkle, IconStar, IconWave } from "./icons";
 import m from "./motion.module.css";
 
-export type NextStop = { href: string; label: string; title?: string } | null;
+/** Where the "next" button goes: another lesson (by id), the NFT finale, or nowhere. Data only; text is built here. */
+export type NextStop = { lessonId: string } | "finale" | null;
 
 export function LessonComplete({
   lesson,
@@ -27,7 +30,17 @@ export function LessonComplete({
   totalXp: number;
   next: NextStop;
 }) {
+  const t = useT();
+  const c = t.lesson.complete;
+  const allLessons = useLessons();
   const heading = useRef<HTMLHeadingElement>(null);
+  const nextLesson = next && next !== "finale" ? allLessons.find((l) => l.id === next.lessonId) : undefined;
+  const nextLink =
+    next === "finale"
+      ? { href: "/finale", label: c.meetMascot, title: undefined }
+      : next
+        ? { href: `/lesson/${next.lessonId}`, label: c.nextLesson, title: nextLesson?.title }
+        : null;
   useEffect(() => heading.current?.focus({ preventScroll: true }), []);
 
   return (
@@ -39,19 +52,20 @@ export function LessonComplete({
         <Badge />
       </div>
 
-      <p className={`label-mono mt-8 text-ocean-teal ${m.fadeUp} ${m.delay1}`}>{lessonLabel(lesson.number)} · complete</p>
+      <p className={`label-mono mt-8 text-ocean-teal ${m.fadeUp} ${m.delay1}`}>{c.eyebrow(t.common.lessonLabel(lessonNum(lesson.number)))}</p>
       <h1
         ref={heading}
         tabIndex={-1}
         className={`mt-3 text-[2.4rem] leading-tight font-extrabold tracking-tight text-ink outline-none sm:text-5xl ${m.fadeUp} ${m.delay1}`}
       >
-        Lesson completed! 🎉
+        {c.heading}
       </h1>
       <p className={`mt-3 max-w-md text-[17px] leading-relaxed text-ink-soft sm:text-lg ${m.fadeUp} ${m.delay2}`}>
         {lesson.outro ?? (
           <>
-            You finished <strong className="font-extrabold text-ink">{lesson.title}</strong>. One more stop on your
-            route, sailed.
+            {c.finished.before}
+            <strong className="font-extrabold text-ink">{lesson.title}</strong>
+            {c.finished.after}
           </>
         )}
       </p>
@@ -62,29 +76,29 @@ export function LessonComplete({
           onClick={onClaim}
           className={`mt-8 inline-flex min-h-16 items-center justify-center gap-2 rounded-[1.25rem] bg-sandy-beige px-10 text-xl font-extrabold text-deep-ocean shadow-[0_16px_36px_-16px_rgba(13,43,69,0.55)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ocean-teal/50 ${m.pop} ${m.delay2}`}
         >
-          ✨ Claim +{lesson.xp} XP ✨
+          {c.claim(lesson.xp)}
         </button>
       ) : (
         <>
 
       <dl className={`mt-8 grid w-full max-w-md grid-cols-3 gap-3 ${m.fadeUp} ${m.delay3}`}>
-        <Stat label="XP earned" value={`+${earned || lesson.xp}`} icon={<IconSparkle width={18} height={18} />} tone="bg-seafoam/20 text-[#2f6b64]" />
+        <Stat label={c.xpEarned} value={`+${earned || lesson.xp}`} icon={<IconSparkle width={18} height={18} />} tone="bg-seafoam/20 text-[#2f6b64]" />
         <Stat
-          label="Day streak"
+          label={c.dayStreak}
           value={String(Math.max(1, streak))}
           icon={<IconWave width={18} height={18} />}
           tone="bg-light-sky/50 text-ocean-teal"
         />
-        <Stat label="Total XP" value={String(totalXp)} icon={<IconStar width={18} height={18} />} tone="bg-sandy-beige/45 text-deep-ocean" />
+        <Stat label={c.totalXp} value={String(totalXp)} icon={<IconStar width={18} height={18} />} tone="bg-sandy-beige/45 text-deep-ocean" />
       </dl>
 
       <div className={`mt-10 flex w-full max-w-md flex-col gap-3 sm:flex-row-reverse ${m.fadeUp} ${m.delay4}`}>
-        {next && (
+        {nextLink && (
           <Link
-            href={next.href}
+            href={nextLink.href}
             className="inline-flex min-h-14 flex-1 items-center justify-center gap-2 rounded-full bg-ocean-teal px-6 text-[17px] font-extrabold text-white shadow-[0_14px_30px_-14px_rgba(30,90,110,0.9)] transition hover:-translate-y-0.5 hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50"
           >
-            {next.label}
+            {nextLink.label}
             <IconArrowRight width={20} height={20} />
           </Link>
         )}
@@ -96,10 +110,10 @@ export function LessonComplete({
               : "bg-ocean-teal text-white shadow-[0_14px_30px_-14px_rgba(30,90,110,0.9)] hover:bg-deep-ocean"
           }`}
         >
-          Back to the route
+          {c.backToRoute}
         </Link>
       </div>
-      {next?.title && <p className="mt-4 text-sm text-ink-soft">Up next: {next.title}</p>}
+      {nextLink?.title && <p className="mt-4 text-sm text-ink-soft">{c.upNext(nextLink.title)}</p>}
         </>
       )}
     </main>

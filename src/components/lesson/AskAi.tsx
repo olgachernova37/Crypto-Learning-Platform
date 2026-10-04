@@ -7,6 +7,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Boat } from "@/components/ocean/Boat";
 import { IconClose, IconSend } from "./icons";
+import { useLocale, useT } from "@/i18n";
 import m from "./motion.module.css";
 
 type Msg = { from: "me" | "ai"; text: string; note?: string };
@@ -46,6 +47,8 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
   const pill = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  const t = useT();
+  const [locale] = useLocale();
 
   async function send(text: string) {
     const question = text.trim();
@@ -58,15 +61,15 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
       const res = await fetch("/api/ai", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...context, question, history }),
+        body: JSON.stringify({ ...context, question, history, locale }),
       });
       const data = (await res.json()) as { answer?: string; note?: string; error?: string };
       setMsgs((m) => [
         ...m,
-        { from: "ai", text: data.answer ?? data.error ?? "Hmm, I couldn't think of an answer. Try asking another way?", note: data.note },
+        { from: "ai", text: data.answer ?? data.error ?? t.ai.noAnswer, note: data.note },
       ]);
     } catch {
-      setMsgs((m) => [...m, { from: "ai", text: "I couldn't reach the guide just now. Check your connection and try again?" }]);
+      setMsgs((m) => [...m, { from: "ai", text: t.ai.offline }]);
     } finally {
       setBusy(false);
     }
@@ -108,15 +111,11 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
 
   const missed = context.phase === "quiz" && context.wasCorrect === false;
   const suggestions = missed
-    ? ["Why was my answer wrong?", "Give me another example"]
+    ? [t.ai.suggestions.whyWrong, t.ai.suggestions.anotherExample]
     : context.phase === "quiz"
-      ? ["Can I have a hint?", "Explain this more simply"]
-      : ["Explain this more simply", "Give me a real-life example"];
-  const greeting = missed
-    ? "Ahoy! That one was tricky. Want me to explain why the right answer fits? Mistakes are just part of the route."
-    : context.phase === "quiz"
-      ? "Ahoy! Need a nudge? I'll give you a hint, not the answer, so the win stays yours."
-      : "Ahoy, voyager! Stuck or just curious about this step? Ask me anything, in your own words.";
+      ? [t.ai.suggestions.hint, t.ai.suggestions.simpler]
+      : [t.ai.suggestions.simpler, t.ai.suggestions.realLife];
+  const greeting = missed ? t.ai.greeting.missed : context.phase === "quiz" ? t.ai.greeting.quiz : t.ai.greeting.read;
 
   const close = () => {
     setOpen(false);
@@ -136,7 +135,7 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
         } ${open ? "pointer-events-none opacity-0" : ""}`}
       >
         <GuideAvatar size={36} />
-        Ask AI
+        {t.ai.open}
       </button>
 
       {open && (
@@ -155,14 +154,14 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
               <GuideAvatar size={44} />
               <div className="min-w-0 flex-1">
                 <h2 id={titleId} className="text-[17px] leading-tight font-extrabold">
-                  Your AI guide
+                  {t.ai.title}
                 </h2>
-                <p className="truncate text-[13px] font-semibold text-light-sky/75">Sailing with you · {context.stepTitle}</p>
+                <p className="truncate text-[13px] font-semibold text-light-sky/75">{t.ai.sailingWith(context.stepTitle)}</p>
               </div>
               <button
                 type="button"
                 onClick={close}
-                aria-label="Close the AI guide"
+                aria-label={t.ai.close}
                 className="grid size-11 place-items-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white focus-visible:outline-3 focus-visible:outline-light-sky"
               >
                 <IconClose width={20} height={20} />
@@ -177,7 +176,7 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
                 <Bubble key={i} {...msg} />
               ))}
               {busy && (
-                <div className="flex w-fit items-center gap-1.5 rounded-[1.25rem] rounded-bl-md bg-white/8 px-4 py-3.5 ring-1 ring-light-sky/15" aria-label="The guide is thinking">
+                <div className="flex w-fit items-center gap-1.5 rounded-[1.25rem] rounded-bl-md bg-white/8 px-4 py-3.5 ring-1 ring-light-sky/15" aria-label={t.ai.thinking}>
                   {[0, 1, 2].map((i) => (
                     <span key={i} className={`size-2 rounded-full bg-[#7ee0f0] ${m.twinkle}`} style={{ animationDelay: `${i * 0.25}s`, animationDuration: "1.2s" }} />
                   ))}
@@ -208,7 +207,7 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
               className="flex items-end gap-2 px-3 pt-1 pb-2"
             >
               <label htmlFor={`${titleId}-q`} className="sr-only">
-                Your question
+                {t.ai.questionLabel}
               </label>
               <textarea
                 id={`${titleId}-q`}
@@ -223,20 +222,20 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
                     send(q);
                   }
                 }}
-                placeholder="Ask about this step…"
+                placeholder={t.ai.placeholder}
                 className="max-h-28 min-h-12 flex-1 resize-none rounded-[1.25rem] bg-white/8 px-4 py-3 text-[16px] text-white ring-1 ring-light-sky/20 outline-none placeholder:text-light-sky/50 focus:ring-2 focus:ring-[#7ee0f0]/60"
               />
               <button
                 type="submit"
                 disabled={!q.trim() || busy}
-                aria-label="Send question"
+                aria-label={t.ai.send}
                 className="grid size-12 shrink-0 place-items-center rounded-full bg-[linear-gradient(135deg,#b7d4e6,#7ee0f0_55%,#8ff0c4)] text-deep-ocean shadow-[0_0_20px_-4px_rgba(126,224,240,0.6)] transition hover:brightness-110 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-light-sky disabled:bg-none disabled:bg-white/10 disabled:text-white/40 disabled:shadow-none"
               >
                 <IconSend width={20} height={20} />
               </button>
             </form>
             <p className="px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center text-[12px] text-light-sky/60">
-              Learning only, not financial advice. Never share your recovery phrase.
+              {t.ai.disclaimer}
             </p>
           </div>
         </>

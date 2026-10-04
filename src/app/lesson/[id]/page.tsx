@@ -18,12 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     : {};
 }
 
-/** Where the "next" button on the lesson-complete screen goes: the next lesson, or the finale. */
+/** Where the "next" button on the lesson-complete screen goes: the next lesson, or the finale (labels are added client-side). */
 function nextStop(lesson: Lesson): NextStop {
   const n = nextLesson(lesson.id);
-  return n
-    ? { href: `/lesson/${n.id}`, label: "Next lesson", title: n.title }
-    : { href: "/finale", label: "Meet your mascot" };
+  return n ? { lessonId: n.id } : "finale";
 }
 
 export default async function LessonPage({ params }: { params: Promise<{ id: string }> }) {

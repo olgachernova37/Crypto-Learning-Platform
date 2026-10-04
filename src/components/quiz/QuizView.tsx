@@ -3,6 +3,7 @@
 import { useId, useMemo, useState } from "react";
 import type { Quiz } from "@/content/types";
 import { IconCheck, IconClose } from "@/components/lesson/icons";
+import { useT } from "@/i18n";
 import { letter, normalize, stableShuffle, type QuizAnswer } from "./logic";
 
 type Props = {
@@ -48,13 +49,8 @@ export function QuizView({ quiz, answer, onChange, revealed, onSubmit }: Props) 
 /* ---------- small "how to answer" hint ---------- */
 
 function KindHint({ quiz }: { quiz: Quiz }) {
-  const text = {
-    single: "Choose one answer",
-    multiple: "Select all that apply",
-    fill: "Fill in the missing word",
-    truefalse: "True or false?",
-    match: "Tap a word, then tap its meaning",
-  }[quiz.kind];
+  const t = useT();
+  const text = t.quiz.kind[quiz.kind];
   return (
     <p className="inline-flex items-center gap-2 rounded-full bg-light-sky/45 px-3.5 py-1.5 text-sm font-bold text-ocean-teal">
       {quiz.kind === "multiple" ? (
@@ -84,6 +80,7 @@ function ChoiceList({
   revealed: boolean;
   labelId: string;
 }) {
+  const t = useT();
   const multi = quiz.kind === "multiple";
   const name = useId();
   const picked = (id: string) =>
@@ -152,7 +149,7 @@ function ChoiceList({
                     right ? "bg-seafoam/25 text-[#2f6b64]" : "bg-sandy-beige/70 text-deep-ocean"
                   }`}
                 >
-                  {right ? (sel ? "Your pick, correct" : "Correct answer") : "Your pick"}
+                  {right ? (sel ? t.quiz.yourPickCorrect : t.quiz.correctAnswer) : t.quiz.yourPick}
                 </span>
               )}
             </span>
@@ -203,6 +200,7 @@ function TrueFalse({
   revealed: boolean;
   labelId: string;
 }) {
+  const t = useT();
   const name = useId();
   return (
     <div role="radiogroup" aria-labelledby={labelId} className="grid grid-cols-2 gap-3 sm:gap-4">
@@ -240,9 +238,9 @@ function TrueFalse({
             <span aria-hidden className={`grid size-12 place-items-center rounded-full ${dot}`}>
               {v ? <IconCheck width={24} height={24} /> : <IconClose width={22} height={22} />}
             </span>
-            {v ? "True" : "False"}
-            {revealed && right && <span className="text-xs font-bold text-[#2f6b64]">Correct answer</span>}
-            {revealed && sel && !right && <span className="text-xs font-bold text-deep-ocean/70">Your pick</span>}
+            {v ? t.quiz.true : t.quiz.false}
+            {revealed && right && <span className="text-xs font-bold text-[#2f6b64]">{t.quiz.correctAnswer}</span>}
+            {revealed && sel && !right && <span className="text-xs font-bold text-deep-ocean/70">{t.quiz.yourPick}</span>}
           </label>
         );
       })}
@@ -267,6 +265,7 @@ function Fill({
   onSubmit?: () => void;
   labelId: string;
 }) {
+  const t = useT();
   const [before, ...rest] = quiz.question.split("___");
   const after = rest.join("___");
   const ok = quiz.answers.some((a) => normalize(a) === normalize(value));
@@ -287,12 +286,12 @@ function Fill({
           type="text"
           value={value}
           readOnly={revealed}
-          aria-label="Your answer for the blank"
+          aria-label={t.quiz.fillAria}
           autoComplete="off"
           autoCapitalize="none"
           spellCheck={false}
           enterKeyHint="done"
-          placeholder="type here"
+          placeholder={t.quiz.fillPlaceholder}
           onChange={(e) => onChange({ kind: "fill", value: e.target.value })}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -307,7 +306,7 @@ function Fill({
       </p>
       {revealed && !ok && (
         <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-seafoam/15 px-4 py-2 text-[17px] font-bold text-[#2f6b64] ring-2 ring-seafoam">
-          <IconCheck width={18} height={18} /> Correct answer: {quiz.answers[0]}
+          <IconCheck width={18} height={18} /> {t.quiz.correctAnswerIs(quiz.answers[0])}
         </p>
       )}
     </div>
@@ -337,6 +336,8 @@ function Match({
   onChange: (a: QuizAnswer) => void;
   revealed: boolean;
 }) {
+  const t = useT();
+  const tm = t.quiz.match;
   const order = useMemo(() => stableShuffle(quiz.pairs.length, quiz.question), [quiz]);
   const [sel, setSel] = useState<Sel>(null);
   const leftOf = (pairIdx: number) => {
@@ -380,7 +381,7 @@ function Match({
 
   if (revealed) {
     return (
-      <ul className="flex flex-col gap-3" aria-label="Correct pairs">
+      <ul className="flex flex-col gap-3" aria-label={tm.correctPairs}>
         {quiz.pairs.map((p, i) => {
           const ok = value[i] === i;
           return (
@@ -405,7 +406,7 @@ function Match({
                 </span>
                 <span className="text-[16px] font-semibold text-ink/80">{p.right}</span>
               </span>
-              <span className="sr-only">{ok ? "You matched this correctly." : "You matched this differently."}</span>
+              <span className="sr-only">{ok ? tm.matchedOk : tm.matchedDiff}</span>
             </li>
           );
         })}
@@ -417,7 +418,7 @@ function Match({
   return (
     <div className="grid gap-5 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] sm:gap-4">
       <div>
-        <p className="label-mono mb-2.5 text-ink-soft">Words</p>
+        <p className="label-mono mb-2.5 text-ink-soft">{tm.words}</p>
         <div className="flex flex-wrap gap-2.5 sm:flex-col">
           {quiz.pairs.map((p, i) => {
             const matched = value[i] !== undefined;
@@ -433,7 +434,7 @@ function Match({
                 type="button"
                 onClick={() => tapLeft(i)}
                 aria-pressed={active}
-                aria-label={`${p.left}${matched ? `, matched with: ${quiz.pairs[value[i]].right}` : ""}`}
+                aria-label={matched ? tm.matchedWith(p.left, quiz.pairs[value[i]].right) : p.left}
                 className={`flex min-h-12 items-center gap-2.5 rounded-full px-4 py-2.5 text-left text-[17px] font-extrabold sm:rounded-[1.25rem] sm:min-h-[3.75rem] ${chip} ${tone}`}
               >
                 {matched && !active && (
@@ -448,7 +449,7 @@ function Match({
         </div>
       </div>
       <div>
-        <p className="label-mono mb-2.5 text-ink-soft">Meanings</p>
+        <p className="label-mono mb-2.5 text-ink-soft">{tm.meanings}</p>
         <div className="flex flex-col gap-2.5">
           {order.map((p) => {
             const l = leftOf(p);
@@ -467,7 +468,7 @@ function Match({
                 type="button"
                 onClick={() => tapRight(p)}
                 aria-pressed={active}
-                aria-label={`${quiz.pairs[p].right}${matched ? `, matched with: ${quiz.pairs[l].left}` : ""}`}
+                aria-label={matched ? tm.matchedWith(quiz.pairs[p].right, quiz.pairs[l].left) : quiz.pairs[p].right}
                 className={`flex min-h-[3.25rem] items-center gap-3 rounded-[1.25rem] px-4 py-3 text-left text-[16px] font-semibold sm:min-h-[3.75rem] sm:text-[17px] ${chip} ${tone}`}
               >
                 <span
@@ -486,10 +487,10 @@ function Match({
       </div>
       <p className="sr-only" aria-live="polite">
         {sel?.side === "left"
-          ? `${quiz.pairs[sel.index].left} selected. Now choose its meaning.`
+          ? tm.pickedWord(quiz.pairs[sel.index].left)
           : sel?.side === "right"
-            ? `${quiz.pairs[sel.index].right} selected. Now choose its word.`
-            : `${Object.keys(value).length} of ${quiz.pairs.length} pairs matched.`}
+            ? tm.pickedMeaning(quiz.pairs[sel.index].right)
+            : tm.pairsMatched(Object.keys(value).length, quiz.pairs.length)}
       </p>
     </div>
   );

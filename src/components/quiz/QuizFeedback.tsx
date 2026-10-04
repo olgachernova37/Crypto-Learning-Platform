@@ -1,11 +1,16 @@
+"use client";
+
 import type { Quiz } from "@/content/types";
 import { IconCheck, IconSparkle } from "@/components/lesson/icons";
 import { ASK_AI_OPEN_EVENT, GuideAvatar } from "@/components/lesson/AskAi";
 import { cheerFor, rightAnswerText } from "./logic";
+import { useT } from "@/i18n";
 import m from "@/components/lesson/motion.module.css";
 
 /** Shown right after "Check". Wrong answers get the right one + why, no retry loop. */
 export function QuizFeedback({ quiz, correct, xp }: { quiz: Quiz; correct: boolean; xp: number }) {
+  const t = useT();
+  const f = t.quiz.feedback;
   return (
     <div
       role="status"
@@ -23,20 +28,22 @@ export function QuizFeedback({ quiz, correct, xp }: { quiz: Quiz; correct: boole
           {correct ? <IconCheck width={20} height={20} /> : <IconSparkle width={20} height={20} />}
         </span>
         <p className="flex-1 text-lg font-extrabold text-ink">
-          {correct ? cheerFor(quiz.question) : "Not quite, and that's okay."}
+          {correct ? cheerFor(quiz.question, f.cheers) : f.wrong}
         </p>
         <span className="shrink-0 rounded-full bg-white/80 px-2.5 py-1 text-xs font-extrabold text-ocean-teal ring-1 ring-ocean-teal/15">
-          +{xp} XP
+          {f.xp(xp)}
         </span>
       </div>
       <div className="mt-3 sm:pl-[3.25rem]">
         {!correct && (
           <p className="text-[17px] font-bold text-deep-ocean">
             {quiz.kind === "match" ? (
-              "The correct pairs are shown above."
+              f.correctPairsShown
             ) : (
               <>
-                The right answer: <span className="text-[#2f6b64]">{rightAnswerText(quiz)}</span>
+                {f.rightAnswer.before}
+                <span className="text-[#2f6b64]">{rightAnswerText(quiz, t.quiz)}</span>
+                {f.rightAnswer.after}
               </>
             )}
           </p>
@@ -46,12 +53,12 @@ export function QuizFeedback({ quiz, correct, xp }: { quiz: Quiz; correct: boole
           <button
             type="button"
             onClick={() =>
-              window.dispatchEvent(new CustomEvent(ASK_AI_OPEN_EVENT, { detail: { ask: "Why was my answer wrong?" } }))
+              window.dispatchEvent(new CustomEvent(ASK_AI_OPEN_EVENT, { detail: { ask: t.ai.suggestions.whyWrong } }))
             }
             className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-sea-night py-1 pr-4 pl-1 text-[15px] font-extrabold text-white transition hover:bg-ocean-teal focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60"
           >
             <GuideAvatar size={34} />
-            Still unsure? Ask the AI guide why
+            {f.askWhy}
           </button>
         )}
       </div>

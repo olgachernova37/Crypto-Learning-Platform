@@ -6,11 +6,10 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { lessons } from "@/content/lessons";
+import { useT } from "@/i18n";
+import { useLessons } from "@/i18n/lessons";
 import { Boat } from "../Boat";
 import s from "./solana-hero.module.css";
-
-const ROUTE = ["What is crypto", "Solana", "Wallets", "Sending SOL", "Swaps", "Staking", "NFTs", "Memecoins", "Staying safe"];
 
 // fixed star field (deterministic, so server and client render the same)
 const STARS = Array.from({ length: 70 }, (_, i) => {
@@ -26,6 +25,8 @@ const STARS = Array.from({ length: 70 }, (_, i) => {
 export function SolanaHero() {
   const router = useRouter();
   const [leaving, setLeaving] = useState(false);
+  const t = useT();
+  const lessons = useLessons();
   const minutes = Math.round(lessons.reduce((n, l) => n + l.minutes, 0) / 5) * 5;
 
   useEffect(() => {
@@ -62,41 +63,41 @@ export function SolanaHero() {
           <div className={s.tag}>
             <span className={s.tagDot} />
             <span>
-              <strong>Stop 01 · Solana</strong>
+              <strong>{t.home.tagTitle}</strong>
               <br />
-              Fast, low-cost, open to anyone
+              {t.home.tagLine}
             </span>
           </div>
         </div>
 
         {/* the words */}
         <section className={s.copy} aria-labelledby="hero-title">
-          <p className={s.eyebrow}>Welcome, voyager 👋</p>
+          <p className={s.eyebrow}>{t.home.eyebrow}</p>
           <h1 id="hero-title" className={s.title}>
-            <span className={s.titleLead}>Your first stop:</span>
+            <span className={s.titleLead}>{t.home.titleLead}</span>
             <span className={s.titleWorld}>Solana</span>
           </h1>
           <p className={s.lede}>
-            Discover crypto and blockchain from zero through short, interactive lessons made for beginners.
+            {t.home.lede}
           </p>
 
           <div className={s.ctaRow}>
             <button type="button" className={s.cta} onClick={start} disabled={leaving}>
-              Start the journey
+              {t.home.cta}
               <span className={s.ctaArrow} aria-hidden="true">
                 →
               </span>
             </button>
             <p className={s.note}>
-              No crypto experience needed · {lessons.length} short lessons · about {minutes} min
+              {t.home.note(lessons.length, minutes)}
             </p>
           </div>
 
           <div className={s.route}>
-            <p className={s.routeLabel}>On your route</p>
+            <p className={s.routeLabel}>{t.home.routeLabel}</p>
             <ol className={s.routeList}>
-              {ROUTE.map((r, i) => (
-                <li key={r} className={i === 1 ? s.routeHere : undefined}>
+              {t.home.route.map((r, i) => (
+                <li key={i} className={i === 1 ? s.routeHere : undefined}>
                   {r}
                 </li>
               ))}

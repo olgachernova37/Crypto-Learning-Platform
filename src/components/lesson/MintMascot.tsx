@@ -6,7 +6,8 @@
 import { useState } from "react";
 import { isAddress } from "@solana/kit";
 import { useProgress } from "@/lib/progress";
-import { addressExplorerUrl, shortAddr, useTrainingWallet } from "@/lib/training-wallet";
+import { addressExplorerUrl, shortAddr, useTrainingWallet, walletErrorText } from "@/lib/training-wallet";
+import { useT } from "@/i18n";
 import { Confetti } from "./Confetti";
 import { IconCheck, IconExternal, IconSparkle } from "./icons";
 import m from "./motion.module.css";
@@ -18,6 +19,8 @@ export function MintMascot() {
   const [phantom, setPhantom] = useState("");
   const minted = wallet?.mascot;
   const phantomOk = isAddress(phantom.trim());
+  const t = useT();
+  const f = t.finale.mint;
 
   const mint = async () => {
     const ok = await mintMascot(where === "phantom" ? phantom.trim() : undefined);
@@ -34,12 +37,14 @@ export function MintMascot() {
             <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
               <IconCheck width={18} height={18} />
             </span>
-            Your mascot is minted! 🎉
+            {f.minted}
           </p>
           <p className="mt-2 text-[16px] leading-relaxed text-white/75">
             {minted.real
-              ? `Pebble is a real NFT on Solana devnet, living in ${toPhantom ? `your Phantom wallet (${shortAddr(minted.owner)})` : "your training wallet"}. Exactly one exists — it's yours.`
-              : "Pebble lives in your practice backpack (simulated). Try again on devnet any time."}
+              ? toPhantom
+                ? f.mintedRealPhantom(shortAddr(minted.owner))
+                : f.mintedRealTraining
+              : f.mintedPractice}
           </p>
           {minted.real && (
             <a
@@ -48,23 +53,22 @@ export function MintMascot() {
               rel="noopener noreferrer"
               className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 text-[15px] font-extrabold text-deep-ocean"
             >
-              See it on Solana Explorer <IconExternal width={16} height={16} />
-              <span className="sr-only">(opens in a new tab)</span>
+              {f.seeOnExplorer} <IconExternal width={16} height={16} />
+              <span className="sr-only">{f.opensInNewTab}</span>
             </a>
           )}
         </div>
         <div className="rounded-[1.5rem] bg-white p-5 text-ink">
-          <p className="text-lg font-extrabold">Where to find your new friend 📱</p>
+          <p className="text-lg font-extrabold">{f.findTitle}</p>
           {toPhantom ? (
             <ol className="mt-2 list-decimal space-y-1 pl-5 text-[16px] leading-relaxed text-ink-soft">
-              <li>Open Phantom → Settings → Developer Settings, and turn on Testnet Mode (Solana Devnet).</li>
-              <li>Tap the Collectibles tab (the icon with little squares, ⊞).</li>
-              <li>Pebble may take a minute to appear while the wallet catches up.</li>
+              {f.phantomSteps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
             </ol>
           ) : (
             <p className="mt-2 text-[16px] leading-relaxed text-ink-soft">
-              In a wallet app like Phantom, NFTs live in the Collectibles tab (the icon with little squares, ⊞). Your Pebble
-              is in the training wallet here — next time, send it straight to your own Phantom.
+              {f.trainingFind}
             </p>
           )}
         </div>
@@ -75,13 +79,13 @@ export function MintMascot() {
   return (
     <div className="w-full max-w-md text-left">
       <fieldset className="rounded-[1.5rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur-md">
-        <legend className="sr-only">Where should your mascot live?</legend>
-        <p className="font-extrabold">Where should Pebble live?</p>
+        <legend className="sr-only">{f.whereLegend}</legend>
+        <p className="font-extrabold">{f.whereTitle}</p>
         <div className="mt-3 flex flex-col gap-2">
           {(
             [
-              ["training", "My training wallet", "Easiest: no app needed."],
-              ["phantom", "My own Phantom wallet", "Paste your Phantom address (it's safe to share)."],
+              ["training", f.trainingLabel, f.trainingHint],
+              ["phantom", f.phantomLabel, f.phantomHint],
             ] as const
           ).map(([value, label, hint]) => (
             <label
@@ -108,28 +112,28 @@ export function MintMascot() {
         {where === "phantom" && (
           <div className={`mt-3 ${m.fadeUp}`}>
             <label htmlFor="phantom-address" className="text-sm font-bold text-white/85">
-              Your Phantom address
+              {f.phantomAddress}
             </label>
             <input
               id="phantom-address"
               value={phantom}
               onChange={(e) => setPhantom(e.target.value)}
-              placeholder="e.g. 7Xb…9Yz"
+              placeholder={f.phantomPlaceholder}
               spellCheck={false}
               autoComplete="off"
               className="mt-1 w-full rounded-full bg-white px-4 py-3 font-mono text-[15px] text-ink outline-none ring-2 ring-transparent focus:ring-light-sky"
             />
-            {phantom && !phantomOk && <p className="mt-1 text-sm text-sandy-beige">That doesn&apos;t look like a Solana address yet.</p>}
+            {phantom && !phantomOk && <p className="mt-1 text-sm text-sandy-beige">{f.phantomInvalid}</p>}
           </div>
         )}
       </fieldset>
 
       {error && (
         <div role="alert" className="mt-3 rounded-[1.1rem] bg-sandy-beige/25 p-4 text-[15px] leading-relaxed">
-          <p className="font-bold">{error}</p>
+          <p className="font-bold">{walletErrorText(error, t.wallet)}</p>
           {wallet?.mode === "devnet" && (
             <button type="button" onClick={switchToPractice} className="mt-2 font-bold text-light-sky underline">
-              Continue in practice mode (simulated)
+              {f.switchToPractice}
             </button>
           )}
         </div>
@@ -146,15 +150,15 @@ export function MintMascot() {
         {busy === "mint" ? (
           <>
             <span aria-hidden className="size-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-            Minting on Solana…
+            {f.busy}
           </>
         ) : (
           <>
-            🎁 Mint my mascot <IconSparkle width={18} height={18} />
+            {f.button} <IconSparkle width={18} height={18} />
           </>
         )}
       </button>
-      <p className="mt-3 text-sm text-white/60">A real 1-of-1 NFT on Solana devnet. Free: devnet coins have no value.</p>
+      <p className="mt-3 text-sm text-white/60">{f.note}</p>
     </div>
   );
 }

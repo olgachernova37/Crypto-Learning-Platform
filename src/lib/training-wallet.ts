@@ -20,16 +20,47 @@ import {
   sendSol,
   signerFromSeed,
 } from "@/lib/solana/devnet";
+import type { Dict } from "@/i18n/ui/en";
 
 export type PracticeTx = {
   signature: string;
   kind: "faucet" | "send" | "swap" | "stake" | "mint";
-  label: string; // "Sent 0.1 SOL to a friend"
+  /** English text saved by older versions. Kept for saved wallets; show describeTx(tx, t.wallet) instead. */
+  label: string;
   amountSol: number; // SOL that left (-) or arrived (+)
   feeSol: number;
   at: number; // epoch ms
   real: boolean; // a real devnet transaction (has an Explorer page)
+  getAmount?: number; // swap: tokens received (older saved swaps don't have it)
+  getSymbol?: string; // swap: token ticker
 };
+
+/** Why the last wallet action failed. `other` carries the network's own (short, untranslated) message. */
+export type WalletErrorCode = keyof Dict["wallet"]["errors"] | "other";
+export type WalletError = { code: WalletErrorCode; detail?: string };
+
+/** The error as text in the learner's language. */
+export const walletErrorText = (e: WalletError, t: Dict["wallet"]) =>
+  e.code === "other" ? (e.detail ?? "") : t.errors[e.code];
+
+/** The receipt's "What" line in the learner's language (computed from kind + amounts). */
+export function describeTx(tx: PracticeTx, t: Dict["wallet"]): string {
+  const sol = Math.abs(tx.amountSol);
+  switch (tx.kind) {
+    case "faucet":
+      return t.tx.faucet(sol);
+    case "send":
+      return t.tx.send(sol);
+    case "stake":
+      return t.tx.stake(sol);
+    case "mint":
+      return t.tx.mint;
+    case "swap":
+      return tx.getAmount != null && tx.getSymbol ? t.tx.swap(sol, tx.getAmount, tx.getSymbol) : tx.label;
+    default:
+      return tx.label;
+  }
+}
 
 export type TrainingWallet = {
   mode: "devnet" | "practice";
@@ -96,17 +127,17 @@ function save(w: TrainingWallet) {
 
 // live devnet balance (not persisted)
 type Busy = "" | "faucet" | "send" | "swap" | "stake" | "mint";
-type Status = { balance: number | null; busy: Busy; lastError: string };
+type Status = { balance: number | null; busy: Busy; lastError: WalletError | null };
 let balance: number | null = null;
 let busy: Busy = "";
-let lastError = "";
+let lastError: WalletError | null = null;
 let status: Status = { balance, busy, lastError };
 function emit() {
   status = { balance, busy, lastError };
   window.dispatchEvent(new Event(EVENT));
 }
 const getStatus = () => status;
-const serverStatus: Status = { balance: null, busy: "", lastError: "" };
+const serverStatus: Status = { balance: null, busy: "", lastError: null };
 
 function subscribe(cb: () => void) {
   window.addEventListener(EVENT, cb);
@@ -125,7 +156,7 @@ export function resetTrainingWallet() {
   }
   memoryOnly = null;
   balance = null;
-  lastError = "";
+  lastError = null;
   emit();
 }
 
@@ -158,23 +189,23 @@ async function refreshBalance() {
   if (!w || w.mode !== "devnet") return;
   try {
     balance = await getBalanceSol(w.address);
-    if (lastError.startsWith("We couldn't reach")) lastError = "";
+    if (lastError?.code === "unreachable" || lastError?.code === "unreachableNow") lastError = null;
     emit();
   } catch (e) {
     // first load failed: say so, so the learner isn't left with a dead button
     if (balance === null) {
-      lastError = friendly(e, "We couldn't reach the Solana devnet. Check your connection and try again.");
-      if (!/reach/.test(lastError)) lastError = "We couldn't reach the Solana devnet right now.";
+      const err = friendly(e, "unreachable");
+      lastError = err.code === "unreachable" || /reach/.test(err.detail ?? "") ? err : { code: "unreachableNow" };
       emit();
     }
   }
 }
 
-const friendly = (e: unknown, fallback: string) => {
+const friendly = (e: unknown, fallback: WalletErrorCode): WalletError => {
   const m = e instanceof Error ? e.message : "";
-  if (/429|rate|limit|airdrop/i.test(m)) return "The free devnet tap is busy right now (it limits how often it pours).";
-  if (/fetch|network|Failed/i.test(m)) return "We couldn't reach the Solana devnet. Check your connection and try again.";
-  return m && m.length < 140 ? m : fallback;
+  if (/429|rate|limit|airdrop/i.test(m)) return { code: "faucetBusy" };
+  if (/fetch|network|Failed/i.test(m)) return { code: "unreachable" };
+  return m && m.length < 140 ? { code: "other", detail: m } : { code: fallback };
 };
 
 /* ---------------- hook ---------------- */
@@ -194,7 +225,7 @@ export function useTrainingWallet() {
   const ensure = useCallback(() => ensureWallet(), []);
 
   const switchToPractice = useCallback(() => {
-    lastError = "";
+    lastError = null;
     update((w) => ({ ...w, mode: "practice" }));
   }, []);
 
@@ -202,14 +233,14 @@ export function useTrainingWallet() {
     const w = await ensureWallet();
     if (w.mode !== "devnet") return;
     busy = "faucet";
-    lastError = "";
+    lastError = null;
     emit();
     try {
       const sig = await requestAirdrop(w.address, 1);
       addTx({ signature: sig, kind: "faucet", label: "Received 1 SOL from the devnet faucet", amountSol: 1, feeSol: 0, at: Date.now(), real: true });
       await refreshBalance();
     } catch (e) {
-      lastError = friendly(e, "The faucet didn't answer. Try again in a minute.");
+      lastError = friendly(e, "faucetFailed");
     } finally {
       busy = "";
       emit();
@@ -219,7 +250,7 @@ export function useTrainingWallet() {
   const send = useCallback(async (amount: number): Promise<PracticeTx | null> => {
     const w = await ensureWallet();
     busy = "send";
-    lastError = "";
+    lastError = null;
     emit();
     try {
       let tx: PracticeTx;
@@ -236,7 +267,7 @@ export function useTrainingWallet() {
       }
       return tx;
     } catch (e) {
-      lastError = friendly(e, "The transfer didn't go through. Please try again.");
+      lastError = friendly(e, "sendFailed");
       return null;
     } finally {
       busy = "";
@@ -246,12 +277,12 @@ export function useTrainingWallet() {
 
   // Practice-only for now: there's no devnet market for our Ocean Token yet.
   const simulated = useCallback(
-    async (kind: "swap" | "stake", label: string, payAmount: number, gain: Record<string, number>) => {
+    async (kind: "swap" | "stake", label: string, payAmount: number, gain: Record<string, number>, extra?: Partial<PracticeTx>) => {
       await ensureWallet();
       busy = kind;
       emit();
       await new Promise((r) => setTimeout(r, 1000));
-      const tx: PracticeTx = { signature: fakeSig(), kind, label, amountSol: -payAmount, feeSol: SIM_FEE, at: Date.now(), real: false };
+      const tx: PracticeTx = { signature: fakeSig(), kind, label, amountSol: -payAmount, feeSol: SIM_FEE, at: Date.now(), real: false, ...extra };
       update((x) => {
         const tokens = { ...x.tokens };
         for (const [k, v] of Object.entries(gain)) tokens[k] = (tokens[k] ?? 0) + v;
@@ -265,7 +296,7 @@ export function useTrainingWallet() {
   );
 
   const swap = useCallback(
-    (pay: number, get: number, symbol: string) => simulated("swap", `Swapped ${pay} SOL for ${get} ${symbol}`, pay, { [symbol]: get }),
+    (pay: number, get: number, symbol: string) => simulated("swap", `Swapped ${pay} SOL for ${get} ${symbol}`, pay, { [symbol]: get }, { getAmount: get, getSymbol: symbol }),
     [simulated],
   );
   const stake = useCallback(
@@ -277,7 +308,7 @@ export function useTrainingWallet() {
   const mintMascot = useCallback(async (recipient?: string) => {
     const w = await ensureWallet();
     busy = "mint";
-    lastError = "";
+    lastError = null;
     emit();
     try {
       const owner = recipient || w.address;
@@ -305,7 +336,7 @@ export function useTrainingWallet() {
       }
       return true;
     } catch (e) {
-      lastError = friendly(e, "Minting didn't go through. Please try again.");
+      lastError = friendly(e, "mintFailed");
       return false;
     } finally {
       busy = "";
