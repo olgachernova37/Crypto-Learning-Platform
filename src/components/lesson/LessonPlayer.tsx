@@ -206,7 +206,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
 
           {phase === "read" && (
             <PrimaryButton onClick={fromRead} disabled={practicePending}>
-              {practicePending ? "Try the practice first" : step.quiz ? "Quick check" : isLast ? "Finish lesson" : "Continue"}
+              {practicePending ? "Practice first" : step.quiz ? "Quick check" : isLast ? "Finish lesson" : "Continue"}
             </PrimaryButton>
           )}
           {phase === "quiz" && !revealed && (

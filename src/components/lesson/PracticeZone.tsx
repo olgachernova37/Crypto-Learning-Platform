@@ -63,7 +63,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
   };
 
   const btn =
-    "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full px-6 text-[17px] font-extrabold transition focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 disabled:opacity-70";
+    "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full px-4 text-[16px] font-extrabold sm:px-6 sm:text-[17px] transition focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 disabled:opacity-70";
 
   return (
     <section
@@ -77,10 +77,13 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
             🎒
           </span>
           <div className="min-w-0">
-            <p className="text-[15px] font-extrabold">Your training wallet</p>
+            <p className="truncate text-[15px] font-extrabold">
+              <span className="sm:hidden">Training wallet</span>
+              <span className="hidden sm:inline">Your training wallet</span>
+            </p>
             {wallet ? (
               <button type="button" onClick={copy} className="font-mono text-xs text-white/65 underline-offset-2 hover:underline">
-                {shortAddr(wallet.address)} · {copied ? "copied!" : "copy address"}
+                {shortAddr(wallet.address)} · {copied ? "copied!" : "copy"}
               </button>
             ) : (
               <p className="font-mono text-xs text-white/60">creating…</p>
@@ -90,7 +93,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
         <span
           className={`label-mono shrink-0 rounded-full px-3 py-1.5 ${devnet ? "bg-seafoam/25 text-[#bfe3de]" : "bg-sandy-beige/20 text-sandy-beige"}`}
         >
-          {devnet ? "Solana devnet" : "Practice"}
+          {devnet ? "Devnet" : "Practice"}
         </span>
       </div>
 
@@ -131,7 +134,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
                   <Spinner /> Pouring test SOL…
                 </>
               ) : (
-                "Fill up from the faucet"
+                "Get free test SOL"
               )}
             </button>
           </div>
@@ -146,7 +149,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
                 <a href="https://faucet.solana.com" target="_blank" rel="noopener noreferrer" className="font-bold text-ocean-teal underline">
                   faucet.solana.com
                 </a>{" "}
-                — paste your address (tap &ldquo;copy address&rdquo; above), choose Devnet, and come back. We&apos;ll notice the
+                — paste your address (tap &ldquo;copy&rdquo; next to it above), choose Devnet, and come back. We&apos;ll notice the
                 coins automatically.
               </p>
             )}
@@ -210,7 +213,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
                   onClick={() => setShowReceipt(true)}
                   className={`${btn} mt-4 min-h-12 bg-deep-ocean text-[16px] text-white hover:bg-ocean-teal`}
                 >
-                  🔍 Verify my {practice.kind === "swap" ? "swap" : "transaction"} onchain
+                  🔍 Verify it onchain
                 </button>
               </>
             ) : (
@@ -296,7 +299,7 @@ function Receipt({ tx, from }: { tx: PracticeTx; from: string }) {
         <p className="flex items-center gap-2 font-extrabold">
           <IconSparkle width={16} height={16} /> Transaction receipt
         </p>
-        <span className="rounded-full bg-seafoam/20 px-3 py-1 text-sm font-extrabold text-[#2f6b64]">
+        <span className="shrink-0 whitespace-nowrap rounded-full bg-seafoam/20 px-3 py-1 text-sm font-extrabold text-[#2f6b64]">
           ✓ {live && !live.ok ? "Failed" : "Success"}
         </span>
       </div>
@@ -318,7 +321,7 @@ function Receipt({ tx, from }: { tx: PracticeTx; from: string }) {
             rel="noopener noreferrer"
             className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-ocean-teal px-6 text-[16px] font-extrabold text-white transition hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50"
           >
-            Open it on Solana Explorer <IconExternal width={17} height={17} />
+            View on Solana Explorer <IconExternal width={17} height={17} />
             <span className="sr-only">(opens in a new tab)</span>
           </a>
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">

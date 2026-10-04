@@ -424,6 +424,8 @@ export function Journey() {
                   className={[
                     "pointer-events-none absolute whitespace-nowrap text-[13px] font-semibold tracking-wide transition-opacity duration-500",
                     selected ? "text-white" : "text-light-sky/80",
+                    // phones: the bottom card already names the lesson; long labels would run off-screen
+                    stop.kind === "lesson" ? "max-md:hidden" : "",
                     labelSide === "above" ? "bottom-9 left-0 -translate-x-1/2" : "",
                     labelSide === "left" ? "right-10 top-0 -translate-y-1/2 text-right" : "",
                     labelSide === "right" ? "left-10 top-0 -translate-y-1/2" : "",

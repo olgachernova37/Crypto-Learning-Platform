@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { IconClose } from "./icons";
+import { ASK_AI_OPEN_EVENT } from "./AskAi";
+import { IconClose, IconSparkle } from "./icons";
 import m from "./motion.module.css";
 
 /** Minimal full-screen lesson header: close, thin progress bar, step count. */
@@ -29,9 +32,21 @@ export function LessonHeader({ value, step, total, label }: { value: number; ste
             style={{ width: `${Math.max(pct, 4)}%` }}
           />
         </div>
-        <span className="label-mono w-12 shrink-0 text-right text-ink-soft">
+        <span className="label-mono w-9 shrink-0 text-right text-ink-soft sm:w-12">
           {step}/{total}
         </span>
+        {/* phones: Ask AI sits up here instead of floating over the lesson */}
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event(ASK_AI_OPEN_EVENT))}
+          aria-haspopup="dialog"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full bg-deep-ocean py-1.5 pr-3.5 pl-1.5 text-[14px] font-extrabold text-white focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60 sm:hidden"
+        >
+          <span aria-hidden className="grid size-7 place-items-center rounded-full bg-light-sky text-deep-ocean">
+            <IconSparkle width={14} height={14} />
+          </span>
+          Ask AI
+        </button>
       </div>
     </header>
   );

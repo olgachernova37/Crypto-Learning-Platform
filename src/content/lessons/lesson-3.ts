@@ -35,7 +35,7 @@ export const lesson3: Lesson = {
       body: [
         "Because the blockchain is public, anyone can look at these receipts. But they only show wallet addresses, never your real name.",
         "Below is the receipt of the test SOL you sent in the last lesson: who sent it, who received it, the amount, the tiny fee and the time.",
-        "Tap \"Open it on Solana Explorer\" to see the very same receipt on the public website that anyone in the world can check.",
+        "Tap \"View on Solana Explorer\" to see the very same receipt on the public website that anyone in the world can check.",
       ],
       example:
         "It's like a bank statement, except anyone can look it up, and it shows wallet addresses instead of names.",

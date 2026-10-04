@@ -112,7 +112,7 @@ export function MarinadeQuest() {
               disabled={!stakeTx}
               className={`${btn} bg-deep-ocean text-white hover:bg-ocean-teal`}
             >
-              🔍 Verify my transaction onchain
+              🔍 Verify it onchain
             </button>
           ),
         )}

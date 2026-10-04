@@ -8,7 +8,9 @@ type Msg = { from: "me" | "ai"; text: string; note?: string };
 
 export type AskContext = { lessonTitle: string; stepTitle: string; quizQuestion?: string };
 
-/** Floating "Ask AI" pill + small rounded chat sheet. Talks to /api/ask. */
+export const ASK_AI_OPEN_EVENT = "crypto-voyage:ask-ai";
+
+/** Floating "Ask AI" pill (tablet/desktop) + small rounded chat sheet. Talks to /api/ask. */
 export function AskAi({ context, raised = true }: { context: AskContext; raised?: boolean }) {
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
@@ -31,6 +33,13 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  // on phones the trigger lives in the lesson header (so it never covers the lesson text)
+  useEffect(() => {
+    const openSheet = () => setOpen(true);
+    window.addEventListener(ASK_AI_OPEN_EVENT, openSheet);
+    return () => window.removeEventListener(ASK_AI_OPEN_EVENT, openSheet);
+  }, []);
 
   useEffect(() => {
     list.current?.scrollTo({ top: list.current.scrollHeight, behavior: "smooth" });
@@ -72,7 +81,7 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-haspopup="dialog"
-        className={`fixed right-4 z-40 inline-flex min-h-12 items-center gap-2 rounded-full bg-deep-ocean py-2 pr-5 pl-2.5 text-[15px] font-extrabold text-white shadow-[0_14px_34px_-12px_rgba(13,43,69,0.75)] ring-4 ring-white/70 transition hover:-translate-y-0.5 hover:bg-ocean-teal focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60 sm:right-8 ${
+        className={`fixed right-4 z-40 hidden min-h-12 sm:inline-flex items-center gap-2 rounded-full bg-deep-ocean py-2 pr-5 pl-2.5 text-[15px] font-extrabold text-white shadow-[0_14px_34px_-12px_rgba(13,43,69,0.75)] ring-4 ring-white/70 transition hover:-translate-y-0.5 hover:bg-ocean-teal focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60 sm:right-8 ${
           raised ? "bottom-[calc(6.5rem+env(safe-area-inset-bottom))] sm:bottom-[7.5rem]" : "bottom-[calc(1rem+env(safe-area-inset-bottom))] sm:bottom-8"
         } ${open ? "pointer-events-none opacity-0" : ""}`}
       >
