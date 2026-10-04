@@ -1,1 +1,543 @@
-{}
+{
+  "what-is-crypto": {
+    "kicker": "Začni tady",
+    "title": "Co je krypto a blockchain?",
+    "summary": "Velká myšlenka kryptoměn, vysvětlená v klidu, jako u kávy s přáteli.",
+    "outro": "Skvělá práce, základy máš v kapse! Tvoje kryptoplavba právě nabírá vítr do plachet.",
+    "steps": {
+      "money-without-borders": {
+        "title": "Peníze bez hranic",
+        "body": [
+          "Vítej! Udělej si pohodlí. Společně teď prozkoumáme svět kryptoměn a slibuju, že je to mnohem jednodušší, než to zní.",
+          "Kryptoměna (nebo zkrátka „krypto“) jsou prostě digitální peníze. Nemůžeš je držet v ruce jako minci, ale fungují kdekoli na světě.",
+          "Protože nepatří žádné konkrétní zemi ani bance, můžeš je poslat kamarádce na druhý konec světa stejně snadno jako textovou zprávu!"
+        ],
+        "example": "Vzpomeň si, jak putuje fotka: klepneš na odeslat a za vteřinu ji má kamarád v telefonu v jiné zemi. Krypto posílá peníze podobně.",
+        "quiz": {
+          "question": "Kryptoměna je zvláštní druh fyzické mince, kterou můžeš nosit v kabelce nebo v kapse.",
+          "explanation": "Nepravda! Krypto je čistě digitální. Máš ho bezpečně v telefonu nebo v počítači, ne v kabelce. 👜"
+        }
+      },
+      "public-notebook": {
+        "title": "Kouzelný veřejný zápisník",
+        "body": [
+          "Když peníze nedrží žádná centrální banka, jak víme, kdo má co?",
+          "Místo banky, která si vede tajné záznamy, používá krypto blockchain. Představ si obrovský kouzelný digitální zápisník, který si může přečíst kdokoli na světě, ale nikdo z něj nemůže nic vymazat ani v něm podvádět.",
+          "Pokaždé, když někdo pošle peníze, přibude v zápisníku nový trvalý řádek, který vidí všichni."
+        ],
+        "example": "Je to jako rodinná kuchařka, kde se každá změna píše propiskou a každý příbuzný má úplně stejnou kopii. Nikdo nemůže potichu přepsat babiččin recept.",
+        "quiz": {
+          "question": "Jak nejjednodušeji popsat blockchain?",
+          "explanation": "Blockchain je obří digitální zápisník, který je úplně veřejný, takže žádná banka nemusí vést tajnou složku. 📖",
+          "options": {
+            "a": "Obrovský veřejný digitální zápisník, který nejde vymazat.",
+            "b": "Tajná složka v počítači manažera banky.",
+            "c": "Papírový deník zamčený v knihovně."
+          }
+        }
+      },
+      "no-boss": {
+        "title": "Žádný šéf",
+        "body": [
+          "Protože kopii kouzelného zápisníku má každý, nemá krypto žádného jednoho šéfa. Žádný ředitel, žádný bankéř ani žádná centrála nerozhoduje o tom, co smíš se svými mincemi dělat.",
+          "Právě tohle lidé myslí, když říkají, že krypto je decentralizované. Celá komunita počítačů spolupracuje jako tým a hlídá, aby všechno bylo férové."
+        ],
+        "example": "Jako knihobudka v sousedství: nemá žádného majitele, všichni dodržují stejná jednoduchá pravidla a každý vidí, co v ní je.",
+        "quiz": {
+          "question": "Co znamená, když o síti říkáme, že je „decentralizovaná“?",
+          "explanation": "Decentralizovaná znamená, že nad ní nestojí žádný šéf ani bankovní manažer. Síť funguje sama, jako tým. 🤝",
+          "options": {
+            "a": "Nemá žádného jednoho šéfa ani ředitele.",
+            "b": "Bankovní manažer ti musí schválit víkendové platby.",
+            "c": "Síť spolupracuje jako tým a kontroluje dodržování pravidel.",
+            "d": "Žádná centrála ti nemůže jen tak zmrazit účet."
+          }
+        }
+      },
+      "why-sail": {
+        "title": "Proč se plavit těmito vodami?",
+        "body": [
+          "Proč používat krypto místo běžné bankovní aplikace? Protože ti dává skutečné vlastnictví tvých digitálních peněz a věcí.",
+          "A moderní sítě jako Solana to zvládají neuvěřitelně rychle a prakticky zadarmo. Je to jako poslat rychlou zprávu v chatu místo posílání těžkého balíku poštou!",
+          "Ještě jedna upřímná poznámka, než vyplujeme dál: ceny kryptoměn umí hodně stoupat i klesat. Vkládej jen peníze, o které si můžeš dovolit přijít."
+        ],
+        "example": "Na Solaně stojí běžný síťový poplatek nepatrný zlomek koruny, mnohem méně než bankovní převod do zahraničí.",
+        "quiz": {
+          "question": "Díky moderním sítím jako Solana je posílání digitálních peněz neuvěřitelně ___ a prakticky zadarmo.",
+          "explanation": "Hledali jsme slovo „rychlé“! Solana je postavená tak, aby byla extrémně svižná. ⚡",
+          "answers": [
+            "rychlé",
+            "rychle",
+            "rychlý",
+            "rychlá",
+            "svižné",
+            "bleskové",
+            "bleskurychlé"
+          ]
+        }
+      }
+    }
+  },
+  "your-first-wallet": {
+    "kicker": "Peněženky",
+    "title": "Tvoje první kryptopeněženka",
+    "summary": "Bezpečné místo pro tvé digitální poklady a jedna adresa, kterou můžeš dát komukoli.",
+    "outro": "Teď víš, co je peněženka, a máš svou vlastní cvičnou adresu!",
+    "steps": {
+      "safe-place": {
+        "title": "Bezpečné místo pro digitální poklady",
+        "body": [
+          "Než se ponoříme hlouběji, potřebuješ bezpečné místo pro své digitální věci. Tím je kryptopeněženka!",
+          "Představ si ji jako osobní digitální batoh. Jsou v něm tvoje digitální peníze i tvoje jedinečné sběratelské předměty.",
+          "Máš ji pod palcem jen ty: žádní úředníci na pobočce a žádné fronty."
+        ],
+        "example": "Některé věci v bankovní aplikaci mají otevírací dobu. Kryptopeněženka funguje úplně stejně i v neděli ve tři ráno.",
+        "quiz": {
+          "question": "Čím se kryptopeněženka liší od běžného bankovního účtu?",
+          "explanation": "Tvoje peněženka má otevřeno pořád a ovládáš ji jen ty. Žádná pobočka, žádná fronta, žádný manažer. 🎒",
+          "options": {
+            "a": "Funguje nonstop a ovládáš ji jen ty.",
+            "b": "Kvůli jejímu použití musíš stát frontu na pobočce."
+          }
+        }
+      },
+      "meet-phantom": {
+        "title": "Seznam se s Phantomem 👻",
+        "body": [
+          "Různé sítě potřebují různé peněženky. Pro rychlou síť Solana je nejpřívětivější peněženka Phantom. (Možná uslyšíš i o MetaMasku, ten je ale určený pro jinou síť, Ethereum.)",
+          "Při zakládání peněženky si normálně musíš zapsat tajnou obnovovací frázi z 12 slov (seed frázi). Protože teprve začínáš, vytvoříme ti tréninkovou peněženku přímo tady v kurzu, na bezplatné cvičné síti Solany, ať se můžeš v klidu soustředit na objevování.",
+          "Jedno pravidlo na později, až si založíš skutečný Phantom: těch 12 slov je jen pro tvoje oči. Žádná skutečná firma ani podpora o ně nikdy nepožádá."
+        ],
+        "example": "Je to jako učit se řídit v autě autoškoly s pedály pro instruktora, než si pořídíš vlastní.",
+        "quiz": {
+          "question": "Pro pokračování v lekci si teď musíš zapsat složité heslo.",
+          "explanation": "Nepravda! Tvoje tréninková peněženka už je nachystaná. 12 slov budeš potřebovat až u skutečné peněženky a pak zůstanou jen pro tebe. 🔒"
+        }
+      },
+      "public-address": {
+        "title": "Tvoje veřejná adresa",
+        "body": [
+          "Každá peněženka má veřejnou adresu, dlouhý řetězec písmen a číslic, třeba 7Xb…9Yz.",
+          "Ber ji jako číslo svého bankovního účtu. Když ti chce kamarádka poslat digitální dárek, dáš jí tuhle adresu.",
+          "Protože slouží jen k přijímání, je úplně bezpečné ji sdílet s kýmkoli!"
+        ],
+        "example": "Stejně jako dáš číslo účtu kolegyni, která ti dluží za oběd, můžeš svou adresu dát komukoli, kdo ti chce poslat krypto.",
+        "quiz": {
+          "question": "Která tvrzení o tvé veřejné adrese jsou pravdivá?",
+          "explanation": "Tvoje adresa je jako číslo účtu: klidně ji sdílej, ať ti lidé můžou něco poslat. Tajná je tvoje obnovovací fráze z 12 slov, nikdy ne adresa. ✉️",
+          "options": {
+            "a": "Funguje jako číslo tvého bankovního účtu.",
+            "b": "Je úplně bezpečné ji sdílet s ostatními.",
+            "c": "Je to přísně tajné heslo, které musíš schovávat."
+          }
+        }
+      }
+    }
+  },
+  "send-and-receive": {
+    "kicker": "Cvičné peníze",
+    "title": "Pojďme poslat kouzelné peníze! ✨",
+    "summary": "Udělej svůj první převod s cvičnými mincemi: nulové riziko a nic nemůžeš rozbít.",
+    "outro": "Právě máš za sebou svou první skutečnou transakci na blockchainu, s testovacími mincemi. Není to paráda?!",
+    "steps": {
+      "safe-space": {
+        "title": "Úplně bezpečné místo",
+        "body": [
+          "Dnes uděláš svůj první kryptopřevod! Zhluboka se nadechni: používáme „peníze na hraní“ na cvičné síti jménem Devnet.",
+          "Je to jako letecký simulátor. Riziko je absolutně nulové a nic nemůžeš rozbít."
+        ],
+        "example": "Piloti trénují hodiny v simulátorech, než usednou do skutečného letadla. Devnet je náš simulátor.",
+        "quiz": {
+          "question": "Když v této lekci kliknu na špatné tlačítko, můžu omylem přijít o skutečné peníze.",
+          "explanation": "Nepravda! Všechno tady jsou cvičné peníze bez skutečné hodnoty. Klikej, jak chceš, nic se nemůže pokazit. 🛟"
+        }
+      },
+      "solana-speed": {
+        "title": "Kouzlo rychlosti Solany 🚀",
+        "body": [
+          "Když v pátek pošleš peníze přes klasickou banku, můžou dorazit klidně až v pondělí.",
+          "Na Solaně stiskneš „odeslat“ a kamarádka je má zhruba za vteřinu, kdekoli na světě, nonstop. A poplatek je nepatrný zlomek koruny."
+        ],
+        "example": "Je to rozdíl mezi posláním dopisu a esemesky.",
+        "quiz": {
+          "question": "Proč je posílání krypta na Solaně tak skvělé?",
+          "explanation": "Solana nikdy nezavírá: převody dorazí zhruba za vteřinu, ve dne i v noci, i o víkendu. ⚡",
+          "options": {
+            "a": "Dorazí zhruba za vteřinu, nonstop.",
+            "b": "Funguje jen v běžné pracovní době."
+          }
+        }
+      },
+      "paying-it-forward": {
+        "title": "Pošli to dál 💌",
+        "body": [
+          "Níž je tvoje tréninková peněženka. Je to skutečná peněženka na cvičné síti Solany, vytvořená jen pro tebe v tomhle prohlížeči.",
+          "Nejdřív do ní z kouzelného „faucetu“ natoč trochu testovacích SOL zdarma. Faucet je prostě kohoutek, ze kterého tečou testovací mince zdarma.",
+          "Pak pojďme kousek poslat! Adresa kamarádky je už vyplněná. Stiskni odeslat a daruj 0,1 testovacího SOL.",
+          "Tip do skutečného života: před odesláním si vždy zkontroluj adresu, protože převody na blockchainu nejdou vrátit."
+        ]
+      }
+    }
+  },
+  "see-it-onchain": {
+    "kicker": "Block explorer",
+    "title": "Digitální účtenka",
+    "summary": "Sleduj svou transakci jako zásilku, na veřejném webu, kde si ji může ověřit kdokoli.",
+    "outro": "Teď umíš sledovat své digitální stopy!",
+    "steps": {
+      "tracking-package": {
+        "title": "Sledování digitální zásilky 📦",
+        "body": [
+          "Znáš to, když čekáš na balík z e-shopu a pořád obnovuješ stránku se sledováním zásilky? V kryptu na to máme Block Explorer (prohlížeč bloků).",
+          "Je to veřejný web, který funguje jako celosvětové sledování zásilek. Zadáš adresu peněženky a uvidíš každou transakci, kterou ta adresa kdy udělala!"
+        ],
+        "example": "Oficiální explorer Solany se jmenuje Solana Explorer. Dalšími, na které můžeš narazit, jsou Solscan a SolanaFM.",
+        "quiz": {
+          "question": "Čemu se Block Explorer nejvíc podobá?",
+          "explanation": "Explorer je veřejná kniha účtenek: dohledáš v něm jakoukoli transakci, jako když sleduješ balík. 🔍",
+          "options": {
+            "a": "Webu, kde sleduješ zásilku nebo dohledáváš účtenku.",
+            "b": "Tajné složce na hesla."
+          }
+        }
+      },
+      "your-footprint": {
+        "title": "Tvoje vlastní stopa 👣",
+        "body": [
+          "Protože je blockchain veřejný, může se na tyhle účtenky podívat kdokoli. Ukazují ale jen adresy peněženek, nikdy tvoje skutečné jméno.",
+          "Níž je účtenka testovacích SOL z minulé lekce: kdo je poslal, kdo je přijal, částka, nepatrný poplatek a čas.",
+          "Klepni na „Zobrazit v Solana Exploreru“ a uvidíš úplně stejnou účtenku na veřejném webu, který si může prohlédnout kdokoli na světě."
+        ],
+        "example": "Je to jako výpis z účtu, jenže si ho může dohledat kdokoli a místo jmen ukazuje adresy peněženek.",
+        "quiz": {
+          "question": "Webu, na kterém kontrolujeme účtenky svých transakcí, se říká block ___.",
+          "explanation": "Je to block explorer (prohlížeč bloků): můžeš v něm prozkoumávat bloky veřejného zápisníku. 🧭",
+          "answers": [
+            "explorer",
+            "exploreru",
+            "explorerem",
+            "explorery"
+          ]
+        }
+      }
+    }
+  },
+  "your-first-swap": {
+    "kicker": "Směna",
+    "title": "Tvůj první swap 🔄",
+    "summary": "Vyměň jednu minci za jinou, jako když měníš peníze na letišti, jen s férovým automatem.",
+    "outro": "Máš za sebou svou první decentralizovanou směnu! Otevřený oceán teď oficiálně čeká na tebe.",
+    "steps": {
+      "currency-exchange": {
+        "title": "Digitální směnárna 💱",
+        "body": [
+          "Když cestuješ do jiné země, vyměníš si peníze na letišti, třeba koruny za eura.",
+          "V kryptu se tomu říká swap (směna). Jednoduše vyměníš jeden druh digitální mince (třeba SOL) za jiný (třeba náš speciální cvičný Ocean Token, OCN)."
+        ],
+        "example": "Koruny za eura ve směnárně na letišti = SOL za OCN ve swapu.",
+        "quiz": {
+          "question": "Co v kryptu znamená „swapovat“?",
+          "explanation": "Swap je výměna: jednu minci dáš a jinou dostaneš zpátky, nic se nemaže. 💱",
+          "options": {
+            "a": "Vyměnit jeden druh digitální mince za jiný.",
+            "b": "Navždy smazat své mince."
+          }
+        }
+      },
+      "vending-machine": {
+        "title": "Kouzelný automat 🤖",
+        "body": [
+          "Ve skutečném světě sedí ve směnárně pokladní, který si strhne provizi. V kryptu můžeš použít DEX, decentralizovanou burzu.",
+          "Žádný pokladní tam není! Funguje to jako obří férový digitální automat: vložíš SOL a automat ti sám vydá tokeny. Je to okamžité a funguje to nonstop."
+        ],
+        "example": "Stejně jako automat na nápoje nepotřebuje prodavače, aby ti podal pití, DEX nepotřebuje pokladního, aby ti schválil swap.",
+        "quiz": {
+          "question": "Na schválení kryptoswapu musíš počkat na pokladního.",
+          "explanation": "Nepravda! DEX je automatický, jako automat na nápoje. Žádný pokladní, žádné čekání. 🤖"
+        }
+      },
+      "try-swap": {
+        "title": "Vyzkoušej si to!",
+        "body": [
+          "Pojďme použít náš cvičný automat. Vyměníš 0,5 svého cvičného SOL za 10 Ocean Tokenů (OCN).",
+          "Neboj, pořád jsou to cvičné peníze!"
+        ]
+      }
+    }
+  },
+  "staking": {
+    "kicker": "Staking",
+    "title": "Nech své SOL pracovat 🌱",
+    "summary": "Pomoz udržet síť v bezpečí a získej za to malé poděkování. Mince přitom zůstávají tvoje.",
+    "outro": "Víš, jak funguje staking, a máš ho i vyzkoušený s cvičnými SOL. Tvoje mince teď můžou pomáhat síti, zatímco spíš!",
+    "steps": {
+      "what-is-staking": {
+        "title": "Pomáhat síti a dostat poděkování 🙌",
+        "body": [
+          "Pamatuješ na sdílený veřejný zápisník? Každou novou stránku musí někdo zkontrolovat, než se do něj přidá. Na Solaně se těmto kontrolorům říká validátoři: jsou to počítače po celém světě, které provozují lidé a firmy.",
+          "Staking znamená, že své SOL postavíš za validátora, kterému věříš, jako projev důvěry. Čím víc SOL za validátorem stojí, tím větší slovo má při kontrole zápisníku.",
+          "Jako poděkování za to, že pomáháš udržet síť poctivou, dostáváš malé odměny v SOL, vyplácené zhruba každé dva dny."
+        ],
+        "example": "Trochu jako spořicí účet, který ti připisuje malý úrok. Rozdíl je v tom, že odměnu vyplácí síť za pomoc s její bezpečností a její výše se může časem měnit.",
+        "quiz": {
+          "question": "Co děláš, když stakuješ své SOL?",
+          "explanation": "Staking je projev důvěry: tvoje SOL podporují validátora, který kontroluje zápisník, a síť ti poděkuje malými odměnami. 🌱",
+          "options": {
+            "a": "Dáváš své SOL navždy cizímu člověku.",
+            "b": "Podporuješ validátora, který pomáhá provozovat síť, a dostáváš za to malé odměny.",
+            "c": "Měníš své SOL za úplně novou minci."
+          }
+        }
+      },
+      "still-yours": {
+        "title": "Tvoje SOL zůstávají tvoje 🔐",
+        "body": [
+          "A teď ta uklidňující část: validátor tvoje mince nikdy nedostane. Stakované SOL zůstávají ve tvé vlastní peněžence, pod tvou kontrolou. Validátor je nemůže utratit ani přesunout.",
+          "Kdykoli si to můžeš rozmyslet a staking zrušit (unstake). Jen to není okamžité: Solana funguje v kolech zvaných epochy, každá trvá zhruba dva dny, takže odemknutí zabere pár dní.",
+          "Odměny nejsou příslib bohatství. Jsou malé, časem se mění a vyplatí se vybrat validátora, který je spolehlivý a pořád online."
+        ],
+        "example": "Je to jako podpořit kandidáta ve volbách v klubu: dostane tvůj hlas, ne tvou peněženku.",
+        "quiz": {
+          "question": "Jakmile stakuješ, validátor může tvoje SOL utratit, jak se mu zlíbí.",
+          "explanation": "Nepravda! Stakované SOL nikdy neopustí tvou kontrolu. Validátor dostane jen tvou důvěru, nikdy tvoje mince. 🔐"
+        }
+      },
+      "liquid-staking": {
+        "title": "Liquid staking: účtenka, kterou můžeš použít 🧾",
+        "body": [
+          "Čekat pár dní na zrušení stakingu může působit pomalu. Proto existuje liquid staking (likvidní staking).",
+          "U služby pro liquid staking, jako je Marinade, svoje SOL stakuješ a zpátky dostaneš token-účtenku jménem mSOL. Tvoje SOL dál vydělávají odměny a účtenku můžeš kdykoli vyměnit zpátky.",
+          "Vyzkoušejme si to s cvičnými SOL. Nic skutečného se nepohne: je to bezpečná simulace ve tvé tréninkové peněžence."
+        ],
+        "example": "Jako lístek ze šatny: kabát je v bezpečí v šatně a lístek v kapse dokazuje, že je tvůj.",
+        "quiz": {
+          "question": "Která tvrzení o stakingu na Solaně jsou pravdivá?",
+          "explanation": "Tvoje SOL zůstávají tvoje, odemknutí trvá pár dní a liquid staking ti dá účtenku jako mSOL. Odměny jsou malé a mění se, takže to nikdy není příslib bohatství. 🧾",
+          "options": {
+            "a": "Stakované SOL ti pořád patří.",
+            "b": "Zrušení stakingu obvykle trvá pár dní.",
+            "c": "Odměny ze stakingu ti zaručeně přinesou bohatství.",
+            "d": "Liquid staking ti dá token-účtenku, třeba mSOL."
+          }
+        }
+      }
+    }
+  },
+  "nfts": {
+    "kicker": "NFT",
+    "title": "Jediné svého druhu 🖼️",
+    "summary": "Proč jsou některé digitální věci jedinečné a co doopravdy znamená nějakou vlastnit.",
+    "outro": "Teď víš, co NFT doopravdy je. Malé prozrazení: na konci trasy na tebe čeká jedinečný mořský kamarád!",
+    "steps": {
+      "one-of-a-kind": {
+        "title": "Zaměnitelné vs. jedinečné 🎟️",
+        "body": [
+          "Stokoruna je stejná jako každá jiná stokoruna. Když si ji vyměníš s kamarádkou, nikdo nic neztratí. Takovým věcem se říká zaměnitelné (anglicky fungible): každý kus je stejný. Zaměnitelné jsou i SOL.",
+          "Teď si představ lístek na koncert na sedadlo 12B nebo babiččin obraz. Existuje jen jeden, takže ho nemůžeš jen tak vyměnit za jiný. To je nezaměnitelné (non-fungible).",
+          "NFT neboli nezaměnitelný token (non-fungible token) je jedinečná digitální věc. Blockchain vede veřejný záznam o tom, kdo ji vlastní, takže si to může ověřit kdokoli."
+        ],
+        "example": "Na kávu ti poslouží kterákoli stokoruna. Ale palubní lístek na sedadlo 14A? Do letadla tě pustí jen ten jeden.",
+        "quiz": {
+          "question": "Přiřaď ke každému slovu jeho význam.",
+          "explanation": "Zaměnitelné = všechno stejné, nezaměnitelné = jediné svého druhu a NFT je jedinečná digitální věc, jejíhož vlastníka si může ověřit kdokoli. 🎟️",
+          "pairs": [
+            {
+              "left": "Zaměnitelné",
+              "right": "Každý kus je stejný, jako mince"
+            },
+            {
+              "left": "Nezaměnitelné",
+              "right": "Jediné svého druhu, jako lístek na sedadlo 12B"
+            },
+            {
+              "left": "NFT",
+              "right": "Jedinečná digitální věc s veřejným záznamem o vlastníkovi"
+            }
+          ]
+        }
+      },
+      "not-just-pictures": {
+        "title": "Nejen obrázky 🎮",
+        "body": [
+          "Možná znáš NFT jako drahé kreslené obrázky. To je ale jen jedno z mnoha využití. NFT může být cokoli, co má být jedinečné a prokazatelně tvoje.",
+          "Vstupenky na akce, které nejde padělat, předmět ve videohře, který opravdu vlastníš, členská karta do klubu, certifikát o dokončení kurzu nebo kousek digitálního umění.",
+          "Na Solaně je vytváření NFT velmi levné. Existuje dokonce „komprimovaný“ druh, díky kterému může hra nebo festival rozdat tisíce NFT za pár korun."
+        ],
+        "example": "Představ si permanentku do posilovny přímo v aplikaci peněženky: dokazuje tvoje členství a nikdo ji nemůže zkopírovat.",
+        "quiz": {
+          "question": "Co z toho by mohlo být NFT?",
+          "explanation": "Vstupenky, herní předměty a členství jsou jedinečné, takže se hodí perfektně. 1 SOL je stejný jako každý jiný SOL, je tedy zaměnitelný, ne NFT. 🎮",
+          "options": {
+            "a": "Lístek na koncert na jedno konkrétní sedadlo",
+            "b": "Meč, který vlastníš ve videohře",
+            "c": "Členská karta do čtenářského klubu",
+            "d": "1 SOL, úplně stejný jako každý jiný SOL"
+          }
+        }
+      },
+      "what-you-own": {
+        "title": "Co doopravdy vlastníš 🔑",
+        "body": [
+          "Pro mnoho lidí je to překvapení: když vlastníš NFT uměleckého díla, obvykle ti to nedává autorská práva. Vlastníš ten jedinečný token, ne právo tisknout obrázek na trička.",
+          "Screenshot obrázku si může udělat kdokoli. Co ale nikdo nezkopíruje, je veřejný záznam, že vlastníkem jsi ty.",
+          "Samotný obrázek bývá často uložený na jiné službě a Solana eviduje, kdo ho vlastní. Na konci téhle trasy dostaneš vlastní NFT: mořskou želvu Pebble, výukový odznak bez peněžní hodnoty, jen důkaz tvé plavby."
+        ],
+        "example": "Když si od umělkyně koupíš podepsaný tisk, můžeš si ho pověsit na zeď, ale autorská práva k dílu má pořád ona.",
+        "quiz": {
+          "question": "Koupí NFT uměleckého díla automaticky získáš i autorská práva k němu.",
+          "explanation": "Nepravda! Vlastníš jedinečný token a jeho veřejný záznam o vlastníkovi. Autorská práva obvykle zůstávají autorovi. 🔑"
+        }
+      }
+    }
+  },
+  "memecoins": {
+    "kicker": "Memecoiny",
+    "title": "Memecoiny: vtipy s cenovkou 🐶",
+    "summary": "Odkud se berou ty vtipné psí mince a proč jejich ceny jezdí jako na horské dráze.",
+    "outro": "Teď poznáš hype na kilometr daleko. Klidná a zvídavá hlava je v kryptu tvůj nejlepší nástroj!",
+    "steps": {
+      "born-from-a-joke": {
+        "title": "Zrozeno z vtipu 😂",
+        "body": [
+          "Memecoin je mince, která vznikla jako internetový vtip nebo legrační obrázek. Ten nejslavnější, Dogecoin, vznikl v roce 2013 jako vtip na mem se psem plemene šiba inu.",
+          "Solana má své slavné memecoiny taky, třeba BONK, dalšího psa. Spousta memecoinů má roztomilá zvířátka, interní vtípky a hodně nadšené fanoušky na internetu.",
+          "A to hlavní: za většinou memecoinů nestojí žádný produkt ani firma. Jejich cena závisí hlavně na pozornosti a hypu: kolik lidí o nich zrovna mluví."
+        ],
+        "example": "Jako vtipná nálepka, kterou si celý týden přeposílá celá vaše skupina v chatu. Všichni ji milují, dokud nepřijde další.",
+        "quiz": {
+          "question": "Co nejvíc hýbe cenou memecoinu?",
+          "explanation": "Za většinou memecoinů nestojí žádný byznys, takže se jejich cena hýbe podle pozornosti a hypu. Když rozruch opadne, cena obvykle taky. 😂",
+          "options": {
+            "a": "Zisky z továrny nebo obchodu",
+            "b": "Hype a pozornost na internetu",
+            "c": "Záruka od vlády"
+          }
+        }
+      },
+      "rollercoaster": {
+        "title": "Jízda na horské dráze 🎢",
+        "body": [
+          "Dnes může kdokoli vytvořit novou minci za pár minut, takže každý den vznikají tisíce memecoinů. Většina z nich rychle ztratí skoro celou svou hodnotu.",
+          "Ceny můžou během hodiny hodně vyskočit a stejně rychle spadnout. Často ti, kdo nakoupili brzy, prodávají těm, kdo přišli pozdě, nadšení z hypu. Tomu se říká pump and dump.",
+          "Někdy je to ještě horší: tvůrci vyberou od lidí peníze a prostě zmizí. Tomu se říká rug pull, jako když se všem podtrhne koberec pod nohama."
+        ],
+        "example": "Představ si večírek, kde pořadatelé prodají spoustu lístků a pak s penězi zmizí dřív, než vůbec začne hrát hudba.",
+        "quiz": {
+          "question": "Přiřaď ke každému pojmu, co znamená.",
+          "explanation": "Pump and dump nafoukne cenu a pak se prodává, rug pull znamená, že tvůrci utečou s penězi, a FOMO je ten panický pocit, kvůli kterému lidé naskakují moc rychle. 🎢",
+          "pairs": [
+            {
+              "left": "Pump and dump",
+              "right": "Hype vyžene cenu nahoru, pak raní kupci prodají"
+            },
+            {
+              "left": "Rug pull",
+              "right": "Tvůrci zmizí s penězi všech"
+            },
+            {
+              "left": "FOMO",
+              "right": "Strach, že o něco přijdeš, který uspěchá rozhodnutí"
+            }
+          ]
+        }
+      },
+      "look-before-you-leap": {
+        "title": "Dvakrát měř, jednou řež 🧭",
+        "body": [
+          "Nejsme tu od toho, abychom ti říkali, co kupovat a co ne. Jsme tu, abychom ti pomohli přemýšlet s chladnou hlavou.",
+          "Když narazíš na nějaký memecoin, polož si pár otázek: Jak dlouho existuje? Drží velký podíl jen pár peněženek? Slibuje někdo, že „vyroste 100×“? A pamatuj, že někteří influenceři dostávají za propagaci mincí zaplaceno.",
+          "A zlaté pravidlo všeho riskantního: používej jen peníze, o které můžeš úplně přijít, aniž by ti to zkomplikovalo život."
+        ],
+        "example": "Je to jako večer v kasinu s přáteli: dívat se je zábava, ale bereš si jen hotovost, se kterou se klidně navždy rozloučíš.",
+        "quiz": {
+          "question": "Když memecoin tento týden vyrostl o 1000 %, příští týden určitě poroste dál.",
+          "explanation": "Nepravda! Minulé skoky nic neříkají o budoucnosti a memecoiny umí spadnout stejně rychle, jako vyletěly. Zachovej klid a zvědavost. 🧭"
+        }
+      }
+    }
+  },
+  "spot-the-scam": {
+    "kicker": "Bezpečnost",
+    "title": "Odhal podvod 🛟",
+    "summary": "Triky, které podvodníci používají, a jednoduché návyky, které udrží tvou peněženku v bezpečí.",
+    "outro": "Teď umíš podvody prokouknout! Tyhle návyky tě ochrání mnohem líp než jakýkoli chytrý nástroj. Tvůj mořský kamarád čeká v cíli.",
+    "steps": {
+      "golden-rule": {
+        "title": "Zlaté pravidlo: tvých 12 slov 🤫",
+        "body": [
+          "Pamatuješ na obnovovací frázi z 12 slov u skutečné peněženky? Je to hlavní klíč ke všemu, co v ní je. Kdo zná ta slova, může ti vzít všechny mince a nikdo to nevrátí.",
+          "Takže pravidlo bez výjimek: nikdy je nesdílej. Ani s podporou, ani s kamarádkou, ani s webem, ani s aplikací, dokonce ani s AI.",
+          "Skutečná podpora ti nikdy nenapíše první a nikdy po tobě tvoje slova nechce. Napiš si je na papír a schovej na bezpečném místě offline, nikdy ne do fotky nebo poznámky v telefonu."
+        ],
+        "example": "Je to jako PIN k platební kartě, klíče od bytu a pas dohromady. To by nikdo nesvěřil cizímu člověku, který mu jen tak napíše.",
+        "quiz": {
+          "question": "Ozve se ti „Phantom Support“: „S tvou peněženkou je problém. Pošli nám obnovovací frázi, ať ho můžeme opravit.“ Co uděláš?",
+          "explanation": "Zablokovat a jít dál. Žádná skutečná firma po tobě nikdy nebude chtít obnovovací frázi a zloději pomůže i její polovina. 🤫",
+          "options": {
+            "a": "Rychle ji pošlu, je to přece oficiální podpora.",
+            "b": "Pošlu jen prvních 6 slov, pro jistotu.",
+            "c": "Budu je ignorovat a zablokuju je. Skutečná podpora o tvoje slova nikdy nežádá."
+          }
+        }
+      },
+      "too-good-to-be-true": {
+        "title": "Příliš krásné, než aby to byla pravda 🎣",
+        "body": [
+          "Podvodníci milují velké sliby: „Pošli 1 SOL a dostaneš 2 zpátky!“, „Vyhráváš airdrop zdarma!“, „Garantovaný zisk!“ Když to zní příliš dobře, než aby to byla pravda, tak to pravda není.",
+          "Taky milují spěch: „Zbývá jen 10 minut!“ Celý trik je v tom tě uspěchat, ať nemáš čas se zastavit a přemýšlet.",
+          "Pozor i na dárky z čista jasna: náhodné tokeny nebo NFT, které se najednou objeví ve tvé peněžence s odkazem „vyzvedni si výhru“. Neklikej. Prostě je ignoruj nebo skryj."
+        ],
+        "example": "Jako e-mail, že máš vyhrané auto a stačí jen předem zaplatit poštovné.",
+        "quiz": {
+          "question": "Co z toho jsou varovné signály?",
+          "explanation": "Sliby zdvojnásobení, časový tlak a „výhry“ z čista jasna jsou klasické podvody. Potvrdit převod, který spouštíš ty, je úplně normální. 🎣",
+          "options": {
+            "a": "„Pošli 1 SOL a my ti pošleme 2 zpátky!“",
+            "b": "„Pospěš si, nabídka končí za 10 minut!“",
+            "c": "Ve tvé peněžence se objeví náhodný token s odkazem na vyzvednutí výhry.",
+            "d": "Peněženka tě žádá o potvrzení převodu, který právě spouštíš ty."
+          }
+        }
+      },
+      "lookalikes": {
+        "title": "Falešné weby a záludná schválení ✍️",
+        "body": [
+          "Některé podvodné weby jsou dokonalé kopie těch skutečných, s adresou skoro stejnou, třeba „phant0m“ s nulou. Vždycky kontroluj adresní řádek a skutečné weby si ulož do záložek.",
+          "Když web chce, aby tvoje peněženka něco schválila, peněženka nejdřív ukáže vyskakovací okno. Přečti si ho! Záludné schválení, kterému se říká wallet drainer, ti může jedním klepnutím vyprázdnit peněženku.",
+          "Pokud to nespouštíš ty, nebo nerozumíš, co to dělá, stiskni Odmítnout. A když zkoušíš novou aplikaci, začni s malinkou částkou."
+        ],
+        "example": "Je to jako zkontrolovat odesílatele v SMS o zásilce, než na odkaz klikneš: „p0sta-zasilky.cz“ není tvoje pošta.",
+        "quiz": {
+          "question": "Přiřaď ke každému podvodu, jak funguje.",
+          "explanation": "Phishingové weby kopírují ty skutečné, draineři se schovávají ve schváleních a falešná podpora se ozve první. Když znáš jejich jména, snadno je poznáš. ✍️",
+          "pairs": [
+            {
+              "left": "Phishingový web",
+              "right": "Falešná kopie skutečného webu"
+            },
+            {
+              "left": "Wallet drainer",
+              "right": "Záludné schválení, které vyprázdní peněženku"
+            },
+            {
+              "left": "Falešná podpora",
+              "right": "„Pomocník“, který ti napíše první"
+            }
+          ]
+        }
+      },
+      "safety-checklist": {
+        "title": "Tvůj bezpečnostní checklist ✅",
+        "body": [
+          "Shrňme to do pár návyků: drž svých 12 slov offline a v tajnosti. Kontroluj adresy webů. Čti každé vyskakovací okno peněženky. Ignoruj dárky z čista jasna. S novými aplikacemi začínej v malém.",
+          "A když máš pochybnosti, zpomal. Skutečná příležitost tu bude i zítra. Podvod naopak tlačí na rozhodnutí hned teď."
+        ],
+        "example": "Stejně jako zamykání dveří: po čase se z těchhle návyků stane automatika.",
+        "quiz": {
+          "question": "Když web vypadá profesionálně, je bezpečné schválit cokoli, o co peněženka požádá.",
+          "explanation": "Nepravda! Podvodné weby můžou vypadat nádherně. Zkontroluj adresu, přečti vyskakovací okno a odmítni všechno, co nespouštíš ty nebo čemu nerozumíš. ✅"
+        }
+      }
+    }
+  }
+}

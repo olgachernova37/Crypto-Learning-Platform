@@ -36,7 +36,7 @@ export const shell = {
     /** Tooltip on the flame (streak) chip. */
     streakTitle: "Days in a row",
     /** Screen-reader only, read right after the streak number (note the leading space). */
-    streakSr: (days: number) => (days === 1 ? " day streak" : " days streak"),
+    streakSr: (days: number): string => (days === 1 ? " day streak" : " days streak"),
     /** Tooltip on the XP chip. */
     xpTitle: "Experience points",
     /** Unit shown after the XP number (very short). */

@@ -9,6 +9,8 @@
 
 import "server-only";
 import { lessons } from "@/content/lessons";
+import { localizeLesson } from "@/content/i18n";
+import { DEFAULT_LOCALE, LOCALE_ENGLISH_NAMES, isLocale, type Locale } from "@/i18n/locales";
 import type { Lesson, LessonStep } from "@/content/types";
 import { rightAnswerText } from "@/components/quiz/logic";
 
@@ -46,6 +48,67 @@ type Body = {
   learnerAnswer?: unknown; // only after the quiz was checked
   wasCorrect?: unknown;
   history?: unknown;
+  locale?: unknown; // "en" | "uk" | "cs" | "ru": the guide answers in this language
+};
+
+// The few lines this route writes itself (offline hints, notes, errors), per language.
+const COPY: Record<Locale, {
+  generic: string; missed: string; nudge: (title: string) => string; thinkLead: string; pictureLead: string; onQuiz: string;
+  notConnected: string; resting: string; noJson: string; empty: string; tooMany: string; t: string; f: string;
+}> = {
+  en: {
+    generic: "Great question! Try reading the step once more, slowly. The answer is usually hiding in one of the short paragraphs. And remember: everything here is practice money on devnet, so there's nothing to lose by trying.",
+    missed: "No worries, this one trips lots of people up.",
+    nudge: (t) => `Here's a little nudge about "${t}":`,
+    thinkLead: "Think of it this way:",
+    pictureLead: "Picture it like this:",
+    onQuiz: "Read the question again with that picture in mind. I believe you've got this!",
+    notConnected: "The AI guide isn't connected yet, so this hint comes from the lesson notes.",
+    resting: "The AI guide is resting right now, so this hint comes from the lesson notes.",
+    noJson: "Please send your question as JSON.",
+    empty: "Type a question first, then I can help.",
+    tooMany: "Whoa, lots of questions! Let's take a short breath. Try again in a minute.",
+    t: "True", f: "False",
+  },
+  uk: {
+    generic: "Чудове питання! Спробуй ще раз повільно перечитати цей крок. Відповідь зазвичай ховається в одному з коротких абзаців. І пам'ятай: тут усе на тренувальних монетах у devnet, тож пробувати зовсім не страшно.",
+    missed: "Не хвилюйся, на цьому питанні спотикаються дуже багато людей.",
+    nudge: (t) => `Ось маленька підказка до кроку «${t}»:`,
+    thinkLead: "", pictureLead: "",
+    onQuiz: "Перечитай питання ще раз, тримаючи цей образ у голові. Я вірю, що в тебе вийде!",
+    notConnected: "AI-помічник ще не підключений, тому ця підказка з нотаток уроку.",
+    resting: "AI-помічник зараз відпочиває, тому ця підказка з нотаток уроку.",
+    noJson: "Надішли питання у форматі JSON.",
+    empty: "Спершу напиши питання, і я допоможу.",
+    tooMany: "Ого, скільки питань! Давай трохи перепочинемо. Спробуй ще раз за хвилину.",
+    t: "Правда", f: "Неправда",
+  },
+  cs: {
+    generic: "Skvělá otázka! Zkus si ten krok přečíst ještě jednou, pomalu. Odpověď se obvykle skrývá v jednom z krátkých odstavců. A pamatuj: všechno tady jsou cvičné mince na devnetu, takže zkoušením nic neztratíš.",
+    missed: "Nic se neděje, na téhle otázce zakopne spousta lidí.",
+    nudge: (t) => `Tady je malá nápověda ke kroku „${t}“:`,
+    thinkLead: "", pictureLead: "",
+    onQuiz: "Přečti si otázku znovu a mysli přitom na tenhle obrázek. Věřím, že to zvládneš!",
+    notConnected: "AI průvodce ještě není připojený, takže tahle nápověda je z poznámek k lekci.",
+    resting: "AI průvodce teď odpočívá, takže tahle nápověda je z poznámek k lekci.",
+    noJson: "Pošli prosím otázku ve formátu JSON.",
+    empty: "Nejdřív napiš otázku, pak ti pomůžu.",
+    tooMany: "Páni, to je otázek! Dáme si krátkou pauzu. Zkus to znovu za minutu.",
+    t: "Pravda", f: "Nepravda",
+  },
+  ru: {
+    generic: "Отличный вопрос! Попробуй ещё раз медленно перечитать этот шаг. Ответ обычно прячется в одном из коротких абзацев. И помни: здесь всё на тренировочных монетах в devnet, так что пробовать совсем не страшно.",
+    missed: "Не переживай, на этом вопросе спотыкаются очень многие.",
+    nudge: (t) => `Вот маленькая подсказка к шагу «${t}»:`,
+    thinkLead: "", pictureLead: "",
+    onQuiz: "Перечитай вопрос ещё раз, держа этот образ в голове. Я верю, у тебя получится!",
+    notConnected: "AI-помощник ещё не подключён, поэтому эта подсказка из заметок к уроку.",
+    resting: "AI-помощник сейчас отдыхает, поэтому эта подсказка из заметок к уроку.",
+    noJson: "Отправь вопрос в формате JSON.",
+    empty: "Сначала напиши вопрос, и я помогу.",
+    tooMany: "Ого, сколько вопросов! Давай немного передохнём. Попробуй ещё раз через минуту.",
+    t: "Правда", f: "Неправда",
+  },
 };
 
 const str = (v: unknown, max = 300) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -63,23 +126,22 @@ function limited(ip: string): boolean {
 
 const firstSentence = (p: string) => p.match(/^.+?[.!?](\s|$)/)?.[0].trim() ?? p;
 // "Think of how a photo travels…" reads fine on its own; anything else gets a gentle lead-in
+// (translated examples already read as a picture, so other languages get no lead-in)
 const picture = (ex: string, lead: string) =>
-  /^(think|imagine|picture)\b/i.test(ex) ? ex : `${lead} ${ex.charAt(0).toLowerCase()}${ex.slice(1)}`;
+  !lead || /^(think|imagine|picture)\b/i.test(ex) ? ex : `${lead} ${ex.charAt(0).toLowerCase()}${ex.slice(1)}`;
 
-function cannedHint(step: LessonStep | undefined, onQuiz: boolean, missed: boolean): string {
-  if (!step) {
-    return "Great question! Try reading the step once more, slowly. The answer is usually hiding in one of the short paragraphs. And remember: everything here is practice money on devnet, so there's nothing to lose by trying.";
-  }
+function cannedHint(step: LessonStep | undefined, onQuiz: boolean, missed: boolean, c: (typeof COPY)[Locale]): string {
+  if (!step) return c.generic;
   if (missed && step.quiz) {
-    return `No worries, this one trips lots of people up. ${step.quiz.explanation}${step.example ? `\n\n${picture(step.example, "Picture it like this:")}` : ""}`;
+    return `${c.missed} ${step.quiz.explanation}${step.example ? `\n\n${picture(step.example, c.pictureLead)}` : ""}`;
   }
-  const parts = [`Here's a little nudge about "${step.title}": ${step.body.map(firstSentence).join(" ")}`];
-  if (step.example) parts.push(picture(step.example, "Think of it this way:"));
-  if (onQuiz) parts.push("Read the question again with that picture in mind. I believe you've got this!");
+  const parts = [`${c.nudge(step.title)} ${step.body.map(firstSentence).join(" ")}`];
+  if (step.example) parts.push(picture(step.example, c.thinkLead));
+  if (onQuiz) parts.push(c.onQuiz);
   return parts.join("\n\n");
 }
 
-function lessonContext(lesson: Lesson | undefined, step: LessonStep | undefined, b: Body): string {
+function lessonContext(lesson: Lesson | undefined, step: LessonStep | undefined, b: Body, c: (typeof COPY)[Locale]): string {
   const onQuiz = b.phase === "quiz" && !!step?.quiz;
   const learnerAnswer = str(b.learnerAnswer, 400);
   const answered = onQuiz && !!learnerAnswer;
@@ -94,7 +156,7 @@ function lessonContext(lesson: Lesson | undefined, step: LessonStep | undefined,
     if (answered) {
       lines.push(
         `They answered: ${learnerAnswer} (${b.wasCorrect === true ? "correct" : "not correct"}).`,
-        `The right answer, already shown to them: ${rightAnswerText(step.quiz)}`,
+        `The right answer, already shown to them: ${rightAnswerText(step.quiz, { true: c.t, false: c.f })}`,
         `The lesson's explanation: ${step.quiz.explanation}`,
       );
     } else {
@@ -117,29 +179,32 @@ export async function POST(request: Request) {
   try {
     body = (await request.json()) as Body;
   } catch {
-    return Response.json({ error: "Please send your question as JSON." }, { status: 400 });
+    return Response.json({ error: COPY.en.noJson }, { status: 400 });
   }
+  const locale: Locale = isLocale(body.locale) ? body.locale : DEFAULT_LOCALE;
+  const c = COPY[locale];
 
   const question = str(body.question, MAX_QUESTION);
-  if (!question) return Response.json({ error: "Type a question first, then I can help." }, { status: 400 });
+  if (!question) return Response.json({ error: c.empty }, { status: 400 });
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "local";
   if (limited(ip)) {
     return Response.json(
-      { error: "Whoa, lots of questions! Let's take a short breath. Try again in a minute." },
+      { error: c.tooMany },
       { status: 429 },
     );
   }
 
-  const lesson = lessons.find((l) => l.id === str(body.lessonId, 80));
+  const found = lessons.find((l) => l.id === str(body.lessonId, 80));
+  const lesson = found && localizeLesson(found, locale);
   const step = lesson?.steps.find((s) => s.id === str(body.stepId, 80));
   const onQuiz = body.phase === "quiz";
   const missed = onQuiz && !!str(body.learnerAnswer) && body.wasCorrect === false;
 
-  const fallback = (note: string) => Response.json({ answer: cannedHint(step, onQuiz, missed), source: "fallback", note });
+  const fallback = (note: string) => Response.json({ answer: cannedHint(step, onQuiz, missed, c), source: "fallback", note });
 
   const key = process.env.GEMINI_API_KEY;
-  if (!key) return fallback("The AI guide isn't connected yet, so this hint comes from the lesson notes.");
+  if (!key) return fallback(c.notConnected);
 
   const model = process.env.GEMINI_MODEL?.trim() || DEFAULT_MODEL;
   const turns = history(body.history);
@@ -147,7 +212,11 @@ export async function POST(request: Request) {
     ...turns.map((t) => ({ role: t.from === "me" ? "user" : "model", parts: [{ text: t.text }] })),
     {
       role: "user",
-      parts: [{ text: `[Where the learner is right now]\n${lessonContext(lesson, step, body)}\n\n[Learner's question]\n${question}` }],
+      parts: [
+        {
+          text: `[Where the learner is right now]\n${lessonContext(lesson, step, body, c)}\n\n[Learner's question]\n${question}\n\n[Reply in ${LOCALE_ENGLISH_NAMES[locale]}.]`,
+        },
+      ],
     },
   ];
 
@@ -158,7 +227,7 @@ export async function POST(request: Request) {
         method: "POST",
         headers: { "content-type": "application/json", "x-goog-api-key": key },
         body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM }] },
+          systemInstruction: { parts: [{ text: `${SYSTEM}\n\nLanguage: the learner reads the app in ${LOCALE_ENGLISH_NAMES[locale]}. Always answer in ${LOCALE_ENGLISH_NAMES[locale]}, in simple everyday words, using the informal "you". Keep brand names (Solana, Phantom, SOL) as they are.` }] },
           contents,
           generationConfig: { temperature: 0.6, maxOutputTokens: 1024 },
         }),
@@ -179,6 +248,6 @@ export async function POST(request: Request) {
     return Response.json({ answer, source: "ai" });
   } catch (err) {
     console.error("[api/ai]", err instanceof Error ? err.message : err);
-    return fallback("The AI guide is resting right now, so this hint comes from the lesson notes.");
+    return fallback(c.resting);
   }
 }

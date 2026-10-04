@@ -8,7 +8,10 @@ Crypto learning web platform for complete beginners (Duolingo + SoloLearn style)
 
 - **Devnet only.** Never touch mainnet, never ask for or handle private keys or seed phrases.
 - **Audience is non-developers.** No code is taught. Lesson text is warm, simple, friend-to-friend, with real-life examples, no jargon.
-- **UI language: English** (Ukrainian may come later — keep strings easy to extract).
+- **Languages: English (source), Ukrainian, Czech, Russian.** Never hard-code user-visible text:
+  - UI strings → `src/i18n/ui/en/<area>.ts`, read with `useT()`; then add the same key to `src/i18n/ui/{uk,cs,ru}.ts` (counts = functions with plural rules). Check: `npx tsx scripts/i18n-ui.mts`.
+  - Lesson text → `src/content/lessons/*.ts` (English, structure + answers) and `src/content/i18n/{uk,cs,ru}.json` (text only, keyed by lesson/step/option id). Show lessons via `useLessons()` / `useLocalizedLesson()`. Check: `npx tsx scripts/i18n-lessons.mts`.
+  - Language switcher in the top bar (saved in localStorage, first visit = browser language). The AI guide answers in the chosen language.
 - **Mobile-first, responsive.** Every screen must work on a phone; bottom nav on mobile.
 - **No hearts/lives, no leaderboard.** Gamification = streak + XP + NFT animal reward.
 - **Wrong answer → show the correct one with an explanation right away** (no "try again" loop).
