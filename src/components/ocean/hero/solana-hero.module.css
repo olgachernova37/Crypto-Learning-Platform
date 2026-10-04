@@ -68,7 +68,8 @@
   min-height: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 96px 32px 40px;
+  /* sized by the screen height too, so the whole landing fits without scrolling */
+  padding: clamp(72px, 12vh, 96px) 32px clamp(16px, 4vh, 40px);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   align-items: center;
@@ -110,13 +111,13 @@
 }
 .titleLead {
   display: block;
-  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  font-size: clamp(1.6rem, min(3.4vw, 5.2vh), 2.9rem);
   font-weight: 800;
   color: #e6f0f7;
 }
 .titleWorld {
   display: block;
-  font-size: clamp(3.6rem, 8.2vw, 6.6rem);
+  font-size: clamp(3rem, min(8.2vw, 12vh), 6.6rem);
   background: linear-gradient(95deg, #b9a2ff 0%, #7ee0f0 48%, #8ff0c4 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -132,7 +133,7 @@
   max-width: 30rem;
 }
 .ctaRow {
-  margin-top: 30px;
+  margin-top: clamp(16px, 3.6vh, 30px);
 }
 .cta {
   display: inline-flex;
@@ -201,7 +202,7 @@
 
 /* route of topics, like stops on the lesson map */
 .route {
-  margin-top: 34px;
+  margin-top: clamp(14px, 3.6vh, 34px);
 }
 .routeLabel {
   margin: 0 0 10px;
@@ -236,7 +237,7 @@
 /* ---------- the world ---------- */
 .world {
   position: relative;
-  width: min(100%, 620px);
+  width: min(100%, 620px, 76vh);
   aspect-ratio: 1;
   margin-left: auto;
 }
@@ -391,7 +392,7 @@
 }
 
 /* ---------- tablet ---------- */
-@media (max-width: 1024px) {
+@media (max-width: 820px) {
   .layout {
     grid-template-columns: 1fr;
     padding-top: 88px;
@@ -400,7 +401,7 @@
   .visual {
     grid-row: 1;
     grid-column: 1;
-    max-width: 520px;
+    max-width: min(520px, 36vh);
     width: 100%;
     margin: 0 auto -40px;
   }
@@ -432,7 +433,7 @@
     padding: 72px 18px 32px;
   }
   .visual {
-    max-width: 330px;
+    max-width: min(330px, 34vh);
     margin-bottom: -28px;
   }
   .tag {
@@ -474,7 +475,7 @@
     padding-top: 60px;
   }
   .visual {
-    max-width: 230px;
+    max-width: min(230px, 30vh);
     margin-bottom: -18px;
   }
   .tag {
@@ -510,6 +511,23 @@
   }
   .note {
     margin-top: 10px;
+  }
+}
+
+/* phones and tablets: the topic chips only when there is room for them */
+@media (max-width: 820px) and (max-height: 1060px) {
+  .route {
+    display: none;
+  }
+}
+
+/* short laptop screens (125–150% display scaling): drop the topic chips, keep everything else in view */
+@media (min-width: 821px) and (max-height: 700px) {
+  .route {
+    display: none;
+  }
+  .lede {
+    margin-top: 12px;
   }
 }
 

@@ -15,7 +15,8 @@ import s from "./solana-hero.module.css";
 
 // fixed star field (deterministic, so server and client render the same)
 const STARS = Array.from({ length: 70 }, (_, i) => {
-  const f = (n: number) => n - Math.floor(n);
+  // rounded: Math.sin can differ in the last digits between server and browser
+  const f = (n: number) => Math.round((n - Math.floor(n)) * 1000) / 1000;
   return {
     x: f(Math.sin(i * 127.1) * 43758.5453) * 100,
     y: f(Math.sin(i * 311.7) * 12543.1234) * 100,
@@ -58,7 +59,7 @@ export function SolanaHero() {
           <span
             key={i}
             className={s.star}
-            style={{ left: `${st.x}%`, top: `${st.y}%`, width: st.r * 2, height: st.r * 2, animationDelay: `${st.d}s` }}
+            style={{ left: `${st.x.toFixed(1)}%`, top: `${st.y.toFixed(1)}%`, width: `${(st.r * 2).toFixed(1)}px`, height: `${(st.r * 2).toFixed(1)}px`, animationDelay: `${st.d.toFixed(2)}s` }}
           />
         ))}
         {Array.from({ length: 14 }, (_, i) => (
