@@ -354,6 +354,8 @@ export function Journey() {
       onPointerCancel={() => (drag.current = null)}
     >
       <h1 className="sr-only">Your route: pick a lesson</h1>
+      {/* arrival: continue the dive from the home intro, fading out of the same deep blue */}
+      <div aria-hidden className={`pointer-events-none fixed inset-0 z-50 ${styles.arrive}`} />
 
       {/* ---- the sea & the world ---- */}
       <div className={`absolute inset-0 ${styles.worldIn}`}>

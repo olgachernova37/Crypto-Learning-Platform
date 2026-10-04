@@ -22,7 +22,11 @@ function Logo({ tone }: { tone: "light" | "dark" }) {
       }`}
       aria-label="Crypto Voyage — home"
     >
-      <WaveLogo size={28} className={tone === "dark" ? "text-light-sky" : "text-ocean-teal"} />
+      <WaveLogo
+        size={28}
+        className={tone === "dark" ? "text-light-sky" : "text-ocean-teal"}
+        data-shell-logo=""
+      />
       <span className="text-[1.05rem] font-extrabold tracking-tight">Crypto Voyage</span>
     </Link>
   );
@@ -40,7 +44,8 @@ export function ImmersiveChrome({ children }: { children: ReactNode }) {
       {children}
 
       {/* The bar itself ignores the pointer so the sea stays draggable; only its controls react. */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
+      {/* data-shell-header: the home intro hides this bar during its preloader, then reveals it. */}
+      <header data-shell-header="" className="pointer-events-none fixed inset-x-0 top-0 z-40">
         <div
           aria-hidden
           className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-sea-night/55 to-transparent"

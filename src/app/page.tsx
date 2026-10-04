@@ -1,10 +1,10 @@
 import { AppShell } from "@/components/shell/AppShell";
-import { GlobeStart } from "@/components/ocean/GlobeStart";
+import { Intro } from "@/components/ocean/intro/Intro";
 
 export default function Page() {
   return (
     <AppShell variant="immersive">
-      <GlobeStart />
+      <Intro />
     </AppShell>
   );
 }

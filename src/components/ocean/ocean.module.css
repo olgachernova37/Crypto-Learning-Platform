@@ -132,3 +132,23 @@
     display: none;
   }
 }
+
+/* arrival from the home intro's dive: start in deep ocean blue and clear */
+.arrive {
+  background: radial-gradient(circle at 50% 50%, #1e5a6e 0%, #0d2b45 55%, #081c2e 100%);
+  animation: arrive 1s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+}
+@keyframes arrive {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrive {
+    display: none;
+  }
+}
