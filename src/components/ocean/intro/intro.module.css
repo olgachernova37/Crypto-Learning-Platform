@@ -114,6 +114,8 @@
   justify-content: space-between;
   align-items: flex-end;
   gap: 40px;
+  /* nothing in here is interactive; its box must never cover the portal or the pill */
+  pointer-events: none;
 }
 .tagline {
   max-width: 30ch;
