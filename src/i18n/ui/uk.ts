@@ -103,6 +103,9 @@ export const uk: DeepPartial<Dict> = {
   lesson: {
     intro: {
       backToRoute: "Назад до маршруту",
+      prevAria: "Попередній урок",
+      nextAria: "Наступний урок",
+      switchAria: "Перемкнути урок",
       mode: "Devnet · Режим практики",
       start: "Поїхали",
       meta: (minutes: number, xp: number, steps: number) =>

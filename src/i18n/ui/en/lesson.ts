@@ -6,6 +6,10 @@ export const lesson = {
     /** Small mono tag top-right (desktop only). */
     mode: "Devnet · Practice mode",
     start: "Let's go",
+    /** Arrows top-right that flip to the previous / next lesson without going back to the route. */
+    prevAria: "Previous lesson",
+    nextAria: "Next lesson",
+    switchAria: "Switch lessons",
     /** Small line next to the start button: "~5 min · +50 XP · 6 steps". */
     meta: (minutes: number, xp: number, steps: number) => `~${minutes} min · +${xp} XP · ${steps} steps`,
   },

@@ -1,17 +1,35 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import type { Lesson } from "@/content/types";
-import { lessonNum } from "@/content/lessons";
+import { lessonNum, lessons } from "@/content/lessons";
 import { useT } from "@/i18n";
 import { SeaScene } from "./SeaScene";
 import { StopTeaser } from "@/components/voyage/StopTeaser";
-import { IconArrowLeft } from "./icons";
+import { IconArrowLeft, IconArrowRight } from "./icons";
 import m from "./motion.module.css";
 
 /** OceanX-style "chapter" opening screen. */
 export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) {
   const t = useT();
+  const router = useRouter();
+  const at = lessons.findIndex((l) => l.id === lesson.id);
+  const prev = lessons[at - 1];
+  const next = lessons[at + 1];
+
+  // ← / → on a keyboard flips between lessons too
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      const to = e.key === "ArrowLeft" ? prev : e.key === "ArrowRight" ? next : undefined;
+      if (to) router.push(`/lesson/${to.id}`);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [prev, next, router]);
+
   return (
     <main className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-deep-ocean text-white">
       <SeaScene variant="intro" className="-z-10" />
@@ -19,12 +37,21 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
       <header className="flex items-center justify-between px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-8 sm:pt-6">
         <Link
           href="/journey"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/10 px-4 text-sm font-bold text-white/90 ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-3 focus-visible:outline-light-sky"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full whitespace-nowrap bg-white/10 px-4 text-sm font-bold text-white/90 ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-3 focus-visible:outline-light-sky"
         >
           <IconArrowLeft width={18} height={18} />
           {t.lesson.intro.backToRoute}
         </Link>
-        <span className="label-mono hidden text-white/60 sm:block">{t.lesson.intro.mode}</span>
+        <div className="flex items-center gap-4">
+          <span className="label-mono hidden text-white/60 lg:block">{t.lesson.intro.mode}</span>
+          <nav aria-label={t.lesson.intro.switchAria} className="flex items-center gap-2">
+            <LessonArrow to={prev?.id} dir={-1} label={t.lesson.intro.prevAria} />
+            <span className="label-mono hidden min-w-14 text-center text-white/70 sm:block" aria-hidden>
+              {lessonNum(at)} / {lessonNum(lessons.length - 1)}
+            </span>
+            <LessonArrow to={next?.id} dir={1} label={t.lesson.intro.nextAria} />
+          </nav>
+        </div>
       </header>
 
       <div className="flex flex-1 items-end px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:px-10 sm:pb-16 lg:justify-end lg:px-20 lg:pb-20">
@@ -65,5 +92,23 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
         </div>
       </div>
     </main>
+  );
+}
+
+const arrowCls =
+  "grid size-11 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-3 focus-visible:outline-light-sky";
+
+function LessonArrow({ to, dir, label }: { to?: string; dir: 1 | -1; label: string }) {
+  const icon = dir > 0 ? <IconArrowRight width={18} height={18} /> : <IconArrowLeft width={18} height={18} />;
+  if (!to)
+    return (
+      <span aria-hidden className={`${arrowCls} opacity-30`}>
+        {icon}
+      </span>
+    );
+  return (
+    <Link href={`/lesson/${to}`} aria-label={label} className={arrowCls}>
+      {icon}
+    </Link>
   );
 }

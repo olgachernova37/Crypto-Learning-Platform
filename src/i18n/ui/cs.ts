@@ -96,6 +96,9 @@ export const cs: DeepPartial<Dict> = {
   lesson: {
     intro: {
       backToRoute: "Zpět na trasu",
+      prevAria: "Předchozí lekce",
+      nextAria: "Další lekce",
+      switchAria: "Přepnout lekci",
       mode: "Devnet · Cvičný režim",
       start: "Jdeme na to",
       meta: (minutes, xp, steps) =>
