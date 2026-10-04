@@ -6,14 +6,14 @@ import { lessons } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { SeaScene } from "./SeaScene";
 import { SeaTurtle } from "./SeaTurtle";
-import { Confetti } from "./Confetti";
+import { MintMascot } from "./MintMascot";
 import { IconArrowLeft, IconArrowRight, IconCheck, IconShare, IconSparkle } from "./icons";
 import m from "./motion.module.css";
 
 const core = lessons;
 
 export function FinaleView() {
-  const { progress, ready, claimNft } = useProgress();
+  const { progress, ready } = useProgress();
   const [shareMsg, setShareMsg] = useState("");
   const done = core.filter((l) => progress.completedLessons.includes(l.id)).length;
   const unlocked = done === core.length;
@@ -78,38 +78,8 @@ export function FinaleView() {
           <div className={`mt-8 flex flex-col items-center gap-4 lg:items-start ${m.fadeUp} ${m.delay3}`}>
             {!ready ? (
               <div className="h-14" />
-            ) : claimed ? (
-              <div className="flex w-full max-w-md flex-col gap-4 text-left">
-                <Confetti />
-                <div role="status" className="rounded-[1.5rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur-md">
-                  <p className="flex items-center gap-3 text-lg font-extrabold">
-                    <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
-                      <IconCheck width={18} height={18} />
-                    </span>
-                    Your mascot is minted! 🎉
-                  </p>
-                  <p className="mt-2 text-[16px] leading-relaxed text-white/75">
-                    For now it lives in your practice backpack here. Real minting to your wallet on Solana devnet
-                    comes next.
-                  </p>
-                </div>
-                <div className="rounded-[1.5rem] bg-white p-5 text-ink">
-                  <p className="text-lg font-extrabold">Where to find your new friend 📱</p>
-                  <p className="mt-2 text-[16px] leading-relaxed text-ink-soft">
-                    Open your Phantom wallet app and tap the Collectibles tab (the icon with little squares, ⊞).
-                    That&apos;s where NFTs like your mascot live.
-                  </p>
-                </div>
-              </div>
-            ) : unlocked ? (
-              <button
-                type="button"
-                onClick={claimNft}
-                className={`inline-flex min-h-16 items-center gap-3 rounded-[1.25rem] bg-seafoam px-9 text-xl font-extrabold text-white shadow-[0_14px_44px_-12px_rgba(107,167,160,0.8)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-light-sky ${m.pulse}`}
-              >
-                🎁 Mint my mascot
-                <IconSparkle width={18} height={18} />
-              </button>
+            ) : unlocked || claimed ? (
+              <MintMascot />
             ) : (
               <div className="w-full max-w-md rounded-[1.5rem] bg-white/10 p-5 text-left ring-1 ring-white/15 backdrop-blur-md">
                 <p className="text-lg font-extrabold">Almost there!</p>

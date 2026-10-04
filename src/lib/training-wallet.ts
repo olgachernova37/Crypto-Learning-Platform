@@ -11,6 +11,7 @@
 // Everything else in the app talks to this hook, never to devnet directly.
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { mintMascotNft } from "@/lib/solana/mascot";
 import {
   explorerUrl,
   getBalanceSol,
@@ -22,7 +23,7 @@ import {
 
 export type PracticeTx = {
   signature: string;
-  kind: "faucet" | "send" | "swap" | "stake";
+  kind: "faucet" | "send" | "swap" | "stake" | "mint";
   label: string; // "Sent 0.1 SOL to a friend"
   amountSol: number; // SOL that left (-) or arrived (+)
   feeSol: number;
@@ -37,6 +38,7 @@ export type TrainingWallet = {
   simSol: number; // practice-mode SOL balance
   tokens: Record<string, number>; // practice tokens: { OCN: 10, mSOL: 1 }
   txs: PracticeTx[]; // newest first
+  mascot?: { mint: string; signature: string; owner: string; real: boolean };
 };
 
 const KEY = "crypto-voyage-training-wallet-v2";
@@ -93,7 +95,7 @@ function save(w: TrainingWallet) {
 }
 
 // live devnet balance (not persisted)
-type Busy = "" | "faucet" | "send" | "swap" | "stake";
+type Busy = "" | "faucet" | "send" | "swap" | "stake" | "mint";
 type Status = { balance: number | null; busy: Busy; lastError: string };
 let balance: number | null = null;
 let busy: Busy = "";
@@ -271,6 +273,46 @@ export function useTrainingWallet() {
     [simulated],
   );
 
+  /** Mint the mascot NFT to the training wallet, or to another address (e.g. the learner's Phantom). */
+  const mintMascot = useCallback(async (recipient?: string) => {
+    const w = await ensureWallet();
+    busy = "mint";
+    lastError = "";
+    emit();
+    try {
+      const owner = recipient || w.address;
+      if (w.mode === "devnet") {
+        const signer = await signerFromSeed(fromB64(w.seed));
+        if ((balance ?? 0) < 0.01) {
+          // a fresh wallet (lessons done in practice mode, or a new browser): top up first
+          const a = await requestAirdrop(w.address, 1);
+          addTx({ signature: a, kind: "faucet", label: "Received 1 SOL from the devnet faucet", amountSol: 1, feeSol: 0, at: Date.now(), real: true });
+        }
+        const { mint, signature } = await mintMascotNft(signer, owner, {
+          name: "Pebble the Sea Turtle",
+          symbol: "VOYAGE",
+          uri: `${window.location.origin}/mascot/pebble.json`,
+        });
+        update((x) => ({
+          ...x,
+          mascot: { mint, signature, owner, real: true },
+          txs: [{ signature, kind: "mint", label: "Minted Pebble the Sea Turtle NFT", amountSol: 0, feeSol: 0.000005, at: Date.now(), real: true }, ...x.txs],
+        }));
+        await refreshBalance();
+      } else {
+        await new Promise((r) => setTimeout(r, 1000));
+        update((x) => ({ ...x, mascot: { mint: fakeSig().slice(0, 44), signature: fakeSig(), owner, real: false } }));
+      }
+      return true;
+    } catch (e) {
+      lastError = friendly(e, "Minting didn't go through. Please try again.");
+      return false;
+    } finally {
+      busy = "";
+      emit();
+    }
+  }, []);
+
   const sol = wallet ? (wallet.mode === "devnet" ? st.balance : wallet.simSol) : null;
 
   return {
@@ -283,6 +325,7 @@ export function useTrainingWallet() {
     send,
     swap,
     stake,
+    mintMascot,
     switchToPractice,
   };
 }

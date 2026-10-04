@@ -5,7 +5,7 @@
 
 import {
   address,
-  appendTransactionMessageInstruction,
+  appendTransactionMessageInstructions,
   createKeyPairSignerFromPrivateKeyBytes,
   createSolanaRpc,
   createTransactionMessage,
@@ -17,6 +17,7 @@ import {
   setTransactionMessageFeePayerSigner,
   setTransactionMessageLifetimeUsingBlockhash,
   signTransactionMessageWithSigners,
+  type Instruction,
   type KeyPairSigner,
   type Signature,
 } from "@solana/kit";
@@ -74,28 +75,31 @@ export async function requestAirdrop(addr: string, sol = 1): Promise<Signature> 
   return sig;
 }
 
-/** Send SOL from the practice wallet. Returns the transaction signature once confirmed. */
-export async function sendSol(from: KeyPairSigner, to: string, sol: number): Promise<Signature> {
+/** Build, sign (fee payer + any signers inside the instructions), send and confirm one transaction. */
+export async function sendInstructions(feePayer: KeyPairSigner, instructions: Instruction[]): Promise<Signature> {
   const { value: latestBlockhash } = await rpc().getLatestBlockhash({ commitment: "confirmed" }).send();
   const message = pipe(
     createTransactionMessage({ version: 0 }),
-    (m) => setTransactionMessageFeePayerSigner(from, m),
+    (m) => setTransactionMessageFeePayerSigner(feePayer, m),
     (m) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, m),
-    (m) =>
-      appendTransactionMessageInstruction(
-        getTransferSolInstruction({
-          source: from,
-          destination: address(to),
-          amount: lamports(BigInt(Math.round(sol * LAMPORTS_PER_SOL))),
-        }),
-        m,
-      ),
+    (m) => appendTransactionMessageInstructions(instructions, m),
   );
   const signed = await signTransactionMessageWithSigners(message);
   const sig = getSignatureFromTransaction(signed);
   await rpc().sendTransaction(getBase64EncodedWireTransaction(signed), { encoding: "base64" }).send();
   await waitForConfirmation(sig);
   return sig;
+}
+
+/** Send SOL from the practice wallet. Returns the transaction signature once confirmed. */
+export async function sendSol(from: KeyPairSigner, to: string, sol: number): Promise<Signature> {
+  return sendInstructions(from, [
+    getTransferSolInstruction({
+      source: from,
+      destination: address(to),
+      amount: lamports(BigInt(Math.round(sol * LAMPORTS_PER_SOL))),
+    }),
+  ]);
 }
 
 /** Read a confirmed transaction for the receipt (fee, time, status). */

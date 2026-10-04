@@ -33,6 +33,7 @@ Next.js · Solana Kit · embedded wallet (provider TBD), Phantom later · Metapl
 ## Solana (devnet)
 
 - `src/lib/solana/devnet.ts` — RPC, airdrop, transfer, receipt, Explorer links (Solana Kit). `src/lib/training-wallet.ts` — the hook every screen uses (devnet mode + practice fallback).
+- `src/lib/solana/mascot.ts` — mints the mascot NFT (Token-2022 + metadata extension). Metadata route: `src/app/mascot/pebble.json/route.ts`. Smoke test: `scripts/mascot-smoke.mts`.
 - Test without devnet access: run `solana-test-validator`, build with `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899`, or `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899 npx tsx scripts/devnet-smoke.mts`.
 
 ## Pages
