@@ -19,6 +19,7 @@ import { useProgress } from "@/lib/progress";
 import { WaveLogo } from "@/components/shell/icons";
 import { createEarthScene } from "./earthScene";
 import { animateValue, project, roundedRectPoints } from "./portalMath";
+import "@fontsource-variable/inter/wght-italic.css";
 import s from "./intro.module.css";
 
 type Stage = "preload" | "docking" | "ready";
