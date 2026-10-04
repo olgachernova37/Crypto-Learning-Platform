@@ -30,6 +30,11 @@ Crypto learning web platform for complete beginners (Duolingo + SoloLearn style)
 
 Next.js · Solana Kit · embedded wallet (provider TBD), Phantom later · Metaplex compressed NFTs (Bubblegum v2, Umi) · Solana Explorer links.
 
+## Solana (devnet)
+
+- `src/lib/solana/devnet.ts` — RPC, airdrop, transfer, receipt, Explorer links (Solana Kit). `src/lib/training-wallet.ts` — the hook every screen uses (devnet mode + practice fallback).
+- Test without devnet access: run `solana-test-validator`, build with `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899`, or `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899 npx tsx scripts/devnet-smoke.mts`.
+
 ## Pages
 
 Home (Earth / globe start screen) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.

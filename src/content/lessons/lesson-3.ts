@@ -34,10 +34,11 @@ export const lesson3: Lesson = {
       title: "Seeing your own footprint 👣",
       body: [
         "Because the blockchain is public, anyone can look at these receipts. But they only show wallet addresses, never your real name.",
-        "Below is the receipt of the practice coin you sent in the last lesson: who sent it, who received it, the amount, the tiny fee and the time.",
+        "Below is the receipt of the test SOL you sent in the last lesson: who sent it, who received it, the amount, the tiny fee and the time.",
+        "Tap \"Open it on Solana Explorer\" to see the very same receipt on the public website that anyone in the world can check.",
       ],
       example:
-        "When your wallet is connected to the real Solana devnet, the same button will open this exact receipt on Solana Explorer.",
+        "It's like a bank statement, except anyone can look it up, and it shows wallet addresses instead of names.",
       practice: { kind: "receipt" },
       quiz: {
         kind: "fill",

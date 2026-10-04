@@ -35,7 +35,7 @@ export const lesson1: Lesson = {
       title: "Meet Phantom 👻",
       body: [
         "Different networks need different wallets. For the fast Solana network, the friendliest wallet is called Phantom. (You might also hear about MetaMask, which is made for a different network called Ethereum.)",
-        "Normally, setting up a wallet means writing down a 12-word secret recovery phrase. Because you're just starting, we've prepared a practice training wallet for you inside this course, so you can relax and focus on exploring.",
+        "Normally, setting up a wallet means writing down a 12-word secret recovery phrase. Because you're just starting, we create a training wallet for you right here in the course, on Solana's free practice network, so you can relax and focus on exploring.",
         "One rule for later, when you set up a real Phantom: those 12 words are for your eyes only. No real company or support person will ever ask for them.",
       ],
       example:

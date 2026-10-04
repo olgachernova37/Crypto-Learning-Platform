@@ -13,7 +13,7 @@ const QUEST_ID = "marinade-quest";
 const QUEST_XP = 50;
 
 export function MarinadeQuest() {
-  const { wallet, ensure, stake } = useTrainingWallet();
+  const { wallet, sol, ensure, stake } = useTrainingWallet();
   const { addXp } = useProgress();
   const { visited, markVisited } = useVisitedPartners();
   const [busy, setBusy] = useState(false);
@@ -26,12 +26,10 @@ export function MarinadeQuest() {
   const stakeTx = wallet?.txs.find((t) => t.kind === "stake") ?? null;
   const claimed = visited.includes(QUEST_ID);
 
-  const doStake = () => {
+  const doStake = async () => {
     setBusy(true);
-    window.setTimeout(() => {
-      stake(1);
-      setBusy(false);
-    }, 1100);
+    await stake(1);
+    setBusy(false);
   };
 
   const claim = () => {
@@ -88,8 +86,8 @@ export function MarinadeQuest() {
           ) : (
             <>
               <p className="mb-4 text-ink-soft">
-                Your training wallet has {wallet ? Math.round(wallet.sol * 1000) / 1000 : 5} practice SOL. Let&apos;s
-                stake 1 of them.
+                Your training wallet has {sol === null ? "…" : Math.round(sol * 1000) / 1000} SOL. Let&apos;s practise
+                staking 1 of them (a simulation: no coins actually move).
               </p>
               <button type="button" onClick={doStake} disabled={busy} className={`${btn} bg-ocean-teal text-white hover:bg-deep-ocean`}>
                 {busy ? "Staking…" : "Stake 1 practice SOL"}

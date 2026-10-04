@@ -1,70 +1,76 @@
 "use client";
 
-// The in-app TRAINING WALLET: a practice simulator for lessons 2–4 and the Marinade quest.
-// Nothing here touches a real blockchain yet — balances and receipts live in localStorage and
-// every screen that uses them says "practice". Real devnet transactions replace this later.
+// The learner's TRAINING WALLET.
+//
+// mode "devnet"   — a real Solana devnet wallet created in this browser (key kept in localStorage,
+//                   never shown). Faucet, transfers and receipts are real devnet transactions you
+//                   can open on Solana Explorer. Devnet coins have no value.
+// mode "practice" — a simulator, used when devnet can't be reached (or the learner chooses it), and
+//                   for actions that don't exist on devnet for us yet (the swap, Marinade staking).
+//
+// Everything else in the app talks to this hook, never to devnet directly.
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
+import {
+  explorerUrl,
+  getBalanceSol,
+  newSeed,
+  requestAirdrop,
+  sendSol,
+  signerFromSeed,
+} from "@/lib/solana/devnet";
 
 export type PracticeTx = {
   signature: string;
   kind: "faucet" | "send" | "swap" | "stake";
-  label: string; // "Sent 1 SOL", "Swapped 0.5 SOL for 10 OCN"
+  label: string; // "Sent 0.1 SOL to a friend"
   amountSol: number; // SOL that left (-) or arrived (+)
   feeSol: number;
   at: number; // epoch ms
+  real: boolean; // a real devnet transaction (has an Explorer page)
 };
 
 export type TrainingWallet = {
+  mode: "devnet" | "practice";
+  seed: string; // base64 secret seed (devnet key) — stays in this browser
   address: string;
-  sol: number;
-  tokens: Record<string, number>; // e.g. { OCN: 10, mSOL: 1 }
+  simSol: number; // practice-mode SOL balance
+  tokens: Record<string, number>; // practice tokens: { OCN: 10, mSOL: 1 }
   txs: PracticeTx[]; // newest first
 };
 
-const KEY = "crypto-voyage-training-wallet-v1";
+const KEY = "crypto-voyage-training-wallet-v2";
 const EVENT = "crypto-voyage-training-wallet";
-const FEE = 0.000005; // a typical Solana base fee, in SOL
+const SIM_FEE = 0.000005;
 
-/** The friendly practice address we send to in lesson 2. */
-export const PRACTICE_FRIEND_ADDRESS = "Fr1end7oceanPractice9Yz3kQe4Wq8sNdLm2HbVt5Cx";
+/** A friend's devnet address we send practice SOL to (we don't hold its key; it just receives). */
+export const PRACTICE_FRIEND_ADDRESS = "6EaBAEFjZLiAdwfStB9ikwSkdfR6MZzkSLyHZfT7ajpc";
+
+export const shortAddr = (a: string) => `${a.slice(0, 4)}…${a.slice(-4)}`;
+export const txExplorerUrl = (tx: PracticeTx) => (tx.real ? explorerUrl("tx", tx.signature) : null);
+export const addressExplorerUrl = (a: string) => explorerUrl("address", a);
 
 const B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-const randomB58 = (len: number) => {
-  const bytes = new Uint8Array(len);
+const fakeSig = () => {
+  const bytes = new Uint8Array(88);
   crypto.getRandomValues(bytes);
   return Array.from(bytes, (b) => B58[b % 58]).join("");
 };
+const toB64 = (u: Uint8Array) => btoa(String.fromCharCode(...u));
+const fromB64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
-export const shortAddr = (a: string) => `${a.slice(0, 4)}…${a.slice(-4)}`;
-
-function fresh(): TrainingWallet {
-  return {
-    address: randomB58(44),
-    sol: 5,
-    tokens: {},
-    txs: [
-      {
-        signature: randomB58(88),
-        kind: "faucet",
-        label: "Received 5 SOL from the practice faucet",
-        amountSol: 5,
-        feeSol: 0,
-        at: Date.now(),
-      },
-    ],
-  };
-}
+/* ---------------- store ---------------- */
 
 let cachedRaw: string | null | undefined;
 let cached: TrainingWallet | null = null;
+let memoryOnly: TrainingWallet | null = null; // private mode fallback
 
 function getSnapshot(): TrainingWallet | null {
   let raw: string | null = null;
   try {
     raw = localStorage.getItem(KEY);
   } catch {
-    /* ignore */
+    return memoryOnly;
   }
   if (raw !== cachedRaw) {
     cachedRaw = raw;
@@ -74,8 +80,31 @@ function getSnapshot(): TrainingWallet | null {
       cached = null;
     }
   }
-  return cached;
+  return cached ?? memoryOnly;
 }
+
+function save(w: TrainingWallet) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(w));
+  } catch {
+    memoryOnly = w;
+  }
+  emit();
+}
+
+// live devnet balance (not persisted)
+type Busy = "" | "faucet" | "send" | "swap" | "stake";
+type Status = { balance: number | null; busy: Busy; lastError: string };
+let balance: number | null = null;
+let busy: Busy = "";
+let lastError = "";
+let status: Status = { balance, busy, lastError };
+function emit() {
+  status = { balance, busy, lastError };
+  window.dispatchEvent(new Event(EVENT));
+}
+const getStatus = () => status;
+const serverStatus: Status = { balance: null, busy: "", lastError: "" };
 
 function subscribe(cb: () => void) {
   window.addEventListener(EVENT, cb);
@@ -86,75 +115,174 @@ function subscribe(cb: () => void) {
   };
 }
 
-function save(w: TrainingWallet) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(w));
-  } catch {
-    /* private mode: works for this page view only */
-    cached = w;
-  }
-  window.dispatchEvent(new Event(EVENT));
-}
-
 export function resetTrainingWallet() {
   try {
     localStorage.removeItem(KEY);
   } catch {
     /* ignore */
   }
-  window.dispatchEvent(new Event(EVENT));
+  memoryOnly = null;
+  balance = null;
+  lastError = "";
+  emit();
 }
 
-/** Read the training wallet; it is created (with 5 practice SOL) the first time it's needed. */
+let creating: Promise<TrainingWallet> | null = null;
+async function ensureWallet(): Promise<TrainingWallet> {
+  const existing = getSnapshot();
+  if (existing) return existing;
+  creating ??= (async () => {
+    const seed = newSeed();
+    const signer = await signerFromSeed(seed);
+    const w: TrainingWallet = { mode: "devnet", seed: toB64(seed), address: signer.address, simSol: 5, tokens: {}, txs: [] };
+    save(w);
+    return w;
+  })();
+  try {
+    return await creating;
+  } finally {
+    creating = null;
+  }
+}
+
+function update(fn: (w: TrainingWallet) => TrainingWallet) {
+  const w = getSnapshot();
+  if (w) save(fn(w));
+}
+const addTx = (tx: PracticeTx) => update((w) => ({ ...w, txs: [tx, ...w.txs] }));
+
+async function refreshBalance() {
+  const w = getSnapshot();
+  if (!w || w.mode !== "devnet") return;
+  try {
+    balance = await getBalanceSol(w.address);
+    if (lastError.startsWith("We couldn't reach")) lastError = "";
+    emit();
+  } catch (e) {
+    // first load failed: say so, so the learner isn't left with a dead button
+    if (balance === null) {
+      lastError = friendly(e, "We couldn't reach the Solana devnet. Check your connection and try again.");
+      if (!/reach/.test(lastError)) lastError = "We couldn't reach the Solana devnet right now.";
+      emit();
+    }
+  }
+}
+
+const friendly = (e: unknown, fallback: string) => {
+  const m = e instanceof Error ? e.message : "";
+  if (/429|rate|limit|airdrop/i.test(m)) return "The free devnet tap is busy right now (it limits how often it pours).";
+  if (/fetch|network|Failed/i.test(m)) return "We couldn't reach the Solana devnet. Check your connection and try again.";
+  return m && m.length < 140 ? m : fallback;
+};
+
+/* ---------------- hook ---------------- */
+
 export function useTrainingWallet() {
   const wallet = useSyncExternalStore(subscribe, getSnapshot, () => null);
+  const st = useSyncExternalStore(subscribe, getStatus, () => serverStatus);
 
-  const ensure = useCallback((): TrainingWallet => {
-    const w = getSnapshot();
-    if (w) return w;
-    const created = fresh();
-    save(created);
-    return created;
+  // keep the real balance fresh while a page shows the wallet
+  useEffect(() => {
+    if (wallet?.mode !== "devnet") return;
+    refreshBalance();
+    const id = window.setInterval(refreshBalance, 6000);
+    return () => clearInterval(id);
+  }, [wallet?.mode, wallet?.address]);
+
+  const ensure = useCallback(() => ensureWallet(), []);
+
+  const switchToPractice = useCallback(() => {
+    lastError = "";
+    update((w) => ({ ...w, mode: "practice" }));
   }, []);
 
-  const record = useCallback(
-    (change: (w: TrainingWallet) => { next: TrainingWallet; tx: PracticeTx }) => {
-      const { next, tx } = change(ensure());
-      save({ ...next, txs: [tx, ...next.txs] });
+  const faucet = useCallback(async () => {
+    const w = await ensureWallet();
+    if (w.mode !== "devnet") return;
+    busy = "faucet";
+    lastError = "";
+    emit();
+    try {
+      const sig = await requestAirdrop(w.address, 1);
+      addTx({ signature: sig, kind: "faucet", label: "Received 1 SOL from the devnet faucet", amountSol: 1, feeSol: 0, at: Date.now(), real: true });
+      await refreshBalance();
+    } catch (e) {
+      lastError = friendly(e, "The faucet didn't answer. Try again in a minute.");
+    } finally {
+      busy = "";
+      emit();
+    }
+  }, []);
+
+  const send = useCallback(async (amount: number): Promise<PracticeTx | null> => {
+    const w = await ensureWallet();
+    busy = "send";
+    lastError = "";
+    emit();
+    try {
+      let tx: PracticeTx;
+      if (w.mode === "devnet") {
+        const signer = await signerFromSeed(fromB64(w.seed));
+        const sig = await sendSol(signer, PRACTICE_FRIEND_ADDRESS, amount);
+        tx = { signature: sig, kind: "send", label: `Sent ${amount} SOL to a friend`, amountSol: -amount, feeSol: 0.000005, at: Date.now(), real: true };
+        addTx(tx);
+        await refreshBalance();
+      } else {
+        await new Promise((r) => setTimeout(r, 1000));
+        tx = { signature: fakeSig(), kind: "send", label: `Sent ${amount} SOL to a friend`, amountSol: -amount, feeSol: SIM_FEE, at: Date.now(), real: false };
+        update((x) => ({ ...x, simSol: Math.max(0, x.simSol - amount - SIM_FEE), txs: [tx, ...x.txs] }));
+      }
+      return tx;
+    } catch (e) {
+      lastError = friendly(e, "The transfer didn't go through. Please try again.");
+      return null;
+    } finally {
+      busy = "";
+      emit();
+    }
+  }, []);
+
+  // Practice-only for now: there's no devnet market for our Ocean Token yet.
+  const simulated = useCallback(
+    async (kind: "swap" | "stake", label: string, payAmount: number, gain: Record<string, number>) => {
+      await ensureWallet();
+      busy = kind;
+      emit();
+      await new Promise((r) => setTimeout(r, 1000));
+      const tx: PracticeTx = { signature: fakeSig(), kind, label, amountSol: -payAmount, feeSol: SIM_FEE, at: Date.now(), real: false };
+      update((x) => {
+        const tokens = { ...x.tokens };
+        for (const [k, v] of Object.entries(gain)) tokens[k] = (tokens[k] ?? 0) + v;
+        return { ...x, tokens, simSol: x.mode === "practice" ? Math.max(0, x.simSol - payAmount - SIM_FEE) : x.simSol, txs: [tx, ...x.txs] };
+      });
+      busy = "";
+      emit();
       return tx;
     },
-    [ensure],
-  );
-
-  const send = useCallback(
-    (amount: number) =>
-      record((w) => {
-        const sol = Math.max(0, w.sol - amount - FEE);
-        return {
-          next: { ...w, sol },
-          tx: { signature: randomB58(88), kind: "send", label: `Sent ${amount} SOL to a friend`, amountSol: -amount, feeSol: FEE, at: Date.now() },
-        };
-      }),
-    [record],
+    [],
   );
 
   const swap = useCallback(
-    (pay: number, get: number, symbol: string) =>
-      record((w) => ({
-        next: { ...w, sol: Math.max(0, w.sol - pay - FEE), tokens: { ...w.tokens, [symbol]: (w.tokens[symbol] ?? 0) + get } },
-        tx: { signature: randomB58(88), kind: "swap", label: `Swapped ${pay} SOL for ${get} ${symbol}`, amountSol: -pay, feeSol: FEE, at: Date.now() },
-      })),
-    [record],
+    (pay: number, get: number, symbol: string) => simulated("swap", `Swapped ${pay} SOL for ${get} ${symbol}`, pay, { [symbol]: get }),
+    [simulated],
   );
-
   const stake = useCallback(
-    (amount: number) =>
-      record((w) => ({
-        next: { ...w, sol: Math.max(0, w.sol - amount - FEE), tokens: { ...w.tokens, mSOL: (w.tokens.mSOL ?? 0) + amount } },
-        tx: { signature: randomB58(88), kind: "stake", label: `Staked ${amount} SOL with Marinade (practice)`, amountSol: -amount, feeSol: FEE, at: Date.now() },
-      })),
-    [record],
+    (amount: number) => simulated("stake", `Staked ${amount} SOL with Marinade (practice)`, amount, { mSOL: amount }),
+    [simulated],
   );
 
-  return { wallet, ensure, send, swap, stake };
+  const sol = wallet ? (wallet.mode === "devnet" ? st.balance : wallet.simSol) : null;
+
+  return {
+    wallet,
+    sol, // null while the devnet balance is loading
+    busy: st.busy,
+    error: st.lastError,
+    ensure,
+    faucet,
+    send,
+    swap,
+    stake,
+    switchToPractice,
+  };
 }

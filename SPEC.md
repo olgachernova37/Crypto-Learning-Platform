@@ -46,7 +46,7 @@ Each lesson ends with "Lesson completed! 🎉" and a **"✨ Claim +XP ✨"** but
 
 **Finale — Meet your mascot! 🐢:** "🎁 Mint my mascot" (pulsing) → confetti → "Where to find your new friend" (Phantom → Collectibles tab).
 
-**Practice / training wallet (current state):** the Action Zones run on an in-app training wallet simulator (5 practice SOL from a "faucet", receipts stored locally) and are clearly labelled "Practice". Next step: replace it with a real embedded devnet wallet, real faucet airdrop, real transfers/swap, Solana Explorer links and real cNFT minting.
+**Training wallet (current state):** a real Solana **devnet** wallet is created in the learner's browser (key kept only in localStorage, never shown). Lesson 2 fills it from the devnet faucet and sends 0.1 SOL to a friend address for real; the receipt (lessons 2 and 3) is read from the chain and links to Solana Explorer. If devnet can't be reached or the faucet is rate-limited, the learner sees a friendly message, a link to faucet.solana.com, and can "continue in practice mode" (simulated). The swap (lesson 4) and the Marinade quest are still labelled practice simulations. Still to do: real cNFT mascot minting (needs a server key → Vercel env), optionally a real devnet Ocean Token swap. RPC is set with `NEXT_PUBLIC_SOLANA_RPC` (see `.env.example`); `scripts/devnet-smoke.mts` tests airdrop + transfer against any RPC.
 
 ## Gamification
 

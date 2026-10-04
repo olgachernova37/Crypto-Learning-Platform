@@ -8,7 +8,7 @@ export const lesson2: Lesson = {
   summary: "Make your first transfer with practice coins: zero risk, and you can't break anything.",
   minutes: 4,
   xp: 50,
-  outro: "You just made your first blockchain transfer, with practice coins. How cool is that?!",
+  outro: "You just made your first real blockchain transaction, with test coins. How cool is that?!",
   steps: [
     {
       id: "safe-space",
@@ -48,11 +48,12 @@ export const lesson2: Lesson = {
       id: "paying-it-forward",
       title: "Paying it forward 💌",
       body: [
-        "We just used a magical \"faucet\" to pour some free practice SOL into your training wallet. A faucet is simply a tap that gives out free test coins.",
-        "Let's try sending a little bit! Below is your practice wallet. The friend's address is already filled in. Press send to give away 1 test coin.",
+        "Below is your training wallet. It's a real wallet on Solana's practice network, created just for you in this browser.",
+        "First, use the magical \"faucet\" to pour some free test SOL into it. A faucet is simply a tap that gives out free test coins.",
+        "Then let's send a little bit! The friend's address is already filled in. Press send to give away 0.1 test SOL.",
         "Tip for real life: always double-check the address before you send, because blockchain transfers can't be undone.",
       ],
-      practice: { kind: "send", amount: 1 },
+      practice: { kind: "send", amount: 0.1 },
     },
   ],
 };

@@ -1,54 +1,69 @@
 "use client";
 
-// Hands-on "Action Zone" inside a lesson step: send, swap, or look at a receipt.
-// Runs on the in-app training wallet (a simulator) and says so — real devnet comes later.
+// Hands-on "Action Zone" inside a lesson step: fill up from the faucet, send, swap, or read a receipt.
+// Sending and the faucet are REAL Solana devnet transactions (test coins, no value) with Solana
+// Explorer receipts. The swap is a labelled practice simulation for now. If devnet can't be
+// reached, the learner can continue in practice mode so a lesson never gets stuck.
 
 import { useEffect, useState } from "react";
 import type { Practice } from "@/content/types";
 import {
   PRACTICE_FRIEND_ADDRESS,
+  addressExplorerUrl,
   shortAddr,
+  txExplorerUrl,
   useTrainingWallet,
   type PracticeTx,
 } from "@/lib/training-wallet";
-import { IconCheck, IconSparkle } from "./icons";
+import { getReceipt } from "@/lib/solana/devnet";
+import { IconCheck, IconExternal, IconSparkle } from "./icons";
 import m from "./motion.module.css";
 
-const fmt = (n: number) => (Math.round(n * 1000) / 1000).toLocaleString("en", { maximumFractionDigits: 3 });
+const FEE = 0.000005;
+const fmt = (n: number) => (Math.round(n * 10000) / 10000).toLocaleString("en", { maximumFractionDigits: 4 });
 
 export function PracticeZone({ practice, onDone }: { practice: Practice; onDone: () => void }) {
-  const { wallet, ensure, send, swap } = useTrainingWallet();
-  const [busy, setBusy] = useState(false);
+  const { wallet, sol, busy, error, ensure, faucet, send, swap, switchToPractice } = useTrainingWallet();
   const [tx, setTx] = useState<PracticeTx | null>(null);
   const [showReceipt, setShowReceipt] = useState(practice.kind === "receipt");
+  const [copied, setCopied] = useState(false);
 
-  // create the training wallet the first time a learner reaches a practice zone
+  // the training wallet is created the first time a learner reaches a practice zone
   useEffect(() => {
     ensure();
   }, [ensure]);
 
-  const kind = practice.kind === "receipt" ? "send" : practice.kind === "swap" ? "swap" : "send";
+  const kind = practice.kind === "swap" ? "swap" : "send";
   const existing = wallet?.txs.find((t) => t.kind === kind) ?? null;
   const done = tx ?? existing;
+  const devnet = wallet?.mode === "devnet";
 
   useEffect(() => {
     if (done) onDone();
   }, [done, onDone]);
 
-  const run = () => {
+  const amount = practice.kind === "send" ? practice.amount : practice.kind === "swap" ? practice.payAmount : 0.1;
+  const needsCoins = practice.kind !== "swap" && devnet && sol !== null && sol < amount + FEE;
+
+  const run = async () => {
     if (busy) return;
-    setBusy(true);
-    window.setTimeout(() => {
-      const t =
-        practice.kind === "swap"
-          ? swap(practice.payAmount, practice.getAmount, practice.getSymbol)
-          : send(practice.kind === "send" ? practice.amount : 1);
-      setTx(t);
-      setBusy(false);
-    }, 1100);
+    const t = practice.kind === "swap" ? await swap(practice.payAmount, practice.getAmount, practice.getSymbol) : await send(amount);
+    if (t) setTx(t);
   };
 
-  const sol = wallet?.sol ?? 5;
+  const copy = async () => {
+    if (!wallet) return;
+    try {
+      await navigator.clipboard.writeText(wallet.address);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard blocked: the address is visible to select by hand */
+    }
+  };
+
+  const btn =
+    "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full px-6 text-[17px] font-extrabold transition focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 disabled:opacity-70";
 
   return (
     <section
@@ -57,64 +72,129 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
     >
       {/* wallet header */}
       <div className="flex items-center justify-between gap-3 px-5 pt-5 sm:px-6">
-        <div className="flex items-center gap-3">
-          <span aria-hidden className="grid size-10 place-items-center rounded-2xl bg-white/10 text-xl">🎒</span>
-          <div>
+        <div className="flex min-w-0 items-center gap-3">
+          <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-2xl bg-white/10 text-xl">
+            🎒
+          </span>
+          <div className="min-w-0">
             <p className="text-[15px] font-extrabold">Your training wallet</p>
-            <p className="font-mono text-xs text-white/60">{wallet ? shortAddr(wallet.address) : "…"}</p>
+            {wallet ? (
+              <button type="button" onClick={copy} className="font-mono text-xs text-white/65 underline-offset-2 hover:underline">
+                {shortAddr(wallet.address)} · {copied ? "copied!" : "copy address"}
+              </button>
+            ) : (
+              <p className="font-mono text-xs text-white/60">creating…</p>
+            )}
           </div>
         </div>
-        <span className="label-mono rounded-full bg-sandy-beige/20 px-3 py-1.5 text-sandy-beige">Practice</span>
+        <span
+          className={`label-mono shrink-0 rounded-full px-3 py-1.5 ${devnet ? "bg-seafoam/25 text-[#bfe3de]" : "bg-sandy-beige/20 text-sandy-beige"}`}
+        >
+          {devnet ? "Solana devnet" : "Practice"}
+        </span>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 px-5 sm:px-6">
-        <Balance label="SOL" value={fmt(sol)} />
+      <div className="mt-4 flex flex-wrap items-center gap-2 px-5 sm:px-6">
+        <Balance label="SOL" value={sol === null ? "…" : fmt(sol)} />
         {Object.entries(wallet?.tokens ?? {}).map(([sym, v]) => (
-          <Balance key={sym} label={sym} value={fmt(v)} />
+          <Balance key={sym} label={`${sym} · practice`} value={fmt(v)} />
         ))}
+        {devnet && wallet && (
+          <a
+            href={addressExplorerUrl(wallet.address)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto inline-flex items-center gap-1 text-sm font-bold text-light-sky hover:underline"
+          >
+            See it on Explorer <IconExternal width={14} height={14} />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        )}
       </div>
 
       <div className="m-3 mt-5 rounded-[1.4rem] bg-white p-5 text-ink sm:m-4 sm:p-6">
+        {/* step 1 (devnet): fill up from the faucet */}
+        {needsCoins && !done && (
+          <div className={`mb-5 rounded-[1.1rem] bg-light-sky/35 p-4 ${m.fadeUp}`}>
+            <p className="font-extrabold">First, fill up from the faucet 🚰</p>
+            <p className="mt-1 text-[16px] leading-relaxed text-ink-soft">
+              Your wallet is empty. The devnet faucet pours free test SOL — no real money, ever.
+            </p>
+            <button
+              type="button"
+              onClick={faucet}
+              disabled={busy === "faucet"}
+              className={`${btn} mt-4 bg-deep-ocean text-white hover:bg-ocean-teal`}
+            >
+              {busy === "faucet" ? (
+                <>
+                  <Spinner /> Pouring test SOL…
+                </>
+              ) : (
+                "Fill up from the faucet"
+              )}
+            </button>
+          </div>
+        )}
+
+        {error && !done && (
+          <div role="alert" className="mb-5 rounded-[1.1rem] bg-sandy-beige/35 p-4 text-[15px] leading-relaxed">
+            <p className="font-bold text-deep-ocean">{error}</p>
+            {devnet && wallet && (
+              <p className="mt-2 text-ink-soft">
+                You can also get coins at{" "}
+                <a href="https://faucet.solana.com" target="_blank" rel="noopener noreferrer" className="font-bold text-ocean-teal underline">
+                  faucet.solana.com
+                </a>{" "}
+                — paste your address (tap &ldquo;copy address&rdquo; above), choose Devnet, and come back. We&apos;ll notice the
+                coins automatically.
+              </p>
+            )}
+            {devnet && (
+              <button type="button" onClick={switchToPractice} className="mt-3 font-bold text-ocean-teal underline">
+                Or continue in practice mode (simulated)
+              </button>
+            )}
+          </div>
+        )}
+
         {practice.kind === "swap" ? (
           <SwapForm pay={practice.payAmount} get={practice.getAmount} symbol={practice.getSymbol} />
         ) : practice.kind === "send" ? (
           <SendForm amount={practice.amount} />
-        ) : null}
-
-        {practice.kind === "receipt" && !done && (
+        ) : !done ? (
           <div>
             <p className="text-[17px] leading-relaxed text-ink-soft">
-              No practice transfer yet. Send 1 practice SOL now and we&apos;ll show you its receipt.
+              No transfer yet. Send {amount} test SOL now and we&apos;ll show you its receipt.
             </p>
             <div className="mt-4">
-              <SendForm amount={1} />
+              <SendForm amount={amount} />
             </div>
           </div>
-        )}
+        ) : null}
 
         {!done ? (
           <button
             type="button"
             onClick={run}
-            disabled={busy}
-            className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-ocean-teal px-6 text-[17px] font-extrabold text-white transition hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 disabled:bg-ocean-teal/70"
+            disabled={!!busy || needsCoins || sol === null}
+            className={`${btn} mt-5 bg-ocean-teal text-white hover:bg-deep-ocean disabled:bg-ocean-teal/50`}
           >
-            {busy ? (
+            {busy === "send" || busy === "swap" ? (
               <>
-                <span aria-hidden className="size-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                {practice.kind === "swap" ? "Swapping…" : "Sending…"}
+                <Spinner /> {practice.kind === "swap" ? "Swapping…" : "Sending…"}
               </>
             ) : practice.kind === "swap" ? (
               `Swap to ${practice.getSymbol}`
             ) : (
-              `Send ${practice.kind === "send" ? practice.amount : 1} SOL`
+              `Send ${amount} SOL`
             )}
           </button>
         ) : (
           <div className={m.fadeUp}>
             {practice.kind !== "receipt" && (
               <p role="status" className="mt-5 flex items-center gap-3 text-lg font-extrabold text-ink">
-                <span aria-hidden className="grid size-9 place-items-center rounded-full bg-seafoam text-white">
+                <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
                   <IconCheck width={18} height={18} />
                 </span>
                 {practice.kind === "swap" ? "The vending machine gave you your tokens!" : "Sent! It arrived in about a second."}
@@ -128,7 +208,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
                 <button
                   type="button"
                   onClick={() => setShowReceipt(true)}
-                  className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-deep-ocean px-6 text-[16px] font-extrabold text-white transition hover:bg-ocean-teal focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50"
+                  className={`${btn} mt-4 min-h-12 bg-deep-ocean text-[16px] text-white hover:bg-ocean-teal`}
                 >
                   🔍 Verify my {practice.kind === "swap" ? "swap" : "transaction"} onchain
                 </button>
@@ -141,6 +221,10 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
       </div>
     </section>
   );
+}
+
+function Spinner() {
+  return <span aria-hidden className="size-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />;
 }
 
 function Balance({ label, value }: { label: string; value: string }) {
@@ -166,7 +250,7 @@ function SendForm({ amount }: { amount: number }) {
     <dl>
       <Row k="To (a friend)" v={shortAddr(PRACTICE_FRIEND_ADDRESS)} mono />
       <Row k="Amount" v={`${amount} SOL`} />
-      <Row k="Network fee" v="0.000005 SOL" />
+      <Row k="Network fee" v="~0.000005 SOL" />
     </dl>
   );
 }
@@ -178,7 +262,7 @@ function SwapForm({ pay, get, symbol }: { pay: number; get: number; symbol: stri
         <p className="text-sm font-bold text-ink-soft">You pay</p>
         <p className="text-2xl font-extrabold">{pay} SOL</p>
       </div>
-      <span aria-hidden className="mx-auto -my-4 z-10 grid size-10 place-items-center rounded-full bg-sandy-beige text-deep-ocean ring-4 ring-white">
+      <span aria-hidden className="z-10 mx-auto -my-4 grid size-10 place-items-center rounded-full bg-sandy-beige text-deep-ocean ring-4 ring-white">
         ↓
       </span>
       <div className="rounded-[1.1rem] bg-light-sky/35 px-4 py-3">
@@ -187,18 +271,34 @@ function SwapForm({ pay, get, symbol }: { pay: number; get: number; symbol: stri
           {get} {symbol} <span className="text-base font-bold text-ink-soft">Ocean Token</span>
         </p>
       </div>
+      <p className="mt-1 text-sm text-ink-soft">Practice swap: simulated in your training wallet, no real tokens move.</p>
     </div>
   );
 }
 
 function Receipt({ tx, from }: { tx: PracticeTx; from: string }) {
+  const [live, setLive] = useState<Awaited<ReturnType<typeof getReceipt>>>(null);
+  useEffect(() => {
+    if (!tx.real) return;
+    let alive = true;
+    getReceipt(tx.signature)
+      .then((r) => alive && setLive(r))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [tx.real, tx.signature]);
+  const link = txExplorerUrl(tx);
+
   return (
     <div className={`mt-5 rounded-[1.25rem] ring-1 ring-ink/10 ${m.fadeUp}`}>
       <div className="flex items-center justify-between gap-3 rounded-t-[1.25rem] bg-foam px-4 py-3">
         <p className="flex items-center gap-2 font-extrabold">
           <IconSparkle width={16} height={16} /> Transaction receipt
         </p>
-        <span className="rounded-full bg-seafoam/20 px-3 py-1 text-sm font-extrabold text-[#2f6b64]">✓ Success</span>
+        <span className="rounded-full bg-seafoam/20 px-3 py-1 text-sm font-extrabold text-[#2f6b64]">
+          ✓ {live && !live.ok ? "Failed" : "Success"}
+        </span>
       </div>
       <dl className="px-4 pb-2">
         <Row k="What" v={tx.label} />
@@ -206,14 +306,31 @@ function Receipt({ tx, from }: { tx: PracticeTx; from: string }) {
         <Row k="From (you)" v={from ? shortAddr(from) : "—"} mono />
         {tx.kind === "send" && <Row k="To" v={shortAddr(PRACTICE_FRIEND_ADDRESS)} mono />}
         <Row k="Amount" v={`${Math.abs(tx.amountSol)} SOL`} />
-        <Row k="Network fee" v={`${tx.feeSol} SOL`} />
-        <Row k="Time" v={new Date(tx.at).toLocaleString()} />
-        <Row k="Network" v="Practice (simulated devnet)" />
+        <Row k="Network fee" v={`${live ? live.feeSol : tx.feeSol} SOL`} />
+        <Row k="Time" v={new Date(live?.blockTime ?? tx.at).toLocaleString()} />
+        <Row k="Network" v={tx.real ? "Solana devnet" : "Practice (simulated)"} />
       </dl>
-      <p className="border-t border-ink/8 px-4 py-3 text-sm leading-relaxed text-ink-soft">
-        This is a practice receipt. Once your wallet is connected to the real Solana devnet, this button will open the
-        same receipt on Solana Explorer. Notice: addresses only, never your name.
-      </p>
+      {link ? (
+        <div className="border-t border-ink/8 p-4">
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-ocean-teal px-6 text-[16px] font-extrabold text-white transition hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50"
+          >
+            Open it on Solana Explorer <IconExternal width={17} height={17} />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+          <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+            That&apos;s the real public record. Notice: only addresses, never your name.
+          </p>
+        </div>
+      ) : (
+        <p className="border-t border-ink/8 px-4 py-3 text-sm leading-relaxed text-ink-soft">
+          This is a practice receipt (simulated). On devnet the same button opens the real record on Solana Explorer.
+          Notice: addresses only, never your name.
+        </p>
+      )}
     </div>
   );
 }
