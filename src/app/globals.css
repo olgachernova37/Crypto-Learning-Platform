@@ -43,12 +43,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Small uppercase "LESSON 01" style labels, like the OceanX chapter labels. */
+/* Small labels above headings ("Lesson 01 · Step 1 of 4", "Quick check · …").
+   Same font as everything else, natural spacing, normal case — no spaced-out capitals. */
 .label-mono {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

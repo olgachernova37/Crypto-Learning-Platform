@@ -406,7 +406,7 @@ export function Journey() {
                   ) : (
                     <span
                       className={[
-                        "relative grid h-10 w-10 place-items-center rounded-full font-mono text-[12px] font-semibold tracking-wider shadow-[0_6px_18px_rgba(2,12,22,0.45)] transition-all duration-300",
+                        "relative grid h-10 w-10 place-items-center rounded-full text-[13px] font-extrabold shadow-[0_6px_18px_rgba(2,12,22,0.45)] transition-all duration-300",
                         stop.done
                           ? "bg-seafoam text-white"
                           : selected
@@ -422,7 +422,7 @@ export function Journey() {
                 </button>
                 <span
                   className={[
-                    "pointer-events-none absolute whitespace-nowrap text-[13px] font-semibold tracking-wide transition-opacity duration-500",
+                    "pointer-events-none absolute whitespace-nowrap text-[13px] font-semibold transition-opacity duration-500",
                     selected ? "text-white" : "text-light-sky/80",
                     // phones: the bottom card already names the lesson; long labels would run off-screen
                     stop.kind === "lesson" ? "max-md:hidden" : "",
@@ -528,7 +528,7 @@ export function Journey() {
                 </span>
               )}
             </p>
-            <p className="mt-3 text-[13px] font-bold uppercase tracking-[0.12em] text-light-sky md:text-sm">
+            <p className="mt-3 text-[15px] font-bold text-light-sky md:text-base">
               {active.kicker}
             </p>
             <h2 className="mt-2 text-balance text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[3.3rem]">

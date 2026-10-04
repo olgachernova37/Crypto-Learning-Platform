@@ -31,7 +31,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
             {lessonLabel(lesson.number)}
           </p>
           <p
-            className={`mt-4 text-sm font-extrabold tracking-[0.12em] text-light-sky uppercase sm:text-base ${m.fadeUp} ${m.delay1}`}
+            className={`mt-4 text-base font-extrabold text-light-sky sm:text-lg ${m.fadeUp} ${m.delay1}`}
           >
             {lesson.kicker}
           </p>

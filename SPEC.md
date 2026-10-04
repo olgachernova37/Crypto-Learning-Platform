@@ -125,7 +125,7 @@ How their structure maps onto ours:
 
 | OceanX 2025 | Our platform |
 | --- | --- |
-| Hero + "Enter experience" button | Globe start page + "Start your journey" button |
+| Hero + "Enter experience" button | Solana first-stop landing + "Start the journey" button |
 | Expedition timeline, a map per chapter | The boat route; each stop is a lesson with its own small map/illustration |
 | "Chapter 01 · Nice, France" label | "Lesson 01 · What is crypto" label above the headline |
 | Big headline + one-line subheading | Big lesson title + one friendly sentence on what you'll learn |
@@ -147,7 +147,7 @@ How their structure maps onto ours:
 
 ## Pages (screen map)
 
-1. **Home page** — the Earth (a globe) as the start screen, short welcome, button to start learning.
+1. **Home page** — "Welcome, voyager · Your first stop: Solana": an illustrated Solana-inspired planet with our boat arriving, a short welcome, "No crypto experience needed", and a "Start the journey" button to the lesson route.
 2. **Lessons list** — a little boat sails along a route across the ocean; each stop on the route is a lesson. The boat shows where the learner is, finished stops are marked.
 3. **Lesson page** — tapping a stop opens the lesson on its **own new page** (not a slide-in or popup over the map). Paragraph-steps with quizzes and the "Ask AI" button, in the ocean tones of the palette.
 4. **Partners page ("We recommend")** — opened by its own button; see below.

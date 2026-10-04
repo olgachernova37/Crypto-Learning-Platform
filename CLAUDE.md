@@ -38,4 +38,4 @@ Next.js · Solana Kit · embedded wallet (provider TBD), Phantom later · Metapl
 
 ## Pages
 
-Home (Earth / globe start screen) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.
+Home ("Welcome, voyager — Your first stop: Solana": illustrated Solana planet + our boat arriving, CTA "Start the journey" → /journey) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.

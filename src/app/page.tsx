@@ -1,10 +1,10 @@
 import { AppShell } from "@/components/shell/AppShell";
-import { EarthHero } from "@/components/ocean/hero/EarthHero";
+import { SolanaHero } from "@/components/ocean/hero/SolanaHero";
 
 export default function Page() {
   return (
     <AppShell variant="immersive">
-      <EarthHero />
+      <SolanaHero />
     </AppShell>
   );
 }

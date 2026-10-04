@@ -63,7 +63,7 @@ export function FinaleView() {
             <span aria-hidden className="size-2 rounded-[2px] bg-sandy-beige" />
             The end of the route
           </p>
-          <p className={`mt-4 text-sm font-extrabold tracking-[0.12em] text-light-sky uppercase sm:text-base ${m.fadeUp} ${m.delay1}`}>
+          <p className={`mt-4 text-base font-extrabold text-light-sky sm:text-lg ${m.fadeUp} ${m.delay1}`}>
             Finale
           </p>
           <h1 className={`mt-2 text-[3rem] leading-[1.02] font-extrabold tracking-tight sm:text-7xl ${m.fadeUp} ${m.delay1}`}>

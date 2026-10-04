@@ -20,7 +20,7 @@ export function StepContent({ step }: { step: LessonStep }) {
           className={`relative overflow-hidden rounded-[1.5rem] bg-sandy-beige/35 p-5 sm:p-6 ${m.fadeUp} ${m.delay2}`}
         >
           <span aria-hidden className="absolute -top-8 -right-8 size-28 rounded-full bg-sandy-beige/40" />
-          <p className="relative flex items-center gap-2 text-sm font-extrabold tracking-wide text-deep-ocean/80 uppercase">
+          <p className="relative flex items-center gap-2 text-[15px] font-extrabold text-deep-ocean/80">
             <span className="grid size-8 place-items-center rounded-full bg-white/80 text-ocean-teal">
               <IconBulb width={17} height={17} />
             </span>
