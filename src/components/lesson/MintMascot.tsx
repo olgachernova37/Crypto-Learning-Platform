@@ -8,6 +8,7 @@ import { isAddress } from "@solana/kit";
 import { useProgress } from "@/lib/progress";
 import { addressExplorerUrl, shortAddr, useTrainingWallet, walletErrorText } from "@/lib/training-wallet";
 import { useT } from "@/i18n";
+import { connectPhantom, forgetPhantom, isMobileDevice, phantomBrowseLink, usePhantomAddress } from "@/lib/phantom";
 import { Confetti } from "./Confetti";
 import { IconCheck, IconExternal, IconSparkle } from "./icons";
 import m from "./motion.module.css";
@@ -17,13 +18,16 @@ export function MintMascot() {
   const { wallet, busy, error, mintMascot, switchToPractice } = useTrainingWallet();
   const [where, setWhere] = useState<"training" | "phantom">("training");
   const [phantom, setPhantom] = useState("");
+  const linked = usePhantomAddress(); // public address from "Connect Phantom" (remembered)
+  const [conn, setConn] = useState<"" | "busy" | "notInstalled" | "rejected">("");
+  const address = (phantom || linked).trim();
   const minted = wallet?.mascot;
-  const phantomOk = isAddress(phantom.trim());
+  const phantomOk = isAddress(address);
   const t = useT();
   const f = t.finale.mint;
 
   const mint = async () => {
-    const ok = await mintMascot(where === "phantom" ? phantom.trim() : undefined);
+    const ok = await mintMascot(where === "phantom" ? address : undefined);
     if (ok) claimNft();
   };
 
@@ -111,8 +115,57 @@ export function MintMascot() {
         </div>
         {where === "phantom" && (
           <div className={`mt-3 ${m.fadeUp}`}>
-            <label htmlFor="phantom-address" className="text-sm font-bold text-white/85">
-              {f.phantomAddress}
+            {linked && !phantom ? (
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-[1.1rem] bg-seafoam/25 px-4 py-3">
+                <p className="font-mono text-[15px] font-bold text-white">✓ {f.connected(shortAddr(linked))}</p>
+                <button type="button" onClick={() => forgetPhantom()} className="text-sm font-bold text-light-sky underline">
+                  {f.useAnother}
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  disabled={conn === "busy"}
+                  onClick={async () => {
+                    setConn("busy");
+                    const r = await connectPhantom();
+                    if (r.ok) {
+                      setPhantom("");
+                      setConn("");
+                    } else setConn(r.reason);
+                  }}
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#ab9ff2] px-5 text-[16px] font-extrabold text-deep-ocean transition hover:brightness-105 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-light-sky disabled:opacity-60"
+                >
+                  {conn === "busy" ? f.connecting : f.connect}
+                </button>
+                {conn === "notInstalled" && (
+                  <p role="status" className="mt-2 text-sm leading-relaxed text-white/85">
+                    {f.notInstalled}{" "}
+                    {isMobileDevice() ? (
+                      <a href={phantomBrowseLink()} className="font-bold text-light-sky underline">
+                        {f.openInApp}
+                      </a>
+                    ) : (
+                      <a href="https://phantom.com/download" target="_blank" rel="noopener noreferrer" className="font-bold text-light-sky underline">
+                        {f.install}
+                        <span className="sr-only"> {f.opensInNewTab}</span>
+                      </a>
+                    )}
+                  </p>
+                )}
+                {conn === "rejected" && (
+                  <p role="status" className="mt-2 text-sm leading-relaxed text-sandy-beige">
+                    {f.rejected}
+                  </p>
+                )}
+                <p className="mt-2 text-xs leading-relaxed text-white/60">{f.connectSafe}</p>
+              </>
+            )}
+            {!(linked && !phantom) && (
+              <>
+            <label htmlFor="phantom-address" className="mt-4 block text-sm font-bold text-white/85">
+              {f.orPaste}
             </label>
             <input
               id="phantom-address"
@@ -123,7 +176,9 @@ export function MintMascot() {
               autoComplete="off"
               className="mt-1 w-full rounded-full bg-white px-4 py-3 font-mono text-[15px] text-ink outline-none ring-2 ring-transparent focus:ring-light-sky"
             />
-            {phantom && !phantomOk && <p className="mt-1 text-sm text-sandy-beige">{f.phantomInvalid}</p>}
+            {phantom.trim() && !isAddress(phantom.trim()) && <p className="mt-1 text-sm text-sandy-beige">{f.phantomInvalid}</p>}
+              </>
+            )}
           </div>
         )}
       </fieldset>
