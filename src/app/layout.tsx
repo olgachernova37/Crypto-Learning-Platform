@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/nunito";
 import "./globals.css";
+import { NameGate } from "@/components/account/NameGate";
 
 export const metadata: Metadata = {
   title: "Crypto Voyage — learn crypto from zero",
@@ -17,7 +18,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <NameGate />
+      </body>
     </html>
   );
 }

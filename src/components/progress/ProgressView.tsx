@@ -8,6 +8,7 @@ import { useState } from "react";
 import { lessonNum } from "@/content/lessons";
 import { useLessons } from "@/i18n/lessons";
 import { useLocale, useT } from "@/i18n";
+import { useProfile } from "@/lib/profile";
 import type { Dict } from "@/i18n/ui/en";
 import type { Lesson } from "@/content/types";
 import { useProgress, type Progress } from "@/lib/progress";
@@ -89,6 +90,7 @@ export function ProgressView() {
   const { progress, ready, reset } = useProgress();
   const t = useT();
   const pt = t.progress;
+  const { profile } = useProfile();
   const lessons = useLessons();
   const [locale] = useLocale();
 
@@ -108,7 +110,7 @@ export function ProgressView() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6 sm:pt-10">
       <header>
-        <p className="label-mono text-ocean-teal">{pt.eyebrow}</p>
+        <p className="label-mono text-ocean-teal">{profile ? t.account.progressOf(profile.name) : pt.eyebrow}</p>
         <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-deep-ocean sm:text-5xl">
           {pt.title}
         </h1>

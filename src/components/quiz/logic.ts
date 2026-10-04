@@ -123,3 +123,19 @@ export function answerText(q: Quiz, a: QuizAnswer, tf: TrueFalseLabels = EN_TF):
     return q.pairs.map((p, i) => `${p.left}: ${q.pairs[a.value[i]]?.right ?? "?"}`).join(" · ");
   return "";
 }
+
+/** The correct answer as if the learner picked it (used by the admin "Demo: next" shortcut). */
+export function correctAnswer(q: Quiz): QuizAnswer {
+  switch (q.kind) {
+    case "single":
+      return { kind: "single", value: q.correct };
+    case "multiple":
+      return { kind: "multiple", value: [...q.correct] };
+    case "fill":
+      return { kind: "fill", value: q.answers[0] };
+    case "truefalse":
+      return { kind: "truefalse", value: q.correct };
+    case "match":
+      return { kind: "match", value: Object.fromEntries(q.pairs.map((_, i) => [i, i])) };
+  }
+}

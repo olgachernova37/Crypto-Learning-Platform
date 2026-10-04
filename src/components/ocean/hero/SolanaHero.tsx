@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { useT } from "@/i18n";
 import { useLessons } from "@/i18n/lessons";
 import { Boat } from "../Boat";
+import { NameDialog } from "@/components/account/NameDialog";
+import { useProfile } from "@/lib/profile";
 import s from "./solana-hero.module.css";
 
 // fixed star field (deterministic, so server and client render the same)
@@ -33,11 +35,19 @@ export function SolanaHero() {
     router.prefetch("/journey");
   }, [router]);
 
-  const start = () => {
-    if (leaving) return;
+  const { profile } = useProfile();
+  const [asking, setAsking] = useState(false);
+
+  const sail = () => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return router.push("/journey");
     setLeaving(true);
     window.setTimeout(() => router.push("/journey"), 1100);
+  };
+  // first time: ask for a name, then set sail
+  const start = () => {
+    if (leaving) return;
+    if (!profile) setAsking(true);
+    else sail();
   };
 
   return (
@@ -107,6 +117,15 @@ export function SolanaHero() {
       </div>
 
       <div className={s.dive} aria-hidden="true" />
+      {asking && (
+        <NameDialog
+          onClose={() => setAsking(false)}
+          onDone={() => {
+            setAsking(false);
+            sail();
+          }}
+        />
+      )}
     </main>
   );
 }

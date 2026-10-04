@@ -8,7 +8,8 @@ import { useLocalizedLesson } from "@/i18n/lessons";
 import { useProgress } from "@/lib/progress";
 import { QuizView } from "@/components/quiz/QuizView";
 import { QuizFeedback } from "@/components/quiz/QuizFeedback";
-import { answerText, emptyAnswer, isCorrect, isReady, type QuizAnswer } from "@/components/quiz/logic";
+import { answerText, correctAnswer, emptyAnswer, isCorrect, isReady, type QuizAnswer } from "@/components/quiz/logic";
+import { useAdmin } from "@/lib/admin-client";
 import { LessonIntro } from "./LessonIntro";
 import { LessonHeader } from "./LessonHeader";
 import { StepContent } from "./StepContent";
@@ -100,6 +101,24 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
     });
   };
 
+  // Admin demo shortcut: 1st tap shows the question answered correctly (with the green feedback),
+  // 2nd tap moves on. Practice zones are skipped. Only visible when logged in at /admin.
+  const { admin } = useAdmin();
+  const demoNext = () => {
+    if (phase === "quiz" && revealed) return goNext();
+    if (step.quiz) {
+      if (!revealed) {
+        const a = correctAnswer(step.quiz);
+        setResults((r) => ({ ...r, [step.id]: { answer: a, correct: true } }));
+        award(step.id);
+      }
+      setPhase("quiz");
+      return;
+    }
+    award(step.id);
+    goNext();
+  };
+
   const back = () => {
     setDraft(null);
     if (phase === "quiz") setPhase("read");
@@ -189,6 +208,17 @@ export function LessonPlayer({ lesson: source, next }: { lesson: Lesson; next: N
           wasCorrect: phase === "quiz" ? result?.correct : undefined,
         }}
       />
+
+      {admin && (
+        <button
+          type="button"
+          onClick={demoNext}
+          aria-label={t.admin.demoAria}
+          className="fixed left-4 z-40 inline-flex min-h-11 items-center gap-1.5 rounded-full bg-sandy-beige px-4 text-[14px] font-extrabold text-deep-ocean shadow-[0_12px_28px_-12px_rgba(13,43,69,0.6)] ring-2 ring-white transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60 bottom-[calc(6.5rem+env(safe-area-inset-bottom))] sm:left-8 sm:bottom-[7.5rem]"
+        >
+          <span aria-hidden>⏭</span> {t.admin.demoNext}
+        </button>
+      )}
 
       {/* bottom action bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-ink/6 bg-white/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg">

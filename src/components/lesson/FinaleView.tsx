@@ -5,6 +5,7 @@ import { useState } from "react";
 import { lessons } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { useT } from "@/i18n";
+import { useProfile } from "@/lib/profile";
 import { SeaScene } from "./SeaScene";
 import { SeaTurtle } from "./SeaTurtle";
 import { MintMascot } from "./MintMascot";
@@ -128,7 +129,9 @@ export function FinaleView() {
 }
 
 function NftCard({ claimed }: { claimed: boolean }) {
-  const c = useT().finale.card;
+  const t = useT();
+  const c = t.finale.card;
+  const { profile } = useProfile();
   return (
     <figure className={`order-first mx-auto w-full max-w-[16rem] sm:max-w-[20rem] lg:order-none lg:max-w-[22rem] ${m.pop} ${m.delay2}`}>
       <div className="relative rounded-[2rem] bg-white p-3 text-ink shadow-[0_40px_90px_-30px_rgba(0,0,0,0.65)] ring-1 ring-white/40">
@@ -145,7 +148,7 @@ function NftCard({ claimed }: { claimed: boolean }) {
         <figcaption className="flex items-center justify-between gap-3 px-3 pt-4 pb-2">
           <div>
             <p className="text-lg font-extrabold sm:text-xl">{c.name}</p>
-            <p className="text-sm text-ink-soft">{c.subtitle}</p>
+            <p className="text-sm text-ink-soft">{profile ? t.account.earnedBy(profile.name) : c.subtitle}</p>
           </div>
           <span
             className={`grid size-11 shrink-0 place-items-center rounded-full ${

@@ -39,6 +39,11 @@ Next.js · Solana Kit · Gemini AI guide (`src/app/api/ai/route.ts`, server-only
 - `src/lib/solana/mascot.ts` — mints the mascot NFT (Token-2022 + metadata extension). Metadata route: `src/app/mascot/pebble.json/route.ts`. Smoke test: `scripts/mascot-smoke.mts`.
 - Test without devnet access: run `solana-test-validator`, build with `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899`, or `NEXT_PUBLIC_SOLANA_RPC=http://127.0.0.1:8899 npx tsx scripts/devnet-smoke.mts`.
 
+## Accounts & admin
+
+- Learners only give a name (no email/password): asked on "Start the journey" and by `NameGate` on any other page. Stored on the device (`src/lib/profile.ts`) and sent to `/api/learners` → Upstash Redis if `KV_REST_API_URL`/`KV_REST_API_TOKEN` are set.
+- `/admin` ("Captain's deck"): password in server env `ADMIN_PASSWORD` → signed httpOnly cookie (`src/lib/server/admin.ts`). Admin sees the learner list, "mark all lessons finished", reset, and a "⏭ Demo: next" button in every lesson. Never expose admin checks or secrets to the client.
+
 ## Pages
 
 Home ("Welcome, voyager — Your first stop: Solana": illustrated Solana planet + our boat arriving, CTA "Start the journey" → /journey) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.

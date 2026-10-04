@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { lessonNum } from "@/content/lessons";
 import { useT } from "@/i18n";
+import { useProfile } from "@/lib/profile";
 import { useLessons } from "@/i18n/lessons";
 import { useProgress } from "@/lib/progress";
 import { Boat } from "./Boat";
@@ -64,6 +65,7 @@ const BOAT_NARROW = 96;
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export function Journey() {
+  const { profile } = useProfile();
   const router = useRouter();
   const { progress, ready } = useProgress();
   const narrow = useIsNarrow();
@@ -491,6 +493,13 @@ export function Journey() {
         </span>
         {t.journey.backToStart}
       </Link>
+      {profile && (
+        <p
+          className={`absolute left-4 top-[128px] z-10 max-w-[70vw] truncate rounded-full px-3.5 text-[15px] font-extrabold text-white/90 md:left-8 md:top-[136px] ${styles.fadeIn}`}
+        >
+          {t.account.hello(profile.name)}
+        </p>
+      )}
 
       {/* ---- wide screens: counter, arrows, hint (bottom-left) ---- */}
       {!narrow && (

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { DeepPartial } from "../types";
 import type { Dict } from "./en";
+import { ukExtra } from "./extra/uk";
 
 // Ukrainian translation of src/i18n/ui/en.ts. Anything missing falls back to English.
 // Addresses the learner with «ти» and avoids gendered past-tense forms where possible.
@@ -20,6 +21,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 type Bold = (text: string) => ReactNode;
 
 export const uk: DeepPartial<Dict> = {
+  ...ukExtra,
   common: {
     language: "Мова",
     appName: "Crypto Voyage",
