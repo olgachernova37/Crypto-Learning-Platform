@@ -6,7 +6,7 @@ import { lessonLabel } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { QuizView } from "@/components/quiz/QuizView";
 import { QuizFeedback } from "@/components/quiz/QuizFeedback";
-import { emptyAnswer, isCorrect, isReady, type QuizAnswer } from "@/components/quiz/logic";
+import { answerText, emptyAnswer, isCorrect, isReady, type QuizAnswer } from "@/components/quiz/logic";
 import { LessonIntro } from "./LessonIntro";
 import { LessonHeader } from "./LessonHeader";
 import { StepContent } from "./StepContent";
@@ -175,9 +175,12 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
       <AskAi
         key={`${step.id}`}
         context={{
-          lessonTitle: lesson.title,
+          lessonId: lesson.id,
+          stepId: step.id,
           stepTitle: step.title,
-          quizQuestion: phase === "quiz" ? step.quiz?.question : undefined,
+          phase: phase === "quiz" ? "quiz" : "read",
+          learnerAnswer: phase === "quiz" && result && step.quiz ? answerText(step.quiz, result.answer) : undefined,
+          wasCorrect: phase === "quiz" ? result?.correct : undefined,
         }}
       />
 

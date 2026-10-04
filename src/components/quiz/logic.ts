@@ -93,3 +93,37 @@ const cheers = [
 ];
 
 export const cheerFor = (seed: string) => cheers[seed.length % cheers.length];
+
+/** The right answer in plain words (used by the feedback card and the AI tutor). */
+export function rightAnswerText(q: Quiz): string {
+  switch (q.kind) {
+    case "single":
+      return q.options.find((o) => o.id === q.correct)?.text ?? "";
+    case "multiple":
+      return q.options
+        .filter((o) => q.correct.includes(o.id))
+        .map((o) => o.text)
+        .join(" · ");
+    case "fill":
+      return q.answers[0];
+    case "truefalse":
+      return q.correct ? "True" : "False";
+    case "match":
+      return q.pairs.map((p) => `${p.left}: ${p.right}`).join(" · ");
+  }
+}
+
+/** What the learner picked, in plain words. */
+export function answerText(q: Quiz, a: QuizAnswer): string {
+  if (q.kind === "single" && a.kind === "single") return q.options.find((o) => o.id === a.value)?.text ?? "";
+  if (q.kind === "multiple" && a.kind === "multiple")
+    return q.options
+      .filter((o) => a.value.includes(o.id))
+      .map((o) => o.text)
+      .join(" · ");
+  if (q.kind === "fill" && a.kind === "fill") return a.value.trim();
+  if (q.kind === "truefalse" && a.kind === "truefalse") return a.value === null ? "" : a.value ? "True" : "False";
+  if (q.kind === "match" && a.kind === "match")
+    return q.pairs.map((p, i) => `${p.left}: ${q.pairs[a.value[i]]?.right ?? "?"}`).join(" · ");
+  return "";
+}

@@ -1,16 +1,42 @@
 "use client";
 
+// The AI guide: our little boat, sailing along with the learner. A compact night-sea panel
+// (tablet/desktop: floats bottom-right above the action bar; phones: a short bottom sheet).
+// It only talks to our own /api/ai route — the Gemini key never reaches the browser.
+
 import { useEffect, useId, useRef, useState } from "react";
-import { IconChat, IconClose, IconSend, IconSparkle } from "./icons";
+import { Boat } from "@/components/ocean/Boat";
+import { IconClose, IconSend } from "./icons";
 import m from "./motion.module.css";
 
 type Msg = { from: "me" | "ai"; text: string; note?: string };
 
-export type AskContext = { lessonTitle: string; stepTitle: string; quizQuestion?: string };
+export type AskContext = {
+  lessonId: string;
+  stepId: string;
+  stepTitle: string;
+  phase: "read" | "quiz";
+  /** set once the quiz was checked */
+  learnerAnswer?: string;
+  wasCorrect?: boolean;
+};
 
+/** Open the guide from anywhere. `detail.ask` (optional) is sent as the first question. */
 export const ASK_AI_OPEN_EVENT = "crypto-voyage:ask-ai";
 
-/** Floating "Ask AI" pill (tablet/desktop) + small rounded chat sheet. Talks to /api/ask. */
+/** The companion's face: our boat in a soft glowing porthole. */
+export function GuideAvatar({ size = 40 }: { size?: number }) {
+  return (
+    <span
+      aria-hidden
+      className="relative grid shrink-0 place-items-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#2a7690,#0d2b45_70%)] ring-2 ring-light-sky/40 shadow-[0_0_18px_-2px_rgba(126,224,240,0.55)]"
+      style={{ width: size, height: size }}
+    >
+      <Boat className="w-[92%] -rotate-[28deg]" />
+    </span>
+  );
+}
+
 export function AskAi({ context, raised = true }: { context: AskContext; raised?: boolean }) {
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
@@ -21,9 +47,40 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
   const list = useRef<HTMLDivElement>(null);
   const titleId = useId();
 
+  async function send(text: string) {
+    const question = text.trim();
+    if (!question || busy) return;
+    const history = msgs.map(({ from, text }) => ({ from, text }));
+    setMsgs((m) => [...m, { from: "me", text: question }]);
+    setQ("");
+    setBusy(true);
+    try {
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...context, question, history }),
+      });
+      const data = (await res.json()) as { answer?: string; note?: string; error?: string };
+      setMsgs((m) => [
+        ...m,
+        { from: "ai", text: data.answer ?? data.error ?? "Hmm, I couldn't think of an answer. Try asking another way?", note: data.note },
+      ]);
+    } catch {
+      setMsgs((m) => [...m, { from: "ai", text: "I couldn't reach the guide just now. Check your connection and try again?" }]);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // keep the newest `send` for the window event listener below
+  const sendRef = useRef(send);
+  useEffect(() => {
+    sendRef.current = send;
+  });
+
   useEffect(() => {
     if (!open) return;
-    input.current?.focus();
+    input.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
@@ -34,9 +91,13 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // on phones the trigger lives in the lesson header (so it never covers the lesson text)
+  // opened from the lesson header (phones) or from a quiz's "Ask the AI guide why"
   useEffect(() => {
-    const openSheet = () => setOpen(true);
+    const openSheet = (e: Event) => {
+      setOpen(true);
+      const ask = (e as CustomEvent<{ ask?: string } | undefined>).detail?.ask;
+      if (ask) sendRef.current(ask);
+    };
     window.addEventListener(ASK_AI_OPEN_EVENT, openSheet);
     return () => window.removeEventListener(ASK_AI_OPEN_EVENT, openSheet);
   }, []);
@@ -45,33 +106,22 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
     list.current?.scrollTo({ top: list.current.scrollHeight, behavior: "smooth" });
   }, [msgs, busy]);
 
-  async function send(text: string) {
-    const question = text.trim();
-    if (!question || busy) return;
-    setMsgs((m) => [...m, { from: "me", text: question }]);
-    setQ("");
-    setBusy(true);
-    try {
-      const res = await fetch("/api/ask", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...context, question }),
-      });
-      const data = (await res.json()) as { answer?: string; note?: string; error?: string };
-      setMsgs((m) => [
-        ...m,
-        { from: "ai", text: data.answer ?? data.error ?? "Hmm, I couldn't think of an answer. Try asking another way?", note: data.note },
-      ]);
-    } catch {
-      setMsgs((m) => [...m, { from: "ai", text: "I couldn't reach the helper just now. Check your connection and try again?" }]);
-    } finally {
-      setBusy(false);
-    }
-  }
+  const missed = context.phase === "quiz" && context.wasCorrect === false;
+  const suggestions = missed
+    ? ["Why was my answer wrong?", "Give me another example"]
+    : context.phase === "quiz"
+      ? ["Can I have a hint?", "Explain this more simply"]
+      : ["Explain this more simply", "Give me a real-life example"];
+  const greeting = missed
+    ? "Ahoy! That one was tricky. Want me to explain why the right answer fits? Mistakes are just part of the route."
+    : context.phase === "quiz"
+      ? "Ahoy! Need a nudge? I'll give you a hint, not the answer, so the win stays yours."
+      : "Ahoy, voyager! Stuck or just curious about this step? Ask me anything, in your own words.";
 
-  const suggestions = context.quizQuestion
-    ? ["Can you give me a hint?", "Explain this step more simply"]
-    : ["Explain this more simply", "Give me another example"];
+  const close = () => {
+    setOpen(false);
+    pill.current?.focus();
+  };
 
   return (
     <>
@@ -81,68 +131,66 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-haspopup="dialog"
-        className={`fixed right-4 z-40 hidden min-h-12 sm:inline-flex items-center gap-2 rounded-full bg-deep-ocean py-2 pr-5 pl-2.5 text-[15px] font-extrabold text-white shadow-[0_14px_34px_-12px_rgba(13,43,69,0.75)] ring-4 ring-white/70 transition hover:-translate-y-0.5 hover:bg-ocean-teal focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60 sm:right-8 ${
+        className={`fixed right-4 z-40 hidden min-h-12 items-center gap-2.5 rounded-full bg-sea-night py-1.5 pr-5 pl-1.5 text-[15px] font-extrabold text-white shadow-[0_14px_34px_-12px_rgba(8,28,46,0.8),0_0_24px_-6px_rgba(126,224,240,0.5)] ring-1 ring-light-sky/25 transition hover:-translate-y-0.5 hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/60 sm:inline-flex sm:right-8 ${
           raised ? "bottom-[calc(6.5rem+env(safe-area-inset-bottom))] sm:bottom-[7.5rem]" : "bottom-[calc(1rem+env(safe-area-inset-bottom))] sm:bottom-8"
         } ${open ? "pointer-events-none opacity-0" : ""}`}
       >
-        <span aria-hidden className="grid size-8 place-items-center rounded-full bg-light-sky text-deep-ocean">
-          <IconSparkle width={16} height={16} />
-        </span>
+        <GuideAvatar size={36} />
         Ask AI
       </button>
 
       {open && (
         <>
-          <div aria-hidden className="fixed inset-0 z-40 bg-deep-ocean/25 backdrop-blur-[2px] sm:bg-transparent sm:backdrop-blur-none" onClick={() => setOpen(false)} />
+          <div aria-hidden className="fixed inset-0 z-40 bg-sea-night/40 backdrop-blur-[2px] sm:hidden" onClick={() => setOpen(false)} />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className={`fixed inset-x-0 bottom-0 z-50 flex max-h-[82dvh] flex-col overflow-hidden rounded-t-[1.75rem] bg-white shadow-[0_-20px_60px_-20px_rgba(13,43,69,0.45)] sm:inset-x-auto sm:right-8 sm:bottom-8 sm:max-h-[min(36rem,80dvh)] sm:w-[24rem] sm:rounded-[1.75rem] sm:shadow-[0_30px_80px_-24px_rgba(13,43,69,0.55)] sm:ring-1 sm:ring-ink/8 ${m.fadeUp}`}
+            className={`fixed inset-x-0 bottom-0 z-50 flex max-h-[72dvh] flex-col overflow-hidden rounded-t-[1.75rem] bg-[linear-gradient(180deg,#0f3350_0%,#081c2e_100%)] text-white shadow-[0_-20px_60px_-20px_rgba(8,28,46,0.7)] ring-1 ring-light-sky/15 sm:inset-x-auto sm:right-8 sm:w-[22rem] sm:rounded-[1.75rem] sm:shadow-[0_30px_80px_-24px_rgba(8,28,46,0.85),0_0_50px_-18px_rgba(126,224,240,0.55)] ${
+              raised ? "sm:bottom-[7.5rem] sm:max-h-[min(32rem,calc(100dvh-10rem))]" : "sm:bottom-8 sm:max-h-[min(32rem,80dvh)]"
+            } ${m.fadeUp}`}
           >
-            <div className="flex items-center gap-3 bg-deep-ocean px-5 py-4 text-white">
-              <span aria-hidden className="grid size-10 place-items-center rounded-full bg-light-sky text-deep-ocean">
-                <IconChat width={20} height={20} />
-              </span>
+            {/* header */}
+            <div className="flex items-center gap-3 px-4 pt-4 pb-3">
+              <GuideAvatar size={44} />
               <div className="min-w-0 flex-1">
-                <h2 id={titleId} className="text-[17px] font-extrabold">
-                  Ask AI
+                <h2 id={titleId} className="text-[17px] leading-tight font-extrabold">
+                  Your AI guide
                 </h2>
-                <p className="truncate text-sm text-white/70">About: {context.stepTitle}</p>
+                <p className="truncate text-[13px] font-semibold text-light-sky/75">Sailing with you · {context.stepTitle}</p>
               </div>
               <button
                 type="button"
-                onClick={() => {
-                  setOpen(false);
-                  pill.current?.focus();
-                }}
-                aria-label="Close the AI helper"
-                className="grid size-11 place-items-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white focus-visible:outline-3 focus-visible:outline-light-sky"
+                onClick={close}
+                aria-label="Close the AI guide"
+                className="grid size-11 place-items-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white focus-visible:outline-3 focus-visible:outline-light-sky"
               >
                 <IconClose width={20} height={20} />
               </button>
             </div>
+            <div aria-hidden className="mx-4 border-t border-dashed border-light-sky/20" />
 
-            <div ref={list} className="flex min-h-48 flex-1 flex-col gap-3 overflow-y-auto bg-foam px-4 py-4" aria-live="polite">
-              <Bubble from="ai" text="Hi! Stuck or just curious? Ask me anything about this step. I'll give you a nudge in plain words, not the quiz answer." />
+            {/* messages */}
+            <div ref={list} className="flex min-h-40 flex-1 flex-col gap-3 overflow-y-auto px-4 py-4" aria-live="polite">
+              <Bubble from="ai" text={greeting} />
               {msgs.map((msg, i) => (
                 <Bubble key={i} {...msg} />
               ))}
               {busy && (
-                <div className="flex w-fit items-center gap-1.5 rounded-[1.25rem] rounded-bl-md bg-white px-4 py-3.5 ring-1 ring-ink/8" aria-label="The helper is thinking">
+                <div className="flex w-fit items-center gap-1.5 rounded-[1.25rem] rounded-bl-md bg-white/8 px-4 py-3.5 ring-1 ring-light-sky/15" aria-label="The guide is thinking">
                   {[0, 1, 2].map((i) => (
-                    <span key={i} className={`size-2 rounded-full bg-seafoam ${m.twinkle}`} style={{ animationDelay: `${i * 0.25}s`, animationDuration: "1.2s" }} />
+                    <span key={i} className={`size-2 rounded-full bg-[#7ee0f0] ${m.twinkle}`} style={{ animationDelay: `${i * 0.25}s`, animationDuration: "1.2s" }} />
                   ))}
                 </div>
               )}
-              {msgs.length === 0 && (
+              {msgs.length === 0 && !busy && (
                 <div className="mt-1 flex flex-wrap gap-2">
                   {suggestions.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => send(s)}
-                      className="min-h-11 rounded-full bg-white px-4 text-sm font-bold text-ocean-teal ring-1 ring-ocean-teal/25 transition hover:bg-light-sky/40 focus-visible:outline-3 focus-visible:outline-ocean-teal/50"
+                      className="min-h-10 rounded-full bg-white/6 px-3.5 text-[14px] font-bold text-light-sky ring-1 ring-light-sky/30 transition hover:bg-light-sky/15 hover:text-white focus-visible:outline-3 focus-visible:outline-light-sky/60"
                     >
                       {s}
                     </button>
@@ -151,12 +199,13 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
               )}
             </div>
 
+            {/* input */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 send(q);
               }}
-              className="flex items-end gap-2 border-t border-ink/8 bg-white p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+              className="flex items-end gap-2 px-3 pt-1 pb-2"
             >
               <label htmlFor={`${titleId}-q`} className="sr-only">
                 Your question
@@ -174,20 +223,20 @@ export function AskAi({ context, raised = true }: { context: AskContext; raised?
                     send(q);
                   }
                 }}
-                placeholder="Type your question…"
-                className="max-h-32 min-h-12 flex-1 resize-none rounded-[1.25rem] bg-foam px-4 py-3 text-[16px] text-ink ring-1 ring-ink/10 outline-none placeholder:text-ink/40 focus:ring-2 focus:ring-ocean-teal/50"
+                placeholder="Ask about this step…"
+                className="max-h-28 min-h-12 flex-1 resize-none rounded-[1.25rem] bg-white/8 px-4 py-3 text-[16px] text-white ring-1 ring-light-sky/20 outline-none placeholder:text-light-sky/50 focus:ring-2 focus:ring-[#7ee0f0]/60"
               />
               <button
                 type="submit"
                 disabled={!q.trim() || busy}
                 aria-label="Send question"
-                className="grid size-12 shrink-0 place-items-center rounded-full bg-ocean-teal text-white transition hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 disabled:bg-ink/15 disabled:text-white"
+                className="grid size-12 shrink-0 place-items-center rounded-full bg-[linear-gradient(135deg,#b7d4e6,#7ee0f0_55%,#8ff0c4)] text-deep-ocean shadow-[0_0_20px_-4px_rgba(126,224,240,0.6)] transition hover:brightness-110 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-light-sky disabled:bg-none disabled:bg-white/10 disabled:text-white/40 disabled:shadow-none"
               >
                 <IconSend width={20} height={20} />
               </button>
             </form>
-            <p className="bg-white px-5 pb-3 text-center text-xs text-ink-soft">
-              Never share your recovery phrase, not even with an AI.
+            <p className="px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center text-[12px] text-light-sky/60">
+              Learning only, not financial advice. Never share your recovery phrase.
             </p>
           </div>
         </>
@@ -201,13 +250,13 @@ function Bubble({ from, text, note }: Msg) {
   return (
     <div className={`max-w-[88%] ${me ? "self-end" : "self-start"}`}>
       <div
-        className={`rounded-[1.25rem] px-4 py-3 text-[16px] leading-relaxed whitespace-pre-line ${
-          me ? "rounded-br-md bg-ocean-teal text-white" : "rounded-bl-md bg-white text-ink ring-1 ring-ink/8"
+        className={`rounded-[1.25rem] px-4 py-3 text-[15.5px] leading-relaxed whitespace-pre-line ${
+          me ? "rounded-br-md bg-[#2a7690] text-white" : "rounded-bl-md bg-white/8 text-[#e6f0f7] ring-1 ring-light-sky/15"
         }`}
       >
         {text}
       </div>
-      {note && <p className="mt-1.5 px-2 text-xs font-semibold text-ink-soft">{note}</p>}
+      {note && <p className="mt-1.5 px-2 text-xs font-semibold text-light-sky/55">{note}</p>}
     </div>
   );
 }

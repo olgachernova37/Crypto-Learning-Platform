@@ -28,7 +28,7 @@ Crypto learning web platform for complete beginners (Duolingo + SoloLearn style)
 
 ## Stack
 
-Next.js · Solana Kit · embedded wallet (provider TBD), Phantom later · Metaplex compressed NFTs (Bubblegum v2, Umi) · Solana Explorer links.
+Next.js · Solana Kit · Gemini AI guide (`src/app/api/ai/route.ts`, server-only, key in `GEMINI_API_KEY`, never `NEXT_PUBLIC_`; works offline with lesson-note hints) · embedded wallet (provider TBD), Phantom later · Metaplex compressed NFTs (Bubblegum v2, Umi) · Solana Explorer links.
 
 ## Solana (devnet)
 
