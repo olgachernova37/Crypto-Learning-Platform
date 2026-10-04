@@ -48,8 +48,15 @@ export type LessonStep = {
     href?: string;
     note?: string;
   };
+  /** A hands-on practice zone. Simulated with the in-app training wallet until devnet is wired up. */
+  practice?: Practice;
   quiz?: Quiz;
 };
+
+export type Practice =
+  | { kind: "send"; amount: number } // send SOL from the training wallet
+  | { kind: "swap"; payAmount: number; getAmount: number; getSymbol: string } // swap SOL -> token
+  | { kind: "receipt" }; // show the receipt of the learner's last practice transaction
 
 export type Lesson = {
   id: string; // url slug: /lesson/[id]
@@ -58,6 +65,7 @@ export type Lesson = {
   title: string;
   summary: string; // one friendly sentence
   minutes: number;
-  xp: number; // XP for finishing the lesson
+  xp: number; // XP for finishing the lesson (claimed on the completion screen)
+  outro?: string; // friendly line on the "Lesson completed" screen
   steps: LessonStep[];
 };

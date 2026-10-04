@@ -4,110 +4,90 @@ export const lesson0: Lesson = {
   id: "what-is-crypto",
   number: 0,
   kicker: "Start here",
-  title: "What is crypto, really?",
-  summary: "The big idea behind crypto and blockchain, explained like you would to a friend over coffee.",
-  minutes: 6,
+  title: "What is crypto and blockchain?",
+  summary: "The big idea behind crypto, explained like you would to a friend over coffee.",
+  minutes: 4,
   xp: 50,
+  outro: "You did an amazing job grasping the basics. You're one step closer to becoming a true crypto explorer!",
   steps: [
     {
-      id: "money-is-agreement",
-      title: "Money is an agreement",
+      id: "money-without-borders",
+      title: "Money without borders",
       body: [
-        "Look at a banknote. It's just paper with a nice print. It's worth something because all of us agree it is, and because we trust the bank and the country behind it to keep that agreement.",
-        "Crypto is a new kind of that agreement. Instead of one bank keeping the records, thousands of computers around the world keep them together.",
+        "Welcome! Grab a cozy seat. We're about to explore the world of crypto together, and I promise it's much simpler than it sounds.",
+        "Cryptocurrency (or just \"crypto\") is simply digital money. You can't hold it in your hand like a physical coin, but it works everywhere in the world.",
+        "Because it doesn't belong to any specific country or bank, you can send it to a friend across the globe just as easily as sending a text message!",
       ],
       example:
-        "Think of a coffee shop loyalty card. The stamps only mean something because you and the café both agree that ten stamps = a free latte.",
-      quiz: {
-        kind: "single",
-        question: "Why does money have value?",
-        options: [
-          { id: "a", text: "Because the paper itself is expensive" },
-          { id: "b", text: "Because people agree it's worth something and trust the system behind it" },
-          { id: "c", text: "Because it's made by computers" },
-        ],
-        correct: "b",
-        explanation:
-          "Money works because we all agree on it and trust whoever keeps the records. Crypto keeps that idea, but the records are kept by many computers instead of one bank.",
-      },
-    },
-    {
-      id: "shared-notebook",
-      title: "A notebook everyone shares",
-      body: [
-        "Imagine one notebook where every payment is written down: \"Anna sent Ben 5 coins.\" Now imagine thousands of people each holding an exact copy of that notebook.",
-        "That's a blockchain. New pages of payments (called blocks) are added one after another, like a chain, and every copy gets the same new page.",
-      ],
-      example:
-        "It's like a family group chat where everyone sees every message. Nobody needs to ask one person \"what was said?\" because everyone has the whole history.",
-      quiz: {
-        kind: "fill",
-        question: "A blockchain is like a shared ___ that everyone has a copy of.",
-        answers: ["notebook", "note book", "ledger", "record book", "record", "book"],
-        explanation:
-          "A blockchain is a shared notebook (people also call it a ledger). Everyone holds the same copy, and new pages, called blocks, are added in order.",
-      },
-    },
-    {
-      id: "no-secret-edits",
-      title: "Why nobody can secretly edit it",
-      body: [
-        "If one person scribbled a fake payment into their copy, it wouldn't match all the other copies. The network simply ignores the copy that doesn't match.",
-        "Each new page is also sealed with a kind of digital fingerprint of the page before it. Change an old page and every fingerprint after it breaks, so tampering is obvious.",
-      ],
-      example:
-        "It's like one guest at a wedding claiming the cake was blue, while 300 other guests have photos of a white cake. Nobody believes the one odd story.",
+        "Think of how a photo travels: you tap send, and a second later it's on your friend's phone in another country. Crypto moves money in a similar way.",
       quiz: {
         kind: "truefalse",
-        question: "One person can quietly change an old payment on the blockchain, and nobody would notice.",
+        question: "Cryptocurrency is a special type of physical coin that you can keep in your real-life purse.",
         correct: false,
-        explanation:
-          "False. Thousands of matching copies plus the \"fingerprint\" seals between pages mean a sneaky change wouldn't match and gets rejected.",
+        explanation: "False! Crypto is entirely digital. You keep it safely on your phone or computer, not in your real purse. 👜",
       },
     },
     {
-      id: "meet-solana",
-      title: "Meet Solana",
+      id: "public-notebook",
+      title: "The magic public notebook",
       body: [
-        "There isn't just one blockchain. There are many, a bit like there are different phone networks. Bitcoin was the first one. Ethereum and Solana came later.",
-        "In this course we use Solana. It's known for being fast and cheap: a payment usually goes through in about a second and the fee is a tiny fraction of a cent. Its own coin is called SOL.",
+        "If there's no central bank holding the money, how do we know who has what?",
+        "Instead of a bank keeping secret records, crypto uses a blockchain. Imagine a giant, magical digital notebook that everyone in the world can read, but absolutely no one can erase or cheat.",
+        "Every time someone sends money, a new permanent line is written in this notebook for everyone to see.",
       ],
       example:
-        "If Bitcoin is a reliable old post office, Solana is more like sending a text message: quick, and it costs almost nothing.",
+        "It's like a shared family recipe book where every change is written in ink and every relative has an identical copy. Nobody can quietly rewrite grandma's recipe.",
       quiz: {
-        kind: "match",
-        question: "Match each word to what it means.",
-        pairs: [
-          { left: "Blockchain", right: "A shared record book" },
-          { left: "Block", right: "One page of payments" },
-          { left: "Solana", right: "A fast, low-fee blockchain" },
-          { left: "SOL", right: "Solana's own coin" },
+        kind: "single",
+        question: "What is the easiest way to describe a blockchain?",
+        options: [
+          { id: "a", text: "A giant, public digital notebook that cannot be erased." },
+          { id: "b", text: "A secret file kept on a bank manager's computer." },
+          { id: "c", text: "A physical diary locked in a library." },
         ],
+        correct: "a",
         explanation:
-          "A blockchain is the shared record book, a block is one page in it, Solana is the blockchain we use, and SOL is its coin.",
+          "A blockchain is a giant digital notebook that's completely public, so no single bank has to keep a secret file. 📖",
       },
     },
     {
-      id: "risk",
-      title: "Crypto is exciting, and risky",
+      id: "no-boss",
+      title: "No boss in charge",
       body: [
-        "Prices of crypto coins can jump up or drop a lot, sometimes in a single day. That's why the golden rule is: never put in more money than you could calmly lose.",
-        "Good news for now: in this course you'll practise with test coins that have no real value. You can't lose a thing while you learn.",
+        "Because everyone shares a copy of this magical notebook, there's no single boss. No CEO, no bank manager, and no central office decides what you can do with your coins.",
+        "This is what people mean when they say crypto is decentralized. A whole community of computers works together as a team to make sure everything is fair.",
       ],
       example:
-        "Treat it like a trip to a fun fair. You decide your budget before you go, not while you're on the rollercoaster.",
+        "Like a neighbourhood book-swap shelf: there's no shop owner, everyone follows the same simple rules, and everyone can see what's there.",
       quiz: {
         kind: "multiple",
-        question: "Which of these are healthy habits with crypto?",
+        question: "What does it mean when we say a network is \"decentralized\"?",
         options: [
-          { id: "a", text: "Only invest money you could afford to lose" },
-          { id: "b", text: "Borrow money because a friend says a coin will \"go to the moon\"" },
-          { id: "c", text: "Practise first with test coins" },
-          { id: "d", text: "Expect prices to go up and down" },
+          { id: "a", text: "There is no single boss or CEO in charge." },
+          { id: "b", text: "A bank manager has to approve your weekend transactions." },
+          { id: "c", text: "The network works together as a team to check the rules." },
+          { id: "d", text: "No central office can randomly freeze your account." },
         ],
         correct: ["a", "c", "d"],
         explanation:
-          "Investing only what you can lose, practising first and expecting ups and downs are all smart. Borrowing money because of hype is a classic way to get hurt.",
+          "Decentralized means there is no central boss or bank manager. The network runs itself as a team. 🤝",
+      },
+    },
+    {
+      id: "why-sail",
+      title: "Why sail these waters?",
+      body: [
+        "Why use crypto instead of your regular banking app? Because it gives you true ownership of your digital money and items.",
+        "Plus, modern networks like Solana make this incredibly fast and practically free. It's like sending a quick chat message instead of mailing a heavy package!",
+        "One honest note before we sail on: crypto prices can go up and down a lot. Only ever put in money you could afford to lose.",
+      ],
+      example:
+        "On Solana, a typical network fee is a tiny fraction of a cent, far less than a bank transfer abroad.",
+      quiz: {
+        kind: "fill",
+        question: "Modern crypto networks like Solana make sending digital money incredibly ___ and practically free.",
+        answers: ["fast", "quick", "speedy"],
+        explanation: "We were looking for fast! Solana is built to be extremely speedy. ⚡",
       },
     },
   ],

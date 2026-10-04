@@ -16,9 +16,13 @@ export function LessonComplete({
   streak,
   totalXp,
   next,
+  claimed,
+  onClaim,
 }: {
   lesson: Lesson;
   earned: number;
+  claimed: boolean;
+  onClaim: () => void;
   streak: number;
   totalXp: number;
   next: NextStop;
@@ -41,15 +45,30 @@ export function LessonComplete({
         tabIndex={-1}
         className={`mt-3 text-[2.4rem] leading-tight font-extrabold tracking-tight text-ink outline-none sm:text-5xl ${m.fadeUp} ${m.delay1}`}
       >
-        Beautifully done!
+        Lesson completed! 🎉
       </h1>
       <p className={`mt-3 max-w-md text-[17px] leading-relaxed text-ink-soft sm:text-lg ${m.fadeUp} ${m.delay2}`}>
-        You finished <strong className="font-extrabold text-ink">{lesson.title}</strong>. One more stop on your
-        route, sailed.
+        {lesson.outro ?? (
+          <>
+            You finished <strong className="font-extrabold text-ink">{lesson.title}</strong>. One more stop on your
+            route, sailed.
+          </>
+        )}
       </p>
 
+      {!claimed ? (
+        <button
+          type="button"
+          onClick={onClaim}
+          className={`mt-8 inline-flex min-h-16 items-center justify-center gap-2 rounded-[1.25rem] bg-sandy-beige px-10 text-xl font-extrabold text-deep-ocean shadow-[0_16px_36px_-16px_rgba(13,43,69,0.55)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ocean-teal/50 ${m.pop} ${m.delay2}`}
+        >
+          ✨ Claim +{lesson.xp} XP ✨
+        </button>
+      ) : (
+        <>
+
       <dl className={`mt-8 grid w-full max-w-md grid-cols-3 gap-3 ${m.fadeUp} ${m.delay3}`}>
-        <Stat label="XP earned" value={`+${earned}`} icon={<IconSparkle width={18} height={18} />} tone="bg-seafoam/20 text-[#2f6b64]" />
+        <Stat label="XP earned" value={`+${earned || lesson.xp}`} icon={<IconSparkle width={18} height={18} />} tone="bg-seafoam/20 text-[#2f6b64]" />
         <Stat
           label="Day streak"
           value={String(Math.max(1, streak))}
@@ -81,6 +100,8 @@ export function LessonComplete({
         </Link>
       </div>
       {next?.title && <p className="mt-4 text-sm text-ink-soft">Up next: {next.title}</p>}
+        </>
+      )}
     </main>
   );
 }

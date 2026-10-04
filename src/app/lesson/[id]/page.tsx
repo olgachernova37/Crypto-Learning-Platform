@@ -18,14 +18,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     : {};
 }
 
-const LAST_REGULAR_LESSON = 3;
-
-/** Where the "next" button on the lesson-complete screen goes. */
+/** Where the "next" button on the lesson-complete screen goes: the next lesson, or the finale. */
 function nextStop(lesson: Lesson): NextStop {
-  if (lesson.number === LAST_REGULAR_LESSON) return { href: "/finale", label: "On to the finale" };
-  if (lesson.number > LAST_REGULAR_LESSON) return null; // the NFT mini-lesson: back to the route
   const n = nextLesson(lesson.id);
-  return n ? { href: `/lesson/${n.id}`, label: "Next lesson", title: n.title } : null;
+  return n
+    ? { href: `/lesson/${n.id}`, label: "Next lesson", title: n.title }
+    : { href: "/finale", label: "Meet your mascot" };
 }
 
 export default async function LessonPage({ params }: { params: Promise<{ id: string }> }) {

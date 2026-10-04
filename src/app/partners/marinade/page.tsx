@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { AppShell } from "@/components/shell/AppShell";
-import { PartnersView } from "@/components/partners/PartnersView";
+import { MarinadeQuest } from "@/components/partners/MarinadeQuest";
 
 export const metadata: Metadata = {
-  title: "Trusted harbors — Crypto Voyage",
-  description: "Trusted places to take your next step in crypto, when you're ready.",
+  title: "Marinade staking quest — Crypto Voyage",
+  description: "Practise staking 1 test SOL, verify it, and claim a Starfish badge.",
 };
 
 export default function Page() {
   return (
     <AppShell variant="light">
-      <PartnersView />
+      <MarinadeQuest />
     </AppShell>
   );
 }

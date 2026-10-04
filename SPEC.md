@@ -34,14 +34,19 @@ Each lesson is split into short paragraph-steps (SoloLearn style). After each pa
 
 ## MVP lessons
 
-1. **Lesson 0 — What is crypto and blockchain.** Pure theory, no actions. How it works in general, so the person doesn't get lost later.
-2. **Lesson 1 — Wallets.** What a wallet is, and creating your first Phantom wallet. MetaMask is only mentioned here as an example that different wallets exist for different networks (Phantom = Solana, MetaMask = Ethereum). Focus stays on Phantom.
-3. **Lesson 2 — Send and receive crypto.** On devnet (test coins, nothing costs real money). The first transaction with no risk.
-4. **Lesson 3 — Block explorer and reward.** The learner opens Solana Explorer and sees their own transaction onchain.
+Course text follows Olya's content draft (warm, friend-to-friend, emojis, real-life examples). Lessons are numbered from 0 in code and shown to people as "Lesson 01…05".
 
-**Final step:** after all four lessons, a button "I finished all lessons" appears, and the user receives their NFT animal into their wallet.
+1. **Lesson 0 — What is crypto and blockchain?** Money without borders, the magic public notebook, no boss in charge (decentralized), why Solana (fast, practically free) + an honest risk note.
+2. **Lesson 1 — Your first crypto wallet.** A safe place for digital treasures (a digital backpack), meet Phantom (MetaMask only mentioned for Ethereum), the practice training wallet, your public address (like an IBAN, safe to share), the 12 words stay private.
+3. **Lesson 2 — Let's move some magic money.** Devnet = flight simulator, Solana speed, Action Zone: send 1 practice SOL to a friend + "Verify my transaction onchain" receipt.
+4. **Lesson 3 — The digital receipt.** Block explorer = parcel tracker; see the receipt of your own transfer (addresses, never names).
+5. **Lesson 4 — Your first swap.** Swap = airport currency exchange, DEX = fair vending machine, Action Zone: swap 0.5 practice SOL for 10 Ocean Tokens (OCN).
 
-**Mini-lesson — view your NFT animal:** step by step, where in Phantom to find the collectibles / NFT tab and see the mascot they just received. Closes the loop.
+Each lesson ends with "Lesson completed! 🎉" and a **"✨ Claim +XP ✨"** button (50 XP per lesson, 100 for the swap lesson).
+
+**Finale — Meet your mascot! 🐢:** "🎁 Mint my mascot" (pulsing) → confetti → "Where to find your new friend" (Phantom → Collectibles tab).
+
+**Practice / training wallet (current state):** the Action Zones run on an in-app training wallet simulator (5 practice SOL from a "faucet", receipts stored locally) and are clearly labelled "Practice". Next step: replace it with a real embedded devnet wallet, real faucet airdrop, real transfers/swap, Solana Explorer links and real cNFT minting.
 
 ## Gamification
 
@@ -147,15 +152,17 @@ How their structure maps onto ours:
 3. **Lesson page** — tapping a stop opens the lesson on its **own new page** (not a slide-in or popup over the map). Paragraph-steps with quizzes and the "Ask AI" button, in the ocean tones of the palette.
 4. **Partners page ("We recommend")** — opened by its own button; see below.
 
-## Partners page
+## Partners page — "🧭 Trusted harbors"
 
-A "We recommend" page with hackathon partners: logo, a short beginner-friendly description, and a bonus if they offer one.
+Partners give no bonuses for our product, so we reward the step ourselves:
 
-Partners give no bonuses for our product — we design our own in-app rewards for following a recommendation (e.g. extra XP or a special NFT). The only known partner bonus is Marinade's own $10 for signing up.
+- **Marinade** — "your digital savings account". Interactive in-app staking quest (practice): stake 1 practice SOL → verify → claim a ⭐️ Starfish NFT (practice) + 50 XP. Marinade's own $10 sign-up bonus is mentioned with "check current terms".
+- **Solana Community (Superteam)** — +50 XP for a visit.
+- **Phantom Wallet** — "True Owner" badge + 100 XP for going to set up the real app.
+- **Bybit EU** — +50 XP for a visit.
+- Not a fit: Accretion (security audits for developers). Trezor is a candidate for later.
 
-- **Marinade** — Solana staking. Announced at the event: a $10 bonus for signing up (confirm exact terms).
-- **Trezor** — hardware wallet; fits a safety lesson for beginners (candidate).
-- Not a fit: Accretion is a security-audit firm for developer teams, with no consumer product. Other event supporters to review later: Superteam, Bybit EU, RockawayX, mitonC, nodeMonster.
+Below the partners: **"🗺️ Before you set sail"** — Devnet vs Mainnet (Phantom → Settings → Developer Settings → Testnet Mode off) and **"A quick note on safety"** (12 words stay private, test with a tiny amount first, only sail with what you can afford, not financial advice).
 
 ## Open questions
 

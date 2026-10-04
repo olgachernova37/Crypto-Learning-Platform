@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Lesson } from "@/content/types";
 import { lessonLabel } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
@@ -10,6 +10,7 @@ import { emptyAnswer, isCorrect, isReady, type QuizAnswer } from "@/components/q
 import { LessonIntro } from "./LessonIntro";
 import { LessonHeader } from "./LessonHeader";
 import { StepContent } from "./StepContent";
+import { PracticeZone } from "./PracticeZone";
 import { LessonComplete, type NextStop } from "./LessonComplete";
 import { AskAi } from "./AskAi";
 import { IconArrowLeft, IconArrowRight } from "./icons";
@@ -30,7 +31,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
   const heading = useRef<HTMLHeadingElement>(null);
   const continueBtn = useRef<HTMLButtonElement>(null);
   const feedbackRef = useRef<HTMLDivElement>(null);
-  const finished = useRef(false);
+  const [practiceDone, setPracticeDone] = useState<Record<string, boolean>>({});
 
   const steps = lesson.steps;
   const step = steps[i];
@@ -39,6 +40,17 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
   const revealed = !!result;
   const answer = result?.answer ?? draft ?? (step?.quiz ? emptyAnswer(step.quiz) : null);
   const isLast = i === n - 1;
+  const stepId = step?.id;
+  const markPractice = useCallback(() => {
+    if (stepId) setPracticeDone((d) => (d[stepId] ? d : { ...d, [stepId]: true }));
+  }, [stepId]);
+  const practicePending = !!(step?.practice && !practiceDone[step.id]);
+  const claimed = progress.completedLessons.includes(lesson.id);
+  const claim = () => {
+    if (claimed) return;
+    setGained((g) => g + lesson.xp);
+    completeLesson(lesson.id, lesson.xp);
+  };
 
   // focus the new heading + scroll up whenever the screen changes
   useEffect(() => {
@@ -56,12 +68,7 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
   const goNext = () => {
     setDraft(null);
     if (isLast) {
-      // award the lesson once, as the end screen appears
-      if (!finished.current) {
-        finished.current = true;
-        if (!progress.completedLessons.includes(lesson.id)) setGained((g) => g + lesson.xp);
-        completeLesson(lesson.id, lesson.xp);
-      }
+      // the lesson XP is claimed on the completion screen ("Claim +50 XP")
       setPhase("done");
     } else {
       setI(i + 1);
@@ -102,7 +109,9 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
     return (
       <LessonComplete
         lesson={lesson}
-        earned={gained || n * STEP_XP + lesson.xp}
+        earned={gained}
+        claimed={claimed}
+        onClaim={claim}
         streak={progress.streak}
         totalXp={progress.xp}
         next={next}
@@ -133,6 +142,11 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
               {step.title}
             </h1>
             <StepContent step={step} />
+            {step.practice && (
+              <div className="mt-6">
+                <PracticeZone practice={step.practice} onDone={markPractice} />
+              </div>
+            )}
           </article>
         ) : (
           step.quiz &&
@@ -191,7 +205,9 @@ export function LessonPlayer({ lesson, next }: { lesson: Lesson; next: NextStop 
           )}
 
           {phase === "read" && (
-            <PrimaryButton onClick={fromRead}>{step.quiz ? "Quick check" : isLast ? "Finish lesson" : "Continue"}</PrimaryButton>
+            <PrimaryButton onClick={fromRead} disabled={practicePending}>
+              {practicePending ? "Try the practice first" : step.quiz ? "Quick check" : isLast ? "Finish lesson" : "Continue"}
+            </PrimaryButton>
           )}
           {phase === "quiz" && !revealed && (
             <PrimaryButton onClick={check} disabled={!ready}>

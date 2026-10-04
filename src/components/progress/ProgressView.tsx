@@ -9,6 +9,7 @@ import { lessons, lessonLabel, lessonNum } from "@/content/lessons";
 import type { Lesson } from "@/content/types";
 import { useProgress, type Progress } from "@/lib/progress";
 import { clearVisitedPartners } from "@/components/partners/visited";
+import { resetTrainingWallet } from "@/lib/training-wallet";
 import { ArrowRightIcon, CheckIcon, FlameIcon, XpIcon } from "@/components/shell/icons";
 import { SailboatArt, TurtleArt } from "./art";
 
@@ -287,6 +288,7 @@ export function ProgressView() {
         onReset={() => {
           reset();
           clearVisitedPartners();
+          resetTrainingWallet();
         }}
       />
     </main>

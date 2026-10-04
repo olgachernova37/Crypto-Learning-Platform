@@ -6,11 +6,11 @@ import { lessons } from "@/content/lessons";
 import { useProgress } from "@/lib/progress";
 import { SeaScene } from "./SeaScene";
 import { SeaTurtle } from "./SeaTurtle";
-import { IconArrowLeft, IconArrowRight, IconBook, IconCheck, IconShare, IconSparkle } from "./icons";
+import { Confetti } from "./Confetti";
+import { IconArrowLeft, IconArrowRight, IconCheck, IconShare, IconSparkle } from "./icons";
 import m from "./motion.module.css";
 
-const NFT_LESSON_ID = "your-nft-animal";
-const core = lessons.filter((l) => l.number <= 3);
+const core = lessons;
 
 export function FinaleView() {
   const { progress, ready, claimNft } = useProgress();
@@ -64,48 +64,57 @@ export function FinaleView() {
             The end of the route
           </p>
           <p className={`mt-4 text-sm font-extrabold tracking-[0.12em] text-light-sky uppercase sm:text-base ${m.fadeUp} ${m.delay1}`}>
-            Share the journey
+            Finale
           </p>
           <h1 className={`mt-2 text-[3rem] leading-[1.02] font-extrabold tracking-tight sm:text-7xl ${m.fadeUp} ${m.delay1}`}>
-            You did it!
+            Meet your mascot! 🐢
           </h1>
           <p className={`mx-auto mt-5 max-w-md text-[17px] leading-relaxed text-white/80 sm:text-lg lg:mx-0 ${m.fadeUp} ${m.delay2}`}>
-            From &ldquo;what is crypto?&rdquo; to your own wallet, your first transaction and reading the blockchain
-            yourself. That&apos;s a real voyage. Here&apos;s a little sea friend to remember it by.
+            Look how far you&apos;ve come! You mastered wallets, sent crypto, tracked receipts, and even made a
+            decentralized swap. To celebrate your graduation, a unique ocean mascot is waiting for your digital
+            backpack.
           </p>
 
           <div className={`mt-8 flex flex-col items-center gap-4 lg:items-start ${m.fadeUp} ${m.delay3}`}>
             {!ready ? (
               <div className="h-14" />
             ) : claimed ? (
-              <div role="status" className="w-full max-w-md rounded-[1.5rem] bg-white/10 p-5 text-left ring-1 ring-white/15 backdrop-blur-md">
-                <p className="flex items-center gap-3 text-lg font-extrabold">
-                  <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
-                    <IconCheck width={18} height={18} />
-                  </span>
-                  Your animal is on its way to your wallet
-                </p>
-                <p className="mt-2 text-[16px] leading-relaxed text-white/75">
-                  Real minting on Solana devnet comes next. For now this is a preview of your learning badge, and
-                  your progress is saved.
-                </p>
+              <div className="flex w-full max-w-md flex-col gap-4 text-left">
+                <Confetti />
+                <div role="status" className="rounded-[1.5rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur-md">
+                  <p className="flex items-center gap-3 text-lg font-extrabold">
+                    <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
+                      <IconCheck width={18} height={18} />
+                    </span>
+                    Your mascot is minted! 🎉
+                  </p>
+                  <p className="mt-2 text-[16px] leading-relaxed text-white/75">
+                    For now it lives in your practice backpack here. Real minting to your wallet on Solana devnet
+                    comes next.
+                  </p>
+                </div>
+                <div className="rounded-[1.5rem] bg-white p-5 text-ink">
+                  <p className="text-lg font-extrabold">Where to find your new friend 📱</p>
+                  <p className="mt-2 text-[16px] leading-relaxed text-ink-soft">
+                    Open your Phantom wallet app and tap the Collectibles tab (the icon with little squares, ⊞).
+                    That&apos;s where NFTs like your mascot live.
+                  </p>
+                </div>
               </div>
             ) : unlocked ? (
               <button
                 type="button"
                 onClick={claimNft}
-                className="inline-flex min-h-14 items-center gap-4 rounded-full bg-white pr-3 pl-7 text-[17px] font-extrabold text-deep-ocean shadow-[0_12px_40px_-12px_rgba(183,212,230,0.6)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-light-sky"
+                className={`inline-flex min-h-16 items-center gap-3 rounded-[1.25rem] bg-seafoam px-9 text-xl font-extrabold text-white shadow-[0_14px_44px_-12px_rgba(107,167,160,0.8)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-light-sky ${m.pulse}`}
               >
-                Get my NFT animal
-                <span aria-hidden className="grid size-9 place-items-center rounded-full bg-sandy-beige text-deep-ocean">
-                  <IconSparkle width={16} height={16} />
-                </span>
+                🎁 Mint my mascot
+                <IconSparkle width={18} height={18} />
               </button>
             ) : (
               <div className="w-full max-w-md rounded-[1.5rem] bg-white/10 p-5 text-left ring-1 ring-white/15 backdrop-blur-md">
                 <p className="text-lg font-extrabold">Almost there!</p>
                 <p className="mt-1 text-[16px] text-white/75">
-                  Finish all {core.length} lessons to unlock your NFT animal. You&apos;ve done {done} of {core.length}.
+                  Finish all {core.length} lessons to unlock your mascot. You&apos;ve done {done} of {core.length}.
                 </p>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/15" aria-hidden>
                   <div className="h-full rounded-full bg-seafoam" style={{ width: `${(done / core.length) * 100}%` }} />
@@ -121,11 +130,10 @@ export function FinaleView() {
 
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               <Link
-                href={`/lesson/${NFT_LESSON_ID}`}
+                href="/partners"
                 className="inline-flex min-h-12 items-center gap-2 rounded-full bg-white/10 px-5 text-[15px] font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-3 focus-visible:outline-light-sky"
               >
-                <IconBook width={18} height={18} />
-                Meet your NFT animal
+                Trusted harbors <IconArrowRight width={18} height={18} />
               </Link>
               <button
                 type="button"
