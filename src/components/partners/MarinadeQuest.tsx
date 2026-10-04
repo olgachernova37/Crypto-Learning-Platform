@@ -19,7 +19,8 @@ export function MarinadeQuest() {
   const { visited, markVisited } = useVisitedPartners();
   const [busy, setBusy] = useState(false);
   const [verified, setVerified] = useState(false);
-  const q = useT().partners.quest;
+  const t = useT();
+  const q = t.partners.quest;
   const b = (text: string) => (
     <strong key={text} className="text-ink">
       {text}
