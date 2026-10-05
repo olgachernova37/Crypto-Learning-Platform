@@ -126,6 +126,7 @@ function ChoiceList({
             <input
               type={multi ? "checkbox" : "radio"}
               name={name}
+              data-option={o.id}
               className="sr-only"
               checked={sel}
               disabled={revealed}
@@ -230,6 +231,7 @@ function TrueFalse({
             <input
               type="radio"
               name={name}
+              data-tf={String(v)}
               className="sr-only"
               checked={sel}
               disabled={revealed}
@@ -433,6 +435,7 @@ function Match({
                 key={p.left}
                 type="button"
                 onClick={() => tapLeft(i)}
+                data-left={i}
                 aria-pressed={active}
                 aria-label={matched ? tm.matchedWith(p.left, quiz.pairs[value[i]].right) : p.left}
                 className={`flex min-h-12 items-center gap-2.5 rounded-full px-4 py-2.5 text-left text-[17px] font-extrabold sm:rounded-[1.25rem] sm:min-h-[3.75rem] ${chip} ${tone}`}
@@ -467,6 +470,7 @@ function Match({
                 key={p}
                 type="button"
                 onClick={() => tapRight(p)}
+                data-right={p}
                 aria-pressed={active}
                 aria-label={matched ? tm.matchedWith(quiz.pairs[p].right, quiz.pairs[l].left) : quiz.pairs[p].right}
                 className={`flex min-h-[3.25rem] items-center gap-3 rounded-[1.25rem] px-4 py-3 text-left text-[16px] font-semibold sm:min-h-[3.75rem] sm:text-[17px] ${chip} ${tone}`}

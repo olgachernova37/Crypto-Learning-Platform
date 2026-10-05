@@ -54,3 +54,7 @@ Next.js · Solana Kit · Gemini AI guide (`src/app/api/ai/route.ts`, server-only
 Home ("Welcome, voyager — Your first stop: Solana": illustrated Solana planet + our boat arriving, CTA "Start the journey" → /journey) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.
 
 Also: `/privacy` (plain-words GDPR page + "Delete my data" → `DELETE /api/learners`; keep its text true to what the code stores), `/voyager?k=done|invite&n=&l=` (where shared links land) and `/api/card` (share-card PNG via `next/og`, fonts in `assets/fonts/`). Vercel Web Analytics is mounted in `layout.tsx` (cookieless). Any new stored data → update the privacy text in all 4 languages.
+
+## Checks before pushing
+
+`npm run lint`, `npm run check:i18n`, `npm run check:quizzes`, and for flow changes `npm run build && npm start` + `npm run test:e2e`. The e2e test finds elements by `data-testid` / `data-option` / `data-tf` / `data-left` / `data-right` — keep those attributes when changing the lesson, quiz, boss, practice, finale or landing UI.

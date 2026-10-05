@@ -94,6 +94,10 @@ npm run dev                  # http://localhost:3000
 
 **Translations:** `npx tsx scripts/i18n-ui.mts` and `npx tsx scripts/i18n-lessons.mts` check that every language is complete.
 
+**Quizzes:** `npm run check:quizzes` checks all 26 quizzes and 8 boss rounds in 4 languages: the correct answer exists and is accepted, a wrong answer is possible, every question has a real explanation, "select all that apply" has 2+ right and 1+ wrong options, no duplicate options, no text left in English.
+
+**Whole learner journey:** `npm run build && npm start`, then `npm run test:e2e` (Playwright; first time: `npx playwright install chromium`). A robot learner goes landing → name → route → all 9 lessons (reading, quizzes with some wrong answers on purpose, boss battles, practice wallet) → NFT finale → progress, in 4 languages on a phone and a laptop. On every screen it checks for crashes, horizontal overflow and leftover English, that a wrong answer shows the correct one with its explanation at once, that multiple-choice uses square checkboxes, and that the XP adds up. Options: `--locales=uk --sizes=phone,small,laptop --base=https://… --headed`.
+
 ## Tech stack
 
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Solana Kit · Token-2022 · Phantom · Google Gemini · Upstash Redis · Vercel.

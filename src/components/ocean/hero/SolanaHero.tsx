@@ -93,7 +93,7 @@ export function SolanaHero() {
           </p>
 
           <div className={s.ctaRow}>
-            <button type="button" className={s.cta} onClick={start} disabled={leaving}>
+            <button type="button" className={s.cta} onClick={start} disabled={leaving} data-testid="start-journey">
               {t.home.cta}
               <span className={s.ctaArrow} aria-hidden="true">
                 →

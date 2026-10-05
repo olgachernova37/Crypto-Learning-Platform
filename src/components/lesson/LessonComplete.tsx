@@ -77,6 +77,7 @@ export function LessonComplete({
         <button
           type="button"
           onClick={onClaim}
+          data-testid="claim-xp"
           className={`mt-8 inline-flex min-h-16 items-center justify-center gap-2 rounded-[1.25rem] bg-sandy-beige px-10 text-xl font-extrabold text-deep-ocean shadow-[0_16px_36px_-16px_rgba(13,43,69,0.55)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ocean-teal/50 ${m.pop} ${m.delay2}`}
         >
           {c.claim(lesson.xp)}
@@ -104,6 +105,7 @@ export function LessonComplete({
         {nextLink && (
           <Link
             href={nextLink.href}
+            data-testid="next-stop"
             className="inline-flex min-h-14 flex-1 items-center justify-center gap-2 rounded-full bg-ocean-teal px-6 text-[17px] font-extrabold text-white shadow-[0_14px_30px_-14px_rgba(30,90,110,0.9)] transition hover:-translate-y-0.5 hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50"
           >
             {nextLink.label}

@@ -78,6 +78,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
             <button
               type="button"
               onClick={onStart}
+              data-testid="lesson-start"
               className="inline-flex min-h-14 items-center gap-4 rounded-full bg-white pr-3 pl-7 text-[17px] font-extrabold text-deep-ocean shadow-[0_12px_40px_-12px_rgba(183,212,230,0.6)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_44px_-12px_rgba(183,212,230,0.8)] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-light-sky active:translate-y-0"
             >
               {t.lesson.intro.start}

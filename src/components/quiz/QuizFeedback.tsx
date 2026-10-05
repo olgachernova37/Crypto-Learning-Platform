@@ -13,6 +13,8 @@ export function QuizFeedback({ quiz, correct, xp }: { quiz: Quiz; correct: boole
   const f = t.quiz.feedback;
   return (
     <div
+      data-testid="quiz-feedback"
+      data-correct={correct}
       role="status"
       className={`${m.fadeUp} mt-6 rounded-[1.5rem] p-5 sm:p-6 ${
         correct ? "bg-seafoam/15 ring-1 ring-seafoam/50" : "bg-sandy-beige/30 ring-1 ring-sandy-beige"

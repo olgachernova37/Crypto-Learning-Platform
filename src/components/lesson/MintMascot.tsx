@@ -36,7 +36,7 @@ export function MintMascot() {
     return (
       <div className="flex w-full max-w-md flex-col gap-4 text-left">
         <Confetti />
-        <div role="status" className="rounded-[1.5rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur-md">
+        <div role="status" data-testid="minted" className="rounded-[1.5rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur-md">
           <p className="flex items-center gap-3 text-lg font-extrabold">
             <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
               <IconCheck width={18} height={18} />
@@ -187,7 +187,7 @@ export function MintMascot() {
         <div role="alert" className="mt-3 rounded-[1.1rem] bg-sandy-beige/25 p-4 text-[15px] leading-relaxed">
           <p className="font-bold">{walletErrorText(error, t.wallet)}</p>
           {wallet?.mode === "devnet" && (
-            <button type="button" onClick={switchToPractice} className="mt-2 font-bold text-light-sky underline">
+            <button type="button" onClick={switchToPractice} data-testid="mint-switch" className="mt-2 font-bold text-light-sky underline">
               {f.switchToPractice}
             </button>
           )}
@@ -197,6 +197,7 @@ export function MintMascot() {
       <button
         type="button"
         onClick={mint}
+        data-testid="mint"
         disabled={busy === "mint" || (where === "phantom" && !phantomOk)}
         className={`mt-5 inline-flex min-h-16 items-center gap-3 rounded-[1.25rem] bg-seafoam px-9 text-xl font-extrabold text-white shadow-[0_14px_44px_-12px_rgba(107,167,160,0.8)] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-light-sky disabled:opacity-60 ${
           busy === "mint" ? "" : m.pulse

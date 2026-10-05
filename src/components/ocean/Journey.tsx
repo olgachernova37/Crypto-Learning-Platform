@@ -574,6 +574,7 @@ export function Journey() {
               <Link
                 href={active.href}
                 onClick={(e) => openLesson(e, active)}
+                data-testid="open-stop"
                 className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2.5 text-[15px] font-bold text-deep-ocean shadow-[0_10px_30px_rgba(2,12,22,0.35)] transition-transform duration-300 hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:scale-[0.98]"
               >
                 {active.cta}

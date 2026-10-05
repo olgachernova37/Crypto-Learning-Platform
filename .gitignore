@@ -43,3 +43,6 @@ next-env.d.ts
 
 # agent worktrees
 /.claude/
+
+# end-to-end test screenshots
+/test-results/

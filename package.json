@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:quizzes": "npx tsx scripts/check-quizzes.mts",
+    "check:i18n": "npx tsx scripts/i18n-ui.mts && npx tsx scripts/i18n-lessons.mts",
+    "test:e2e": "npx tsx scripts/e2e-journey.mts"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.3.0",
@@ -26,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
+    "playwright": "^1.56.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

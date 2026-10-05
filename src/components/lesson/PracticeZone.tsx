@@ -143,6 +143,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
             <button
               type="button"
               onClick={faucet}
+              data-testid="practice-faucet"
               disabled={busy === "faucet"}
               className={`${btn} mt-4 bg-deep-ocean text-white hover:bg-ocean-teal`}
             >
@@ -170,7 +171,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
               </p>
             )}
             {devnet && (
-              <button type="button" onClick={switchToPractice} className="mt-3 font-bold text-ocean-teal underline">
+              <button type="button" onClick={switchToPractice} data-testid="practice-switch" className="mt-3 font-bold text-ocean-teal underline">
                 {p.error.switchToPractice}
               </button>
             )}
@@ -198,6 +199,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
           <button
             type="button"
             onClick={run}
+            data-testid="practice-run"
             disabled={!!busy || needsCoins || (!simulatedOnly && sol === null)}
             className={`${btn} mt-5 bg-ocean-teal text-white hover:bg-deep-ocean disabled:bg-ocean-teal/50`}
           >
@@ -216,7 +218,7 @@ export function PracticeZone({ practice, onDone }: { practice: Practice; onDone:
         ) : (
           <div className={m.fadeUp}>
             {practice.kind !== "receipt" && (
-              <p role="status" className="mt-5 flex items-center gap-3 text-lg font-extrabold text-ink">
+              <p role="status" data-testid="practice-done" className="mt-5 flex items-center gap-3 text-lg font-extrabold text-ink">
                 <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-seafoam text-white">
                   <IconCheck width={18} height={18} />
                 </span>

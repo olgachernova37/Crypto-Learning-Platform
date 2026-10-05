@@ -62,7 +62,7 @@ export function BossBattle({ boss, won, onWin, onXp }: { boss: Boss; won: boolea
   };
 
   return (
-    <section aria-label={tb.boss(name)} className={`mt-6 overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,#0f3350_0%,#081c2e_100%)] text-white shadow-[0_30px_70px_-30px_rgba(8,28,46,0.9)] ${m.fadeUp}`}>
+    <section aria-label={tb.boss(name)} data-testid="boss" data-won={won} className={`mt-6 overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,#0f3350_0%,#081c2e_100%)] text-white shadow-[0_30px_70px_-30px_rgba(8,28,46,0.9)] ${m.fadeUp}`}>
       {/* arena */}
       <div className="relative px-5 pt-5 sm:px-7">
         <div className="flex items-center justify-between gap-3">
@@ -108,6 +108,7 @@ export function BossBattle({ boss, won, onWin, onXp }: { boss: Boss; won: boolea
                   <button
                     type="button"
                     onClick={() => setShield(true)}
+                    data-testid="boss-shield"
                     className="inline-flex min-h-11 items-center gap-2 rounded-full bg-light-sky/40 px-4 text-[15px] font-extrabold text-deep-ocean transition hover:bg-light-sky/60 focus-visible:outline-3 focus-visible:outline-ocean-teal/50"
                   >
                     🛡️ {tb.shield}
@@ -119,6 +120,7 @@ export function BossBattle({ boss, won, onWin, onXp }: { boss: Boss; won: boolea
             <button
               type="button"
               onClick={done ? next : strike}
+              data-testid="boss-action"
               disabled={!done && !isReady(round, answer)}
               className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-deep-ocean px-6 text-[17px] font-extrabold text-white transition hover:bg-ocean-teal focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 disabled:bg-ink/12 disabled:text-ink/40"
             >
