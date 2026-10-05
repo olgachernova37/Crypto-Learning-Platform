@@ -34,7 +34,7 @@ Crypto apps are made for people who already know crypto. Beginners meet jargon, 
 | **Bosses** | The Whirlpool of Hype (memecoins) and the Island of Sirens (scams): quick rounds, every answer lands a hit, no lives. Phantom's shield gives hints. |
 | **The crew** | Partners join the voyage in learning order, never before their topic: Phantom after the wallet lesson, Bybit EU after the swap, Marinade after staking, Superteam at the finale. |
 | **AI guide** | "Ask AI" in every lesson, powered by Gemini. It hints instead of giving quiz answers, explains mistakes, never gives financial advice, and replies in the learner's language. Works offline with hints from the lesson notes. |
-| **4 languages** | English, Ukrainian, Czech, Russian — interface and all lessons. |
+| **5 languages** | English, German, Czech, Russian, Ukrainian — interface and all lessons. |
 | **Light sign-up + demo mode** | Learners only give a name. `/admin` (password) shows who joined and adds a "⏭ Demo: next" button for live demos. |
 
 ## How Solana is used
@@ -94,9 +94,9 @@ npm run dev                  # http://localhost:3000
 
 **Translations:** `npx tsx scripts/i18n-ui.mts` and `npx tsx scripts/i18n-lessons.mts` check that every language is complete.
 
-**Quizzes:** `npm run check:quizzes` checks all 26 quizzes and 8 boss rounds in 4 languages: the correct answer exists and is accepted, a wrong answer is possible, every question has a real explanation, "select all that apply" has 2+ right and 1+ wrong options, no duplicate options, no text left in English.
+**Quizzes:** `npm run check:quizzes` checks all 26 quizzes and 8 boss rounds in 5 languages: the correct answer exists and is accepted, a wrong answer is possible, every question has a real explanation, "select all that apply" has 2+ right and 1+ wrong options, no duplicate options, no text left in English.
 
-**Whole learner journey:** `npm run build && npm start`, then `npm run test:e2e` (Playwright; first time: `npx playwright install chromium`). A robot learner goes landing → name → route → all 9 lessons (reading, quizzes with some wrong answers on purpose, boss battles, practice wallet) → NFT finale → progress, in 4 languages on a phone and a laptop. On every screen it checks for crashes, horizontal overflow and leftover English, that a wrong answer shows the correct one with its explanation at once, that multiple-choice uses square checkboxes, and that the XP adds up. Options: `--locales=uk --sizes=phone,small,laptop --base=https://… --headed`.
+**Whole learner journey:** `npm run build && npm start`, then `npm run test:e2e` (Playwright; first time: `npx playwright install chromium`). A robot learner goes landing → name → route → all 9 lessons (reading, quizzes with some wrong answers on purpose, boss battles, practice wallet) → NFT finale → progress, in 5 languages on a phone and a laptop. On every screen it checks for crashes, horizontal overflow and leftover English, that a wrong answer shows the correct one with its explanation at once, that multiple-choice uses square checkboxes, and that the XP adds up. Options: `--locales=uk --sizes=phone,small,laptop --base=https://… --headed`.
 
 ## Tech stack
 

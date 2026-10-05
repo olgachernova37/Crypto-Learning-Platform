@@ -8,9 +8,9 @@ Crypto learning web platform for complete beginners (Duolingo + SoloLearn style)
 
 - **Devnet only.** Never touch mainnet, never ask for or handle private keys or seed phrases.
 - **Audience is non-developers.** No code is taught. Lesson text is warm, simple, friend-to-friend, with real-life examples, no jargon.
-- **Languages: English (source), Ukrainian, Czech, Russian.** Never hard-code user-visible text:
-  - UI strings → `src/i18n/ui/en/<area>.ts`, read with `useT()`; then add the same key to `src/i18n/ui/{uk,cs,ru}.ts` (counts = functions with plural rules). Check: `npx tsx scripts/i18n-ui.mts`.
-  - Lesson text → `src/content/lessons/*.ts` (English, structure + answers) and `src/content/i18n/{uk,cs,ru}.json` (text only, keyed by lesson/step/option id). Show lessons via `useLessons()` / `useLocalizedLesson()`. Check: `npx tsx scripts/i18n-lessons.mts`.
+- **Languages: English (source), German, Czech, Russian, Ukrainian** (this is also the switcher order, `LOCALES` in `src/i18n/locales.ts`). Never hard-code user-visible text:
+  - UI strings → `src/i18n/ui/en/<area>.ts`, read with `useT()`; then add the same key to `src/i18n/ui/{de,cs,ru,uk}.ts` (counts = functions with plural rules). Check: `npx tsx scripts/i18n-ui.mts`.
+  - Lesson text → `src/content/lessons/*.ts` (English, structure + answers) and `src/content/i18n/{de,cs,ru,uk}.json` (text only, keyed by lesson/step/option id). Show lessons via `useLessons()` / `useLocalizedLesson()`. Check: `npx tsx scripts/i18n-lessons.mts`.
   - Language switcher in the top bar (saved in localStorage, first visit = browser language). The AI guide answers in the chosen language.
 - **Mobile-first, responsive.** Every screen must work on a phone; bottom nav on mobile.
 - **No hearts/lives, no leaderboard.** Gamification = streak + XP + NFT animal reward.
@@ -53,7 +53,7 @@ Next.js · Solana Kit · Gemini AI guide (`src/app/api/ai/route.ts`, server-only
 
 Home ("Welcome, voyager — Your first stop: Solana": illustrated Solana planet + our boat arriving, CTA "Start the journey" → /journey) → Lessons list (a boat sails a route; each stop = a lesson) → Lesson on its own new page, not a slide-in (steps + quizzes + "Ask AI" button) → Partners ("We recommend"). All in the ocean palette.
 
-Also: `/privacy` (plain-words GDPR page + "Delete my data" → `DELETE /api/learners`; keep its text true to what the code stores), `/voyager?k=done|invite&n=&l=` (where shared links land) and `/api/card` (share-card PNG via `next/og`, fonts in `assets/fonts/`). Vercel Web Analytics is mounted in `layout.tsx` (cookieless). Any new stored data → update the privacy text in all 4 languages.
+Also: `/privacy` (plain-words GDPR page + "Delete my data" → `DELETE /api/learners`; keep its text true to what the code stores), `/voyager?k=done|invite&n=&l=` (where shared links land) and `/api/card` (share-card PNG via `next/og`, fonts in `assets/fonts/`). Vercel Web Analytics is mounted in `layout.tsx` (cookieless). Any new stored data → update the privacy text in all 5 languages.
 
 ## Checks before pushing
 

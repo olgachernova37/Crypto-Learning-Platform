@@ -1,4 +1,4 @@
-// English UI strings: wallet. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: wallet. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 // Text the training wallet (src/lib/training-wallet.ts) produces: error messages and receipt "What" lines.
 export const wallet = {
   /** Error box above the practice / mint buttons. */

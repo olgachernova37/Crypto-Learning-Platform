@@ -1,4 +1,4 @@
-// English UI strings: home. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: home. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 export const home = {
   /** Little tag next to the planet illustration (bold line, then a short line). */
   tagTitle: "Stop 01 · Solana",

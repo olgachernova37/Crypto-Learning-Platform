@@ -30,7 +30,7 @@ function report(lang: string, path: string, msg: string) {
   problems++;
   if (problems < 60) console.log(`${lang}: ${path} — ${msg}`);
 }
-for (const lang of ["uk", "cs", "ru"]) {
+for (const lang of ["de", "uk", "cs", "ru"]) {
   const file = `src/content/i18n/${lang}.json`;
   walk(en, JSON.parse(fs.readFileSync(file, "utf8")), "", lang);
 }

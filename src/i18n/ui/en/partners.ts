@@ -1,4 +1,4 @@
-// English UI strings: partners. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: partners. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 // Brand names (Marinade, Phantom, Bybit EU, Superteam, Solana, SOL, mSOL, Solana Explorer) stay as they are.
 import type { ReactNode } from "react";
 

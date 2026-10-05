@@ -1,4 +1,4 @@
-// English UI strings: lesson. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: lesson. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 export const lesson = {
   /** Opening "chapter" screen of a lesson (dark sea). */
   intro: {

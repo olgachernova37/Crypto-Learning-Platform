@@ -1,11 +1,12 @@
-// Checks src/i18n/ui/{uk,cs,ru}.ts against the English dictionary: missing keys, extra keys,
+// Checks src/i18n/ui/{de,uk,cs,ru}.ts against the English dictionary: missing keys, extra keys,
 // wrong value types (string vs function vs list).  Run: npx tsx scripts/i18n-ui.mts [lang]
 import { en } from "../src/i18n/ui/en";
+import { de } from "../src/i18n/ui/de";
 import { uk } from "../src/i18n/ui/uk";
 import { cs } from "../src/i18n/ui/cs";
 import { ru } from "../src/i18n/ui/ru";
 
-const all = { uk, cs, ru } as Record<string, unknown>;
+const all = { de, uk, cs, ru } as Record<string, unknown>;
 const only = process.argv[2];
 let problems = 0;
 const kind = (v: unknown) => (Array.isArray(v) ? "list" : typeof v);

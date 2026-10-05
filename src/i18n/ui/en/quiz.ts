@@ -1,4 +1,4 @@
-// English UI strings: quiz. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: quiz. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 export const quiz = {
   /** Small pill above each quiz telling how to answer. */
   kind: {

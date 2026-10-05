@@ -6,6 +6,7 @@
 import { lessons } from "../lessons";
 import type { BossRound, Lesson, LessonStep, Quiz } from "../types";
 import type { Locale } from "@/i18n/locales";
+import de from "./de.json";
 import uk from "./uk.json";
 import cs from "./cs.json";
 import ru from "./ru.json";
@@ -30,6 +31,7 @@ export type LessonText = { kicker: string; title: string; summary: string; outro
 export type LessonsText = Record<string, LessonText>;
 
 const TEXT: Partial<Record<Locale, LessonsText>> = {
+  de: de as LessonsText,
   uk: uk as LessonsText,
   cs: cs as LessonsText,
   ru: ru as LessonsText,

@@ -48,7 +48,7 @@ type Body = {
   learnerAnswer?: unknown; // only after the quiz was checked
   wasCorrect?: unknown;
   history?: unknown;
-  locale?: unknown; // "en" | "uk" | "cs" | "ru": the guide answers in this language
+  locale?: unknown; // "en" | "de" | "uk" | "cs" | "ru": the guide answers in this language
 };
 
 // The few lines this route writes itself (offline hints, notes, errors), per language.
@@ -69,6 +69,19 @@ const COPY: Record<Locale, {
     empty: "Type a question first, then I can help.",
     tooMany: "Whoa, lots of questions! Let's take a short breath. Try again in a minute.",
     t: "True", f: "False",
+  },
+  de: {
+    generic: "Gute Frage! Lies den Schritt noch einmal in Ruhe durch. Die Antwort versteckt sich meistens in einem der kurzen Absätze. Und denk dran: Hier ist alles Übungsgeld im devnet, beim Ausprobieren kannst du also nichts verlieren.",
+    missed: "Keine Sorge, bei dieser Frage stolpern viele.",
+    nudge: (t) => `Hier ist ein kleiner Tipp zu „${t}“:`,
+    thinkLead: "", pictureLead: "",
+    onQuiz: "Lies die Frage noch einmal und denk dabei an dieses Bild. Ich glaube an dich!",
+    notConnected: "Der KI-Guide ist noch nicht verbunden, deshalb kommt dieser Tipp aus den Lektionsnotizen.",
+    resting: "Der KI-Guide macht gerade Pause, deshalb kommt dieser Tipp aus den Lektionsnotizen.",
+    noJson: "Bitte schick deine Frage als JSON.",
+    empty: "Schreib zuerst eine Frage, dann helfe ich dir.",
+    tooMany: "Wow, so viele Fragen! Lass uns kurz durchatmen. Versuch es in einer Minute noch einmal.",
+    t: "Wahr", f: "Falsch",
   },
   uk: {
     generic: "Чудове питання! Спробуй ще раз повільно перечитати цей крок. Відповідь зазвичай ховається в одному з коротких абзаців. І пам'ятай: тут усе на тренувальних монетах у devnet, тож пробувати зовсім не страшно.",

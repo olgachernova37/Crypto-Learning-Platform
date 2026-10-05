@@ -1,4 +1,4 @@
-// English UI strings: finale. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: finale. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 // The finale page (src/components/lesson/FinaleView.tsx) and minting the mascot (MintMascot.tsx).
 export const finale = {
   backToRoute: "Back to the route",

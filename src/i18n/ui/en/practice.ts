@@ -1,4 +1,4 @@
-// English UI strings: practice. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: practice. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 // The "Action Zone" inside a lesson step (src/components/lesson/PracticeZone.tsx).
 export const practice = {
   /** aria-label of the whole practice block. */

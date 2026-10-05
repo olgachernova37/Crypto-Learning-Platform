@@ -1,4 +1,4 @@
-// English UI strings: shell. Other languages translate this exact shape (src/i18n/ui/{uk,cs,ru}.ts).
+// English UI strings: shell. Other languages translate this exact shape (src/i18n/ui/{de,cs,ru,uk}.ts).
 export const shell = {
   /** aria-label of the logo link in the top bar (keep the brand name). */
   homeAria: "Crypto Voyage — home",
