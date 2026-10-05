@@ -22,6 +22,12 @@ export const csVoyage = {
         line: "Likvidní staking už znáš z tréninku. Marinade to umí doopravdy: stakuj SOL, získej mSOL a nech je růst. Zkus cvičný úkol a získej NFT hvězdici.",
         cta: "Začít úkol se stakingem",
       },
+      trezor: {
+        role: "Strážce trezoru",
+        joins: "Trezor se přidává k posádce!",
+        line: "Tvoje úspory si zaslouží trezor. Trezor je hardwarová peněženka z Prahy: tvoje klíče zůstávají offline a nic neodejde, dokud nezmáčkneš tlačítko na zařízení. Funguje se Solanou.",
+        cta: "Prozkoumat Trezor",
+      },
       superteam: {
         role: "Tvoje posádka na souši",
         joins: "Superteam tě vítá na břehu!",

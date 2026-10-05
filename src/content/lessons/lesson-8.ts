@@ -9,7 +9,7 @@ export const lesson8: Lesson = {
   summary: "The tricks scammers use, and the simple habits that keep your wallet safe.",
   minutes: 5,
   xp: 100,
-  outro: "You're now a scam-spotter! These habits protect you far better than any fancy tool. Your sea friend is waiting at the finish.",
+  outro: "You're now a scam-spotter! These habits protect you far better than any fancy tool. One last stop before the finish: a vault for your treasure.",
   steps: [
     {
       id: "golden-rule",
@@ -79,6 +79,7 @@ export const lesson8: Lesson = {
       title: "Your safety checklist ✅",
       body: [
         "Let's pack it into a few habits: keep your 12 words offline and secret. Check website addresses. Read every wallet pop-up. Ignore surprise gifts. Start small with new apps.",
+        "Trying a new app? Check that it's well known, and that security experts have checked its code. That check is called an audit, and real projects proudly show theirs. An audit doesn't make a project perfect, but no audit at all is a warning sign.",
         "And when in doubt, slow down. A real opportunity will still be there tomorrow. A scam needs you to act right now.",
       ],
       example: "Just like you lock your front door without thinking about it, these habits become automatic after a while.",
@@ -139,6 +140,19 @@ export const lesson8: Lesson = {
             correct: "b",
             explanation: "Reject! \"phant0m\" has a zero instead of an \"o\". When you don't understand a request, the answer is always no. 🛡️",
             hint: "Look closely at the letters in the address.",
+          },
+          {
+            kind: "single",
+            question: "🎶 \"Download Phantom here!\" Four links float by. Which one is the real Phantom website?",
+            options: [
+              { id: "a", text: "phantom-wallet-secure.app" },
+              { id: "b", text: "phantm.com" },
+              { id: "c", text: "phantom.com" },
+              { id: "d", text: "phantom.com-login.help" },
+            ],
+            correct: "c",
+            explanation: "The real one is phantom.com. Fakes add extra words, drop a letter, or hide the real name at the start of a strange address. Save the real site as a bookmark and always open it from there. 🔖",
+            hint: "Read each address to its very end. The real one has nothing extra.",
           },
         ],
       },

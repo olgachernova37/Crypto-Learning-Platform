@@ -104,7 +104,10 @@ function checkQuiz(q: Quiz, en: Quiz, where: string, locale: Locale, boss: boole
     if (same(q.question, en.question)) warn(where, "question is still in English");
     if (same(q.explanation, en.explanation)) warn(where, "explanation is still in English");
     if ((q.kind === "single" || q.kind === "multiple") && (en.kind === "single" || en.kind === "multiple"))
-      q.options.forEach((o, i) => same(o.text, en.options[i].text) && warn(where, `option "${o.id}" is still in English`));
+      q.options.forEach(
+        // web addresses (e.g. "spot the fake site") stay the same in every language
+        (o, i) => same(o.text, en.options[i].text) && !/^[\w.-]+\.[a-z]{2,}$/i.test(o.text.trim()) && warn(where, `option "${o.id}" is still in English`),
+      );
   }
 }
 

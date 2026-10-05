@@ -68,7 +68,7 @@ export const cs: DeepPartial<Dict> = {
     note: (lessons, minutes) =>
       `Bez zkušeností s kryptem · ${lessons} ${pl(lessons, "krátká lekce", "krátké lekce", "krátkých lekcí")} · zhruba ${minutes} min`,
     routeLabel: "Na tvé trase",
-    route: ["Co je krypto", "Solana", "Peněženky", "Posílání SOL", "Swapy", "Staking", "NFT", "Memecoiny", "Bezpečnost"],
+    route: ["Co je krypto", "Solana", "Peněženky", "Posílání SOL", "Swapy", "Staking", "NFT", "Memecoiny", "Bezpečnost", "Tvůj trezor"],
   },
 
   journey: {
@@ -459,6 +459,12 @@ export const cs: DeepPartial<Dict> = {
         reward: "⭐️ NFT hvězdice (cvičné) + bonus 10 $ od Marinade za registraci",
         cta: "Začít staking výpravu",
         note: "Bonus 10 $ je vlastní nabídka Marinade pro skutečné registrace. Aktuální podmínky si ověř na jejich webu.",
+      },
+      trezor: {
+        tagline: "Sejf pro tvoje úspory",
+        line: "Máš víc než kapesné? Hardwarová peněženka drží tvoje klíče offline a nic neodejde bez zmáčknutí tlačítka na zařízení.",
+        reward: (xp: number) => `🔐 +${xp} XP`,
+        cta: "Prozkoumat Trezor",
       },
       superteam: {
         name: "Solana komunita (Superteam)",

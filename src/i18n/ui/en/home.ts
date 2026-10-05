@@ -13,5 +13,5 @@ export const home = {
     `No crypto experience needed · ${lessons} short lessons · about ${minutes} min`,
   routeLabel: "On your route",
   /** The route chips under the hero, in lesson order (short topic names; the 2nd one is highlighted). */
-  route: ["What is crypto", "Solana", "Wallets", "Sending SOL", "Swaps", "Staking", "NFTs", "Memecoins", "Staying safe"],
+  route: ["What is crypto", "Solana", "Wallets", "Sending SOL", "Swaps", "Staking", "NFTs", "Memecoins", "Staying safe", "Your vault"],
 };

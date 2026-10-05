@@ -498,7 +498,7 @@
     "kicker": "Sicher bleiben",
     "title": "Erkenne den Betrug 🛟",
     "summary": "Die Tricks, die Betrüger benutzen, und die einfachen Gewohnheiten, die deine Wallet schützen.",
-    "outro": "Du bist jetzt ein Profi im Betrug-Erkennen! Diese Gewohnheiten schützen dich viel besser als jedes schicke Tool. Dein Meeresfreund wartet im Ziel auf dich.",
+    "outro": "Du bist jetzt ein Profi im Betrug-Erkennen! Diese Gewohnheiten schützen dich viel besser als jedes schicke Tool. Noch ein letzter Halt vor dem Ziel: ein Tresor für deinen Schatz.",
     "steps": {
       "golden-rule": {
         "title": "Die goldene Regel: deine 12 Wörter 🤫",
@@ -568,6 +568,7 @@
         "title": "Deine Sicherheits-Checkliste ✅",
         "body": [
           "Packen wir es in ein paar Gewohnheiten: Halte deine 12 Wörter offline und geheim. Prüf Website-Adressen. Lies jedes Wallet-Pop-up. Ignorier Überraschungsgeschenke. Fang bei neuen Apps klein an.",
+          "Du probierst eine neue App aus? Prüf, ob sie bekannt ist und ob Sicherheitsexperten ihren Code überprüft haben. Diese Prüfung nennt man Audit, und echte Projekte zeigen ihres stolz her. Ein Audit macht ein Projekt nicht perfekt, aber gar kein Audit ist ein Warnsignal.",
           "Und wenn du unsicher bist: langsamer machen. Eine echte Chance ist morgen auch noch da. Ein Betrug braucht dich genau jetzt."
         ],
         "example": "So wie du deine Haustür abschließt, ohne darüber nachzudenken, werden diese Gewohnheiten nach einer Weile ganz automatisch.",
@@ -616,8 +617,92 @@
                 "b": "Ablehnen und dann die Website-Adresse prüfen."
               },
               "hint": "Schau dir die Buchstaben in der Adresse genau an."
+            },
+            {
+              "question": "🎶 „Lade Phantom hier herunter!“ Vier Links treiben vorbei. Welcher ist die echte Phantom-Website?",
+              "explanation": "Die echte ist phantom.com. Fälschungen hängen extra Wörter an, lassen einen Buchstaben weg oder verstecken den echten Namen am Anfang einer seltsamen Adresse. Speichere die echte Seite als Lesezeichen und öffne sie immer von dort. 🔖",
+              "options": {
+                "a": "phantom-wallet-secure.app",
+                "b": "phantm.com",
+                "c": "phantom.com",
+                "d": "phantom.com-login.help"
+              },
+              "hint": "Lies jede Adresse bis ganz zum Ende. Bei der echten ist nichts zu viel."
             }
           ]
+        }
+      }
+    }
+  },
+  "treasure-vault": {
+    "kicker": "Sicher aufbewahren",
+    "title": "Ein Tresor für deinen Schatz 🔐",
+    "summary": "Hot Wallets und Cold Wallets, und wann dein Erspartes einen eigenen Tresor verdient.",
+    "outro": "Du weißt jetzt, wann Coins in die Hosentasche gehören und wann in einen Tresor. Das ist echtes Krypto-Wissen. Dein Meeresfreund wartet im Ziel auf dich!",
+    "steps": {
+      "hot-wallet": {
+        "title": "Deine Wallet für die Hosentasche: eine Hot Wallet (heiße Wallet) 🔥",
+        "body": [
+          "Apps wie Phantom nennt man Hot Wallets. Sie leben auf deinem Handy oder in deinem Browser und sind immer mit dem Internet verbunden.",
+          "Das macht sie super praktisch: Du kannst in Sekunden senden, tauschen und bezahlen, egal wo du bist.",
+          "Die Kehrseite: Wenn dein Handy einen Virus hat oder du auf einen Phishing-Link tippst und das Falsche freigibst, kann ein Dieb an das kommen, was drin ist."
+        ],
+        "example": "Eine Hot Wallet ist wie der Geldbeutel in deiner Hosentasche: perfekt für Kaffee und Busticket, aber dein ganzes Erspartes würdest du darin nicht herumtragen.",
+        "quiz": {
+          "question": "Eine Hot Wallet, wie die Phantom-App auf deinem Handy, ist mit dem Internet verbunden.",
+          "explanation": "Richtig! Genau das macht sie „heiß“: immer online, also schnell und praktisch, aber für Betrüger auch leichter zu erreichen. 🔥"
+        }
+      },
+      "cold-wallet": {
+        "title": "Der Tresor: eine Cold Wallet (kalte Wallet) 🧊",
+        "body": [
+          "Eine Cold Wallet, auch Hardware-Wallet genannt, ist ein kleines Gerät, ein bisschen wie ein USB-Stick. Deine geheimen Schlüssel bleiben darin und kommen nie mit dem Internet in Berührung.",
+          "Jedes Mal, wenn du Coins sendest, zeigt das Gerät die Details auf seinem eigenen kleinen Bildschirm, und nichts passiert, bis du seinen Knopf drückst.",
+          "Selbst wenn dein Computer also einen Virus hat oder du auf einer gefälschten Website gelandet bist, kann ein Dieb deine Coins nicht bewegen, ohne dieses Gerät in der Hand zu haben.",
+          "Eins bleibt gleich: Du bekommst trotzdem eine Geheimphrase. Schreib sie auf Papier und bewahr sie offline auf, genau wie vorher."
+        ],
+        "example": "Das ist wie ein Safe zu Hause: ein bisschen langsamer zu öffnen als deine Hosentasche, aber genau darum geht es ja.",
+        "quiz": {
+          "question": "Was macht eine Hardware-Wallet für dich?",
+          "explanation": "Sie hält deine Schlüssel offline und lässt dich jede Überweisung auf dem Gerät bestätigen. Sie lässt Coins nicht wachsen, und deine Geheimphrase musst du trotzdem sicher aufbewahren. 🧊",
+          "options": {
+            "a": "Sie hält deine geheimen Schlüssel offline, weg vom Internet.",
+            "b": "Du kannst jede Überweisung auf dem eigenen Bildschirm des Geräts prüfen und bestätigen.",
+            "c": "Sie lässt deine Coins automatisch im Wert steigen.",
+            "d": "Du musst deine Geheimphrase nie mehr aufbewahren."
+          }
+        }
+      },
+      "when-to-switch": {
+        "title": "Wann ist es Zeit für einen Tresor? 🤔",
+        "body": [
+          "Für Übungs-Coins oder ein paar Euro brauchst du keinen Tresor. Für kleine Beträge ist eine Hot Wallet völlig in Ordnung.",
+          "Ein guter Moment für einen Tresor: wenn es dir richtig wehtun würde, den Betrag zu verlieren. Zum Beispiel mehr, als du jemals als Bargeld mit dir herumtragen würdest.",
+          "Viele Leute nutzen beides: eine Hot Wallet mit ein bisschen für den Alltag und eine Cold Wallet für ihr Erspartes."
+        ],
+        "example": "Du hast etwas Bargeld im Geldbeutel und dein Erspartes auf der Bank. Gleiche Idee, nur für Krypto.",
+        "quiz": {
+          "question": "Deine Krypto ist auf einen Betrag gewachsen, dessen Verlust dir richtig wehtun würde. Was ist ein guter Plan?",
+          "explanation": "Das Ersparte in den Tresor, das Taschengeld in die Hot Wallet. Und deine Geheimphrase kommt nie aufs Handy: Papier, offline, sicher. 🔐",
+          "options": {
+            "a": "Alles in der App auf dem Handy lassen. Das ist am bequemsten.",
+            "b": "Dein Erspartes auf eine Hardware-Wallet verschieben und einen kleinen Betrag für den Alltag in der Hot Wallet lassen.",
+            "c": "Deine Geheimphrase in den Notizen auf deinem Handy speichern, damit du sie nie verlierst."
+          }
+        }
+      },
+      "setup-safely": {
+        "title": "Deinen Tresor sicher einrichten 📦",
+        "body": [
+          "Kauf eine Hardware-Wallet nur im offiziellen Shop des Herstellers oder bei einem offiziellen Händler. Niemals gebraucht und niemals von irgendeinem Marktplatz.",
+          "Beim Einrichten erstellt das Gerät deine Geheimphrase selbst. Schreib sie auf Papier. Tipp sie niemals in einen Computer oder ein Handy ein.",
+          "Wenn ein Gerät mit einer Geheimphrase ankommt, die schon aufgedruckt oder ausgefüllt ist, ist es Betrug. Wer sie aufgeschrieben hat, kann das Gerät später leerräumen.",
+          "Und jedes Mal, wenn du Coins sendest, vergleich die Adresse auf dem Bildschirm des Geräts mit der, die du eigentlich nutzen wolltest."
+        ],
+        "example": "Wie bei einem neuen Türschloss: Du würdest nie eins nehmen, zu dem schon jemand anderes einen Ersatzschlüssel hat.",
+        "quiz": {
+          "question": "Deine neue Hardware-Wallet kam mit einer Karte an, auf der schon 24 Wörter einer Geheimphrase aufgedruckt sind. Du kannst diese Wörter bedenkenlos benutzen.",
+          "explanation": "Falsch! Echte Geräte erstellen die Wörter beim Einrichten für dich. Vorgedruckte Wörter bedeuten, dass jemand anderes deinen Schlüssel kennt. Schick es zurück. 📦"
         }
       }
     }

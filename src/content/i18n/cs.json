@@ -505,7 +505,7 @@
     "kicker": "Bezpečnost",
     "title": "Odhal podvod 🛟",
     "summary": "Triky, které podvodníci používají, a jednoduché návyky, které udrží tvou peněženku v bezpečí.",
-    "outro": "Teď umíš podvody prokouknout! Tyhle návyky tě ochrání mnohem líp než jakýkoli chytrý nástroj. Tvůj mořský kamarád čeká v cíli.",
+    "outro": "Teď umíš podvody prokouknout! Tyhle návyky tě ochrání mnohem líp než jakýkoli chytrý nástroj. Ještě jedna zastávka před cílem: trezor na tvůj poklad.",
     "steps": {
       "golden-rule": {
         "title": "Zlaté pravidlo: tvých 12 slov 🤫",
@@ -575,6 +575,7 @@
         "title": "Tvůj bezpečnostní checklist ✅",
         "body": [
           "Shrňme to do pár návyků: drž svých 12 slov offline a v tajnosti. Kontroluj adresy webů. Čti každé vyskakovací okno peněženky. Ignoruj dárky z čista jasna. S novými aplikacemi začínej v malém.",
+          "Zkoušíš novou aplikaci? Ověř si, že je známá a že její kód prověřili bezpečnostní odborníci. Takové prověrce se říká audit a skutečné projekty se tím svým rády chlubí. Audit z projektu nedělá dokonalý, ale když žádný audit nemá, je to varovný signál.",
           "A když máš pochybnosti, zpomal. Skutečná příležitost tu bude i zítra. Podvod naopak tlačí na rozhodnutí hned teď."
         ],
         "example": "Stejně jako zamykání dveří: po čase se z těchhle návyků stane automatika.",
@@ -623,8 +624,92 @@
                 "b": "Odmítnout a pak zkontrolovat adresu webu."
               },
               "hint": "Podívej se pozorně na písmena v adrese."
+            },
+            {
+              "question": "🎶 „Stáhni si Phantom tady!“ Kolem proplouvají čtyři odkazy. Který z nich je skutečný web Phantomu?",
+              "explanation": "Ten pravý je phantom.com. Falešné weby přidávají slova navíc, vynechají písmenko nebo schovají skutečné jméno na začátek divné adresy. Ulož si pravý web do záložek a otevírej ho vždycky odtamtud. 🔖",
+              "options": {
+                "a": "phantom-wallet-secure.app",
+                "b": "phantm.com",
+                "c": "phantom.com",
+                "d": "phantom.com-login.help"
+              },
+              "hint": "Přečti každou adresu až do úplného konce. Ta pravá nemá nic navíc."
             }
           ]
+        }
+      }
+    }
+  },
+  "treasure-vault": {
+    "kicker": "V bezpečí",
+    "title": "Trezor na tvůj poklad 🔐",
+    "summary": "Horké a studené peněženky, a kdy si tvoje úspory zaslouží vlastní trezor.",
+    "outro": "Víš, kdy nechat mince v kapse a kdy je zamknout do trezoru. To je opravdová kryptomoudrost. Tvůj mořský kamarád čeká v cíli!",
+    "steps": {
+      "hot-wallet": {
+        "title": "Peněženka do kapsy: horká peněženka 🔥",
+        "body": [
+          "Aplikacím jako Phantom se říká horké peněženky. Bydlí v tvém telefonu nebo prohlížeči a jsou pořád připojené k internetu.",
+          "Díky tomu jsou super praktické: posílat, měnit a platit můžeš během pár vteřin, ať jsi kdekoli.",
+          "Druhá strana mince: když ti telefon chytí virus, nebo klepneš na podvodný odkaz a schválíš něco špatného, zloděj se může dostat k tomu, co je uvnitř."
+        ],
+        "example": "Horká peněženka je jako peněženka v kapse: ideální na kafe a jízdenku na autobus, ale všechny úspory bys v ní nenosil(a).",
+        "quiz": {
+          "question": "Horká peněženka, třeba aplikace Phantom v telefonu, je připojená k internetu.",
+          "explanation": "Pravda! Právě proto je „horká“: pořád online, takže je rychlá a praktická, ale podvodníci se k ní taky snáz dostanou. 🔥"
+        }
+      },
+      "cold-wallet": {
+        "title": "Trezor: studená peněženka 🧊",
+        "body": [
+          "Studená peněženka, které se taky říká hardwarová peněženka, je malé zařízení, trochu jako USB flashka. Tvoje tajné klíče zůstávají uvnitř a nikdy se nedotknou internetu.",
+          "Pokaždé, když posíláš mince, ukáže zařízení podrobnosti na svém malém displeji a nic se nepohne, dokud nezmáčkneš jeho tlačítko.",
+          "Takže i když máš v počítači virus, nebo jsi skončil(a) na falešném webu, zloděj tvoje mince bez toho zařízení v tvé ruce nepřesune.",
+          "Jedna věc se nemění: pořád dostaneš obnovovací slova. Napiš si je na papír a drž je offline, stejně jako předtím."
+        ],
+        "example": "Je to jako trezor doma: otevře se o chlup pomaleji než kapsa, ale právě o to jde.",
+        "quiz": {
+          "question": "Co pro tebe hardwarová peněženka dělá?",
+          "explanation": "Drží tvoje klíče offline a každý převod musíš potvrdit na zařízení. Mince ti nerozmnoží a obnovovací slova musíš pořád dobře schovávat. 🧊",
+          "options": {
+            "a": "Drží tvoje tajné klíče offline, daleko od internetu.",
+            "b": "Umožní ti zkontrolovat a potvrdit každý převod na vlastním displeji zařízení.",
+            "c": "Automaticky zvyšuje hodnotu tvých mincí.",
+            "d": "Díky ní už nikdy nemusíš schovávat obnovovací slova."
+          }
+        }
+      },
+      "when-to-switch": {
+        "title": "Kdy je čas na trezor? 🤔",
+        "body": [
+          "Na cvičné mince nebo pár eur trezor nepotřebuješ. Na malé částky úplně stačí horká peněženka.",
+          "Dobrá chvíle si ho pořídit: když by tě ztráta té částky opravdu bolela. Třeba když je to víc, než bys kdy nosil(a) u sebe v hotovosti.",
+          "Spousta lidí používá obojí: horkou peněženku s trochou na každý den a studenou peněženku na úspory."
+        ],
+        "example": "Trochu hotovosti nosíš v peněžence a úspory máš v bance. Stejný nápad, jen pro krypto.",
+        "quiz": {
+          "question": "Tvoje krypto narostlo na částku, jejíž ztráta by tě opravdu bolela. Jaký je dobrý plán?",
+          "explanation": "Úspory do trezoru, kapesné do horké peněženky. A obnovovací slova nikdy nepatří do telefonu: papír, offline, v bezpečí. 🔐",
+          "options": {
+            "a": "Nechat všechno v aplikaci v telefonu. Je to nejpohodlnější.",
+            "b": "Přesunout úspory na hardwarovou peněženku a v horké peněžence nechat malou částku na každý den.",
+            "c": "Uložit si obnovovací slova do poznámek v telefonu, ať je nikdy neztratíš."
+          }
+        }
+      },
+      "setup-safely": {
+        "title": "Bezpečné nastavení trezoru 📦",
+        "body": [
+          "Hardwarovou peněženku kupuj jen v oficiálním obchodě výrobce nebo u oficiálního prodejce. Nikdy z druhé ruky a nikdy z náhodného bazaru.",
+          "Při nastavení si zařízení vytvoří obnovovací slova samo. Napiš si je na papír. Nikdy je nepiš do počítače ani do telefonu.",
+          "Pokud zařízení dorazí s už vytištěnými nebo vyplněnými obnovovacími slovy, je to podvod. Kdo je napsal, může ho později vyprázdnit.",
+          "A pokaždé, když posíláš mince, porovnej adresu na displeji zařízení s tou, na kterou chceš poslat."
+        ],
+        "example": "Jako když si pořizuješ nový zámek do dveří: nikdy bys nepoužil(a) takový, ke kterému už má náhradní klíč někdo jiný.",
+        "quiz": {
+          "question": "Tvoje nová hardwarová peněženka dorazila s kartičkou, na které je už vytištěných 24 obnovovacích slov. Je bezpečné ta slova použít.",
+          "explanation": "Nepravda! Skutečná zařízení ti slova vytvoří až při nastavení. Předtištěná slova znamenají, že tvůj klíč zná někdo jiný. Pošli ho zpátky. 📦"
         }
       }
     }

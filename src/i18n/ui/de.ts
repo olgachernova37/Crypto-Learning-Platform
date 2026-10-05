@@ -61,7 +61,7 @@ export const de: DeepPartial<Dict> = {
     note: (lessons: number, minutes: number) =>
       `Keine Krypto-Erfahrung nötig · ${lessons} kurze ${pl(lessons, "Lektion", "Lektionen")} · ca. ${minutes} Min.`,
     routeLabel: "Auf deiner Route",
-    route: ["Was ist Krypto", "Solana", "Wallets", "SOL senden", "Tauschen", "Staking", "NFTs", "Memecoins", "Sicher bleiben"],
+    route: ["Was ist Krypto", "Solana", "Wallets", "SOL senden", "Tauschen", "Staking", "NFTs", "Memecoins", "Sicher bleiben", "Dein Tresor"],
   },
 
   journey: {
@@ -456,6 +456,12 @@ export const de: DeepPartial<Dict> = {
         cta: "Staking-Quest starten",
         note: "Der 10-$-Bonus ist Marinades eigenes Angebot für echte Anmeldungen. Die aktuellen Bedingungen findest du auf ihrer Seite.",
       },
+      trezor: {
+        tagline: "Ein Safe für deine Ersparnisse",
+        line: "Mehr als Taschengeld? Eine Hardware-Wallet hält deine Schlüssel offline, und nichts geht raus ohne einen Druck auf das Gerät.",
+        reward: (xp: number) => `🔐 +${xp} XP`,
+        cta: "Trezor entdecken",
+      },
       superteam: {
         name: "Solana-Community (Superteam)",
         tagline: "Die freundliche weltweite Familie hinter unserem Netzwerk",
@@ -637,6 +643,12 @@ export const de: DeepPartial<Dict> = {
         joins: "Marinades Leuchtturm geht an!",
         line: "Du hast gerade Liquid Staking ausprobiert. Marinade ist das Original: SOL staken, mSOL bekommen und wachsen lassen. Probier die Übungsquest für ein Seestern-NFT.",
         cta: "Staking-Quest starten",
+      },
+      trezor: {
+        role: "Tresorwächter",
+        joins: "Trezor kommt in deine Crew!",
+        line: "Deine Ersparnisse verdienen einen Tresor. Trezor ist eine Hardware-Wallet aus Prag: Deine Schlüssel bleiben offline, und nichts geht raus, bevor du den Knopf am Gerät drückst. Funktioniert mit Solana.",
+        cta: "Trezor entdecken",
       },
       superteam: {
         role: "Deine Crew an Land",

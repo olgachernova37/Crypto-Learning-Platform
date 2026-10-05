@@ -2,7 +2,7 @@
 
 **Learn crypto from zero, like Duolingo — and end every lesson with a real, safe action on Solana.**
 
-Crypto Voyage is a playful learning voyage for complete beginners. A little boat sails a route of 9 short lessons. Learners make a real Solana wallet, send real (test) SOL, check the receipt on Solana Explorer, beat scam "bosses", and finish with their own NFT in Phantom. Everything runs on **Solana devnet**: free, no real money, no seed phrases.
+Crypto Voyage is a playful learning voyage for complete beginners. A little boat sails a route of 10 short lessons. Learners make a real Solana wallet, send real (test) SOL, check the receipt on Solana Explorer, beat scam "bosses", and finish with their own NFT in Phantom. Everything runs on **Solana devnet**: free, no real money, no seed phrases.
 
 Built for the **SolanaCZE Build Station** (Prague, Oct 2026) and the **Colosseum** hackathon.
 
@@ -28,11 +28,11 @@ Crypto apps are made for people who already know crypto. Beginners meet jargon, 
 
 | | |
 | --- | --- |
-| **9 lessons** | What is crypto · Your first wallet · Sending SOL · Block explorer · Your first swap · Staking · NFTs · Memecoins · Spot the scam. Short steps, real-life examples, quizzes (single, multiple, true/false, fill-in, matching). Wrong answer → the right one + why, right away. No hearts, no leaderboard: streak + XP. |
+| **10 lessons** | What is crypto · Your first wallet · Sending SOL · Block explorer · Your first swap · Staking · NFTs · Memecoins · Spot the scam · A vault for your treasure (hot vs cold wallet). Short steps, real-life examples, quizzes (single, multiple, true/false, fill-in, matching). Wrong answer → the right one + why, right away. No hearts, no leaderboard: streak + XP. |
 | **Real Solana practice** | A training wallet on devnet: faucet, send 0.1 SOL, verify the receipt on Solana Explorer. Swap and liquid staking (mSOL) are clearly labelled simulations. |
 | **Your first NFT** | At the finale the learner mints **Pebble the Sea Turtle**, a 1-of-1 Token-2022 NFT with on-chain metadata, into the training wallet or straight into **Phantom** ("Connect Phantom" shares only the public address). |
 | **Bosses** | The Whirlpool of Hype (memecoins) and the Island of Sirens (scams): quick rounds, every answer lands a hit, no lives. Phantom's shield gives hints. |
-| **The crew** | Partners join the voyage in learning order, never before their topic: Phantom after the wallet lesson, Bybit EU after the swap, Marinade after staking, Superteam at the finale. |
+| **The crew** | Partners join the voyage in learning order, never before their topic: Phantom after the wallet lesson, Bybit EU after the swap, Marinade after staking, Trezor after the vault lesson, Superteam at the finale. |
 | **AI guide** | "Ask AI" in every lesson, powered by Gemini. It hints instead of giving quiz answers, explains mistakes, never gives financial advice, and replies in the learner's language. Works offline with hints from the lesson notes. |
 | **5 languages** | English, German, Czech, Russian, Ukrainian — interface and all lessons. |
 | **Light sign-up + demo mode** | Learners only give a name. `/admin` (password) shows who joined and adds a "⏭ Demo: next" button for live demos. |
@@ -94,9 +94,9 @@ npm run dev                  # http://localhost:3000
 
 **Translations:** `npx tsx scripts/i18n-ui.mts` and `npx tsx scripts/i18n-lessons.mts` check that every language is complete.
 
-**Quizzes:** `npm run check:quizzes` checks all 26 quizzes and 8 boss rounds in 5 languages: the correct answer exists and is accepted, a wrong answer is possible, every question has a real explanation, "select all that apply" has 2+ right and 1+ wrong options, no duplicate options, no text left in English.
+**Quizzes:** `npm run check:quizzes` checks all 30 quizzes and 9 boss rounds in 5 languages: the correct answer exists and is accepted, a wrong answer is possible, every question has a real explanation, "select all that apply" has 2+ right and 1+ wrong options, no duplicate options, no text left in English.
 
-**Whole learner journey:** `npm run build && npm start`, then `npm run test:e2e` (Playwright; first time: `npx playwright install chromium`). A robot learner goes landing → name → route → all 9 lessons (reading, quizzes with some wrong answers on purpose, boss battles, practice wallet) → NFT finale → progress, in 5 languages on a phone and a laptop. On every screen it checks for crashes, horizontal overflow and leftover English, that a wrong answer shows the correct one with its explanation at once, that multiple-choice uses square checkboxes, and that the XP adds up. Options: `--locales=uk --sizes=phone,small,laptop --base=https://… --headed`.
+**Whole learner journey:** `npm run build && npm start`, then `npm run test:e2e` (Playwright; first time: `npx playwright install chromium`). A robot learner goes landing → name → route → all 10 lessons (reading, quizzes with some wrong answers on purpose, boss battles, practice wallet) → NFT finale → progress, in 5 languages on a phone and a laptop. On every screen it checks for crashes, horizontal overflow and leftover English, that a wrong answer shows the correct one with its explanation at once, that multiple-choice uses square checkboxes, and that the XP adds up. Options: `--locales=uk --sizes=phone,small,laptop --base=https://… --headed`.
 
 ## Tech stack
 
@@ -106,7 +106,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Solana K
 
 ```
 src/app/              pages + API routes (/api/ai, /api/learners, /api/admin/*)
-src/content/lessons/  the 9 lessons (English source, structure + answers)
+src/content/lessons/  the 10 lessons (English source, structure + answers)
 src/content/i18n/     lesson translations (uk, cs, ru)
 src/content/voyage.ts the crew (partners) and bosses
 src/i18n/             interface dictionaries, language switcher

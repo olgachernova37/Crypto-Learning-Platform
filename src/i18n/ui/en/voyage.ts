@@ -1,5 +1,5 @@
 // English UI strings: voyage — the crew (partners who join along the route) and the two bosses.
-// Brand names (Phantom, Bybit EU, Marinade, Superteam, mSOL) stay as they are.
+// Brand names (Phantom, Bybit EU, Marinade, Trezor, Superteam, mSOL) stay as they are.
 export const voyage = {
   allies: {
     phantom: {
@@ -20,6 +20,12 @@ export const voyage = {
       joins: "Marinade's lighthouse lights up!",
       line: "You just tried liquid staking. Marinade is the real thing: stake SOL, get mSOL, and let it grow. Try the practice quest for a Starfish NFT.",
       cta: "Start the staking quest",
+    },
+    trezor: {
+      role: "Vault keeper",
+      joins: "Trezor joins your crew!",
+      line: "Your savings deserve a vault. Trezor is a hardware wallet made in Prague: your keys stay offline, and nothing leaves until you press the button on the device. It works with Solana.",
+      cta: "Explore Trezor",
     },
     superteam: {
       role: "Your crew on land",

@@ -29,6 +29,12 @@ export const partners = {
       cta: "Start the staking quest",
       note: "The $10 bonus is Marinade's own offer for real sign-ups. Check current terms on their site.",
     },
+    trezor: {
+      tagline: "A safe for your savings",
+      line: "Holding more than pocket money? A hardware wallet keeps your keys offline, and nothing leaves without a press on the device.",
+      reward: (xp: number) => `🔐 +${xp} XP`,
+      cta: "Explore Trezor",
+    },
     superteam: {
       /** "Superteam" is a brand; "Solana Community" may be translated */
       name: "Solana Community (Superteam)",

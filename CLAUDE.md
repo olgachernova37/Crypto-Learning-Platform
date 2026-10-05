@@ -41,7 +41,7 @@ Next.js · Solana Kit · Gemini AI guide (`src/app/api/ai/route.ts`, server-only
 
 ## Voyage: crew & bosses
 
-- Partners are the **crew**, joining in learning order (never before their topic is taught): Phantom after L02 Wallet, Bybit EU after L05 Swap, Marinade after L06 Staking, Superteam at the finale. Data: `src/content/voyage.ts`; text: `t.voyage`. Logos: put the partner's official file in `public/partners/<id>.(svg|png)` and set `logo` — never draw brand logos ourselves.
+- Partners are the **crew**, joining in learning order (never before their topic is taught): Phantom after L02 Wallet, Bybit EU after L05 Swap, Marinade after L06 Staking, Trezor after L10 Treasure vault (hot vs cold wallet), Superteam at the finale. Data: `src/content/voyage.ts`; text: `t.voyage`. Logos: put the partner's official file in `public/partners/<id>.(svg|png)` and set `logo` — never draw brand logos ourselves.
 - **Bosses are threats, never partners**: L08 Whirlpool of Hype, L09 Island of Sirens — a `boss` step (rounds = quizzes) rendered by `BossBattle`. No lives: every answer hits, right ones hit harder; Phantom's shield gives hints once Phantom has joined.
 
 ## Accounts & admin

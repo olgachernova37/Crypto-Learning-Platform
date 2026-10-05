@@ -6,13 +6,14 @@
 //   06 Staking  → 💧 Marinade lighthouse (stake + mSOL, the practice quest)
 //   08 Memecoins→ 🌀 boss: the Whirlpool of Hype      (lesson step, see lesson-7.ts)
 //   09 Scams    → 🧜 boss: the Island of Sirens       (lesson step, see lesson-8.ts)
+//   10 Vault    → 🔐 Trezor, the vault for your savings (hot vs cold wallet)
 //   Finale      → ☀️ Superteam welcomes you ashore (community)
 //
 // Logos: drop the partner's official file into public/partners/<id>.(svg|png) and set `logo`.
 
 import type { BossId } from "./types";
 
-export type AllyId = "phantom" | "bybit" | "marinade" | "superteam";
+export type AllyId = "phantom" | "bybit" | "marinade" | "trezor" | "superteam";
 export type Ally = {
   id: AllyId;
   /** joins after this lesson is finished; "finale" = after the NFT */
@@ -32,6 +33,7 @@ export const ALLIES: Ally[] = [
   { id: "phantom", joinsAfter: "your-first-wallet", emoji: "👻", brand: "Phantom", href: "https://phantom.com/download", xp: 100, tile: "bg-light-sky/55" },
   { id: "bybit", joinsAfter: "your-first-swap", emoji: "💳", brand: "Bybit EU", href: "https://www.bybit.eu", xp: 50, tile: "bg-deep-ocean/10" },
   { id: "marinade", joinsAfter: "staking", emoji: "💧", brand: "Marinade", href: "/partners/marinade", internal: true, xp: 0, tile: "bg-seafoam/20" },
+  { id: "trezor", joinsAfter: "treasure-vault", emoji: "🔐", brand: "Trezor", href: "https://trezor.io", xp: 50, tile: "bg-light-sky/40" },
   { id: "superteam", joinsAfter: "finale", emoji: "☀️", brand: "Superteam", href: "https://superteam.fun", xp: 50, tile: "bg-sandy-beige/45" },
 ];
 

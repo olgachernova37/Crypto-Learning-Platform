@@ -16,7 +16,7 @@ import { useLessons } from "@/i18n/lessons";
 import { AllyMark } from "@/components/voyage/AllyMark";
 
 type Partner = {
-  id: "marinade" | "superteam" | "phantom" | "bybit"; // also the key in t.partners.cards
+  id: "marinade" | "superteam" | "phantom" | "bybit" | "trezor"; // also the key in t.partners.cards
   emoji: string;
   /** Brand name; a translated name in t.partners.cards[id].name wins when present */
   name: string;
@@ -31,6 +31,7 @@ const PARTNERS: Partner[] = [
   { id: "phantom", emoji: "👻", name: "Phantom Wallet", xp: 100, href: "https://phantom.com/download", tile: "bg-light-sky/55" },
   { id: "bybit", emoji: "💳", name: "Bybit EU", xp: 50, href: "https://www.bybit.eu", tile: "bg-deep-ocean/10" },
   { id: "marinade", emoji: "💧", name: "Marinade", xp: 0, href: "/partners/marinade", internal: true, tile: "bg-seafoam/20" },
+  { id: "trezor", emoji: "🔐", name: "Trezor", xp: 50, href: "https://trezor.io", tile: "bg-light-sky/40" },
   { id: "superteam", emoji: "☀️", name: "Solana Community (Superteam)", xp: 50, href: "https://superteam.fun", tile: "bg-sandy-beige/45" },
 ];
 
