@@ -123,6 +123,9 @@ export function Journey() {
   const [arrivedAt, setArrivedAt] = useState(-1);
   const [leaving, setLeaving] = useState<Stop | null>(null);
   const [touched, setTouched] = useState(false);
+  // Wide screens: which half of the sea the mouse is over (-1 = back, 1 = forward, 0 = none).
+  const [hoverSide, setHoverSide] = useState<-1 | 0 | 1>(0);
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -306,6 +309,23 @@ export function Journey() {
     }
   };
 
+  // Wide screens: click the right half of the sea to sail forward, the left half to sail back.
+  // A little bubble follows the mouse and says where a click will take you.
+  const sideAt = (e: ReactPointerEvent): -1 | 0 | 1 => {
+    if (narrow || leaving) return 0;
+    if ((e.target as Element | null)?.closest?.("a, button, [data-no-sail]")) return 0;
+    const side = e.clientX >= window.innerWidth / 2 ? 1 : -1;
+    const target = sel + side;
+    return target < 0 || target > stops.length - 1 ? 0 : side;
+  };
+  const onPointerMove = (e: ReactPointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    const side = sideAt(e);
+    if (side !== hoverSide) setHoverSide(side);
+    const el = cursorRef.current;
+    if (el) el.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+  };
+
   // Swipe / drag on the water.
   const drag = useRef<{ x: number; y: number; t: number } | null>(null);
   const onPointerDown = (e: ReactPointerEvent) => {
@@ -317,6 +337,12 @@ export function Journey() {
     if (!d || performance.now() - d.t > 900) return;
     const dx = e.clientX - d.x;
     const dy = e.clientY - d.y;
+    // A click (not a drag) on the open sea: right half = next stop, left half = previous.
+    if (!narrow && Math.hypot(dx, dy) < 8) {
+      const side = sideAt(e);
+      if (side) step(side);
+      return;
+    }
     // Phone: the route runs upwards, so swiping up sails forward. Wide: drag left = forward.
     const main = narrow ? -dy : -dx;
     const cross = narrow ? dx : dy;
@@ -360,7 +386,10 @@ export function Journey() {
       onWheel={onWheel}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
+      onPointerMove={onPointerMove}
+      onPointerLeave={() => setHoverSide(0)}
       onPointerCancel={() => (drag.current = null)}
+      style={{ cursor: hoverSide ? "pointer" : undefined }}
     >
       <h1 className="sr-only">{t.journey.srTitle}</h1>
       {/* arrival: continue the dive from the home intro, fading out of the same deep blue */}
@@ -517,7 +546,8 @@ export function Journey() {
       {/* ---- wide screens: counter, arrows, hint (bottom-left) ---- */}
       {!narrow && (
         <div
-          className={`absolute bottom-10 left-8 z-10 flex items-center gap-5 ${styles.fadeIn}`}
+          data-no-sail
+          className={`absolute bottom-10 left-8 z-10 flex items-center gap-5 short:bottom-5 ${styles.fadeIn}`}
           onPointerDown={(e) => e.stopPropagation()}
         >
           <StepArrows sel={sel} count={stops.length} onStep={step} />
@@ -526,7 +556,7 @@ export function Journey() {
               <span className="mr-2 inline-block h-1.5 w-1.5 -translate-y-px bg-sandy-beige align-middle" aria-hidden="true" />
               {t.journey.stopCounter(sel + 1, stops.length)}
             </span>
-            <span className={`label-mono text-light-sky/60 transition-opacity duration-700 ${touched ? "opacity-0" : "opacity-100"}`}>
+            <span className={`label-mono text-light-sky/60 transition-opacity duration-700 short:hidden ${touched ? "opacity-0" : "opacity-100"}`}>
               {t.journey.hint}
             </span>
           </div>
@@ -536,7 +566,8 @@ export function Journey() {
       {/* ---- the text block ---- */}
       <section
         aria-live="polite"
-        className="absolute inset-x-0 bottom-0 z-10 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:inset-x-auto md:bottom-[11vh] md:right-[6vw] md:w-[min(460px,40vw)] md:px-0 md:pb-0"
+        data-no-sail
+        className="absolute inset-x-0 bottom-0 z-10 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:inset-x-auto md:bottom-[11vh] md:right-[6vw] md:w-[min(460px,40vw)] md:px-0 md:pb-0 short:md:bottom-5"
         onPointerDown={(e) => e.stopPropagation()}
       >
         {showCard && active && (
@@ -555,13 +586,13 @@ export function Journey() {
             <p className="mt-3 text-[15px] font-bold text-light-sky md:text-base">
               {active.kicker}
             </p>
-            <h2 className="mt-2 text-balance text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[3.3rem]">
+            <h2 className="mt-2 text-balance text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[3.3rem] short:md:text-[2rem]">
               {active.title}
             </h2>
-            <p className="mt-3 max-w-[38ch] text-[15px] font-light leading-relaxed text-white/80 md:mt-4 md:text-base">
+            <p className="mt-3 max-w-[38ch] text-[15px] font-light leading-relaxed text-white/80 md:mt-4 md:text-base short:hidden">
               {active.summary}
             </p>
-            {active.kind === "lesson" && <StopTeaser lessonId={active.key} className="mt-3" />}
+            {active.kind === "lesson" && <StopTeaser lessonId={active.key} className="mt-3 short:hidden" />}
             <p className="label-mono mt-3 flex items-center gap-2 text-light-sky/80">
               {active.done && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-seafoam/25 px-2 py-0.5 text-[#bfe3dc]">
@@ -570,7 +601,7 @@ export function Journey() {
               )}
               {active.meta}
             </p>
-            <div className="mt-5 flex items-center justify-between gap-3 md:mt-7">
+            <div className="mt-5 flex items-center justify-between gap-3 md:mt-7 short:md:mt-4">
               <Link
                 href={active.href}
                 onClick={(e) => openLesson(e, active)}
@@ -587,6 +618,21 @@ export function Journey() {
           </div>
         )}
       </section>
+
+      {/* ---- wide screens: the "click to sail" bubble that follows the mouse ---- */}
+      {!narrow && (
+        <div ref={cursorRef} className="pointer-events-none fixed left-0 top-0 z-30" aria-hidden="true">
+          <div
+            className={`flex -translate-y-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-white/90 px-3.5 py-2 text-[13px] font-extrabold text-deep-ocean shadow-[0_10px_30px_rgba(2,12,22,0.4)] backdrop-blur-sm transition-[opacity,scale] duration-200 ${
+              hoverSide ? "scale-100 opacity-100" : "scale-75 opacity-0"
+            } ${hoverSide < 0 ? "-translate-x-[calc(100%+14px)]" : "translate-x-[14px]"}`}
+          >
+            {hoverSide < 0 && <Chevron dir={-1} />}
+            {hoverSide !== 0 && stops[sel + hoverSide] && (stops[sel + hoverSide].kind === "lesson" ? stops[sel + hoverSide].label : stops[sel + hoverSide].kicker)}
+            {hoverSide > 0 && <Chevron dir={1} />}
+          </div>
+        </div>
+      )}
 
       {/* ---- arriving from the globe: the deep blue clears like surfacing ---- */}
       <div

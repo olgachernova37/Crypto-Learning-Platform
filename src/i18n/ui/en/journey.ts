@@ -9,7 +9,7 @@ export const journey = {
   /** Counter bottom-left, e.g. "Stop 03 / 10". */
   stopCounter: (current: number, total: number) => `Stop ${pad(current)} / ${pad(total)}`,
   /** Hint under the counter (fades out once the learner moves). */
-  hint: "Scroll, drag or use ← → to sail",
+  hint: "Click left or right of the boat, scroll or use ← → to sail",
   prevAria: "Sail to the previous stop",
   nextAria: "Sail to the next stop",
   /** aria-label of a stop marker on the map, e.g. "Lesson 01: What is crypto (finished)". */

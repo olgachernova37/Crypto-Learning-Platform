@@ -78,7 +78,7 @@ export const ru: DeepPartial<Dict> = {
     srTitle: "Твой маршрут: выбери урок",
     backToStart: "На главную",
     stopCounter: (current: number, total: number) => `Остановка ${pad(current)} / ${pad(total)}`,
-    hint: "Листай, тяни или жми ← →, чтобы плыть",
+    hint: "Кликай слева или справа от кораблика, листай или жми ← →",
     prevAria: "Плыть к предыдущей остановке",
     nextAria: "Плыть к следующей остановке",
     stopAria: (name: string, title: string, finished: boolean) =>

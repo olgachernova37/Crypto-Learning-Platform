@@ -299,7 +299,7 @@ function PrimaryButton({
       data-testid="lesson-next"
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-ocean-teal px-8 text-[17px] font-extrabold text-white shadow-[0_12px_28px_-14px_rgba(30,90,110,0.95)] transition hover:-translate-y-0.5 hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 active:translate-y-0 disabled:translate-y-0 disabled:bg-ink/12 disabled:text-ink/40 disabled:shadow-none ${
+      className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-ocean-teal px-5 text-[16px] leading-tight font-extrabold text-white sm:px-8 sm:text-[17px] shadow-[0_12px_28px_-14px_rgba(30,90,110,0.95)] transition hover:-translate-y-0.5 hover:bg-deep-ocean focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ocean-teal/50 active:translate-y-0 disabled:translate-y-0 disabled:bg-ink/12 disabled:text-ink/40 disabled:shadow-none ${
         wide ? "flex-1 sm:flex-none" : ""
       }`}
     >

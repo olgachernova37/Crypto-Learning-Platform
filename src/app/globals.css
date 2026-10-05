@@ -14,6 +14,9 @@
   --ink-soft: #4d6577;
 }
 
+/* Short screens: phones held sideways, small laptop windows. */
+@custom-variant short (@media (max-height: 520px));
+
 @theme inline {
   --color-deep-ocean: var(--deep-ocean);
   --color-ocean-teal: var(--ocean-teal);

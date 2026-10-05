@@ -66,7 +66,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
             {lesson.kicker}
           </p>
           <h1
-            className={`mt-2 text-[2.6rem] leading-[1.05] font-extrabold tracking-tight text-balance sm:text-6xl ${m.fadeUp} ${m.delay2}`}
+            className={`mt-2 text-[2.6rem] leading-[1.05] font-extrabold tracking-tight text-balance sm:text-6xl short:sm:text-[2.6rem] ${m.fadeUp} ${m.delay2}`}
           >
             {lesson.title}
           </h1>

@@ -81,7 +81,7 @@ export const uk: DeepPartial<Dict> = {
     srTitle: "Твій маршрут: обери урок",
     backToStart: "На початок",
     stopCounter: (current: number, total: number) => `Зупинка ${pad(current)} / ${pad(total)}`,
-    hint: "Гортай, тягни або тисни ← →, щоб плисти",
+    hint: "Клікай ліворуч чи праворуч від кораблика, гортай або тисни ← →",
     prevAria: "Плисти до попередньої зупинки",
     nextAria: "Плисти до наступної зупинки",
     stopAria: (name: string, title: string, finished: boolean) =>

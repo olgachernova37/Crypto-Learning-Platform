@@ -75,7 +75,7 @@ export const cs: DeepPartial<Dict> = {
     srTitle: "Tvoje trasa: vyber si lekci",
     backToStart: "Zpět na začátek",
     stopCounter: (current, total) => `Zastávka ${pad(current)} / ${pad(total)}`,
-    hint: "Posouvej, táhni nebo pluj šipkami ← →",
+    hint: "Klikni vlevo nebo vpravo od lodičky, posouvej nebo pluj šipkami ← →",
     prevAria: "Plout na předchozí zastávku",
     nextAria: "Plout na další zastávku",
     stopAria: (name, title, finished) => `${name}: ${title}${finished ? " (dokončeno)" : ""}`,

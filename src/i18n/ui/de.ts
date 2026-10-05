@@ -68,7 +68,7 @@ export const de: DeepPartial<Dict> = {
     srTitle: "Deine Route: Wähl eine Lektion",
     backToStart: "Zurück zum Start",
     stopCounter: (current: number, total: number) => `Halt ${pad(current)} / ${pad(total)}`,
-    hint: "Scrollen, ziehen oder ← → zum Segeln",
+    hint: "Links oder rechts vom Boot klicken, scrollen oder ← → zum Segeln",
     prevAria: "Zum vorherigen Halt segeln",
     nextAria: "Zum nächsten Halt segeln",
     stopAria: (name: string, title: string, finished: boolean) =>
