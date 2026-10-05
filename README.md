@@ -6,7 +6,7 @@ Crypto Voyage is a playful learning voyage for complete beginners. A little boat
 
 Built for the **SolanaCZE Build Station** (Prague, Oct 2026) and the **Colosseum** hackathon.
 
-> **Live demo:** https://crypto-learning-platform-lyart.vercel.app/
+> **Live demo:** https://www.echobrief.online/
 
 <p>
   <img src="docs/screenshots/landing.jpg" alt="Landing page: Your first stop, Solana" width="100%">
